@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "382ad9f0-2e6e-44f1-a8ff-cc77937e8858",
+    "team": "482e0132-1b95-4845-b292-d08008c98f13",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "delicate-limit-9314"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "build",
+    "rootDir": ""
+  }
+}

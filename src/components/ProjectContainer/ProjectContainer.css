@@ -1,0 +1,34 @@
+.project {
+  padding: 5% 10% 5% 10%;
+  margin: 0 auto;
+  text-align: left;
+  transition: transform 0.1s linear;
+}
+
+.project:hover {
+  transform: translateY(-7px);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+}
+
+.project__description {
+  margin-top: 1em;
+}
+
+.project__stack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  margin: 1.2em 0;
+}
+
+.project__stack-item {
+  margin: 0.5em;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--clr-fg-alt);
+}
+
+.project .link--icon {
+  margin-left: 0.5em;
+  justify-content: center;
+}

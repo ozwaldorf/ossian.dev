@@ -1,0 +1,17 @@
+.history-tl-container {
+}
+
+.history-tl-container ul.tl li {
+  max-width: 90%;
+  padding: 10px 10px 50px 30px;
+  list-style: square;
+}
+
+ul.tl li .item-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+ul.tl li .item-detail {
+  max-width: 80%;
+}

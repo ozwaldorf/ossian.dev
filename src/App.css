@@ -1,0 +1,98 @@
+@import url(https://fonts.googleapis.com/css?family=Consolas);
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap');
+
+.app {
+  font-family: 'Consolas', monospace;
+  line-height: 1.5;
+  color: var(--clr-fg);
+  background-color: var(--clr-bg);
+  line-height: 150%;
+}
+
+.light {
+  --clr-bg: #fff;
+  --clr-bg-alt: #fff;
+  --clr-fg: #000;
+  --clr-fg-alt: #000;
+  --clr-primary: #458588;
+  --clr-secondary: #458588;
+  --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.dark {
+  --clr-bg: #111;
+  --clr-bg-alt: #111;
+  --clr-fg: #fff;
+  --clr-fg-alt: #fff;
+  --clr-primary: #4c8c4a;
+  --clr-secondary: #4c8c4a;
+  --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+main {
+  max-width: 1100px;
+  width: 95%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.section {
+  margin-top: 5em;
+}
+
+.section__title {
+  text-align: center;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: var(--clr-secondary);
+  position: relative;
+  text-decoration: underline;
+  display: inline;
+}
+
+.link:hover {
+  color: var(--clr-secondary);
+  background-color: var(--clr-primary);
+  color: var(--clr-bg);
+  text-decoration: none;
+}
+
+.link:hover::before,
+.link:focus::before {
+  width: 100%;
+}
+
+.link--nav {
+  color: var(--clr-primary);
+  font-weight: 800;
+}
+
+.link--nav--pressed {
+  color: var(--clr-secondary);
+  background-color: var(--clr-primary);
+  color: var(--clr-bg);
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .section {
+    margin-top: 4em;
+  }
+}
+
+.nav__list {
+  margin-right: 1.5em;
+  display: flex;
+}
+
+.nav__list-item {
+  margin-left: 1.5em;
+}
