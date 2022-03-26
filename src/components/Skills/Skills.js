@@ -8,13 +8,13 @@ const Skills = () => {
   return (
     <section className='section skills' id='skills'>
       <ul className='skills__list'>
-        <li className='skills__list-item btn btn--plain'>{'{'}</li>
+        <li className='skills__list-item btn btn--plain'>[</li>
         {skills.map((skill) => (
           <li key={uniqid()} className='skills__list-item btn btn--plain'>
             {skill}
           </li>
         ))}
-        <li className='skills__list-item btn btn--plain'>{'}'}</li>
+        <li className='skills__list-item btn btn--plain'>]</li>
       </ul>
       <br />
       <br />

@@ -41,14 +41,28 @@ const projects = [
   {
     name: 'Tidalwave / API',
     description: 'Api in golang for Tidal, the music streaming platform',
-    stack: ['Golang', 'REST', 'Encryption'],
+    stack: ['Golang', 'REST', 'Encryption', 'Security'],
     sourceCode: 'https://github.com/ozwaldorf/tidal',
+  },
+  {
+    name: 'rekt.network',
+    description:
+      'Hub for EDM enthusiasts. Get REKT! Helped create the initial golang backend for a custom QUIC web server rolled up with a websocket IRC bridge, and radio streaming.',
+    stack: ['Golang', 'QUIC', 'Icecast', 'Websockets', 'IRC'],
+    livePreview: 'https://rekt.network',
   },
   {
     name: 'Arbicrypt LLC ',
     description:
       'Arbitrage crypto trading platform, project was abandoned due to oversaturation',
-    stack: ['Golang', 'WebSockets', 'Blockchain'],
+    stack: [
+      'Golang',
+      'WebSockets',
+      'Cryptocurrency',
+      'Trading',
+      'Bot',
+      'Blockchain',
+    ],
     sourceCode: '',
   },
   {
@@ -70,9 +84,17 @@ const experiences = [
     stack: ['Rust', 'Internet Computer', 'Web3'],
     link: 'https://psychedelic.ooo',
   },
+  {
+    name: 'Arbicrypt LLC',
+    title: 'Backend Developer',
+    description:
+      'A startup to create a arbitrage trading platform where users could deposit crypto into a pool and earn interest',
+    duration: '2016 - 2017',
+    stack: ['Golang', 'Python', 'Blockchain', 'Trading'],
+  },
 ]
 
-const skills = ['Rust', 'Golang', 'C (#)', 'Web', 'React.js']
+const skills = ['Rust,', 'Golang,', 'C (#),', 'Web,', 'React.js']
 
 const contact = {
   email: 'self@ossian.dev',
