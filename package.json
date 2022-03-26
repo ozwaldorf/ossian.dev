@@ -24,7 +24,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
-    "deploy": "gh-pages -d build"
+    "deploy": "yarn build && fleek site:deploy"
   },
   "browserslist": {
     "production": [
