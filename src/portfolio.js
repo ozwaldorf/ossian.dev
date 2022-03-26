@@ -36,7 +36,7 @@ const projects = [
     description: 'A free to use pastebin for the command line',
     stack: ['Golang', 'Pastebin', 'Command Line Utility'],
     sourceCode: '',
-    link: 'https://upld.is',
+    livePreview: 'https://upld.is',
   },
   {
     name: 'Tidalwave / API',
