@@ -27,9 +27,10 @@ const projects = [
   },
   {
     name: 'Cipherproxy',
-    description: 'An project I donate a little bit of time to',
+    description:
+      'A web3 research collective and project laboratory developing decentralized projects and protocols',
     stack: ['Unity', 'C#', 'Web', 'Blockchain'],
-    sourceCode: '',
+    sourceCode: 'https://github.com/CipherProxy',
   },
   {
     name: 'upld.is',
