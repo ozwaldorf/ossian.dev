@@ -19,16 +19,23 @@ const about = {
 
 const projects = [
   {
+    name: 'Emporium',
+    description: 'On chain discord bot - with dip20 rewards and a dip721 shop',
+    stack: ['Rust', 'Internet Computer', 'DIP20', 'DIP721'],
+    sourceCode: 'https://github.com/emporium-bot',
+    livePreview: 'https://emporiumbot.xyz',
+  },
+  {
     name: 'Curation Canister POC',
     description:
-      'POC, completely on-chain, NoSQL database. Provides indexing and filtering for NFTs and Jelly transactions.',
+      'Completely on-chain, NoSQL database. Provides indexing and filtering for NFTs and Jelly transactions.',
     stack: ['Internet Computer', 'Rust', 'Blockchain', 'NoSQL'],
     sourceCode: 'https://github.com/ozwaldorf/curation_poc',
     livePreview: 'https://j2brg-liaaa-aaaah-abmta-cai.ic0.app/',
   },
   {
     name: 'Jelly Marketplace',
-    description: 'Open source NFT marketplace protocol.',
+    description: 'Open sourced NFT marketplace protocol.',
     stack: ['Rust', 'Blockchain', 'AWS', 'DynamoDB'],
     sourceCode: 'https://github.com/psychedelic/nft-marketplace',
     livePreview: 'https://jelly.xyz/',
