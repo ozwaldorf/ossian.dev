@@ -44,6 +44,7 @@ const projects = [
     name: 'cover-builder CLI',
     description: 'CLI for submitting cover.ooo builds using a dfx identity.',
     stack: ['Node', 'Cryptography', 'Blockchain'],
+    sourceCode: 'https://github.com/ozwaldorf/cover-builder',
   },
   {
     name: 'Principal ID Bruteforce',
