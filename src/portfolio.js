@@ -19,6 +19,26 @@ const about = {
 
 const projects = [
   {
+    name: 'Curation Canister POC',
+    description:
+      'POC, completely on-chain, NoSQL database. Provides indexing and filtering for NFTs and Jelly transactions.',
+    stack: ['Internet Computer', 'Rust', 'Blockchain', 'NoSQL'],
+    sourceCode: 'https://github.com/ozwaldorf/curation_poc',
+    livePreview: 'https://j2brg-liaaa-aaaah-abmta-cai.ic0.app/',
+  },
+  {
+    name: 'Jelly Marketplace',
+    description: 'Open source NFT marketplace protocol.',
+    stack: ['Rust', 'Blockchain', 'AWS', 'DynamoDB'],
+    sourceCode: 'https://github.com/psychedelic/nft-marketplace',
+    livePreview: 'https://jelly.xyz/',
+  },
+  {
+    name: 'cover-builder CLI',
+    description: 'CLI for submitting cover.ooo builds using a dfx identity.',
+    stack: ['Node', 'Cryptography', 'Blockchain'],
+  },
+  {
     name: 'Principal ID Bruteforce',
     description:
       'Bruteforce generate principal ids with a human readable prefix',
@@ -77,10 +97,10 @@ const projects = [
 
 const experiences = [
   {
-    name: 'Psychedelic DAO / Fleek.co',
+    name: 'Psychedelic DAO / Fleek.co / Jelly.xyz',
     title: 'Fullstack Developer',
     description:
-      'A decentralized product studio focused on building Web3 products.',
+      'A decentralized product studio focused on building Web3 products. Lead the development of the Jelly.xyz decentralized NFT marketplace protocol.',
     duration: 'Feb 2022 - Present',
     stack: ['Rust', 'Internet Computer', 'Web3'],
     link: 'https://psychedelic.ooo',
