@@ -3,6 +3,7 @@
   margin: 0 auto;
   text-align: left;
   transition: transform 0.1s linear;
+  width: 100%;
 }
 
 .project:hover {
