@@ -75,7 +75,6 @@ jobs:
       id: deployment
       uses: actions/deploy-pages@v1
       with:
-        emit_telemetry: false
         token: ${{ secrets.GITHUB_TOKEN }}
         timeout: 600000
         error_count: 10
