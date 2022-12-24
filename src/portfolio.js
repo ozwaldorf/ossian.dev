@@ -6,8 +6,8 @@ const about = {
   name: 'Ossian Mapes',
   role: 'Software Developer, Musician',
   description: [
-    "I'm Ossian, a fullstack software developer.",
-    'I play piano in my freetime, and enjoy using my brain',
+    "Hi! I'm Ossian, a fullstack software developer.",
+    'I play piano in my free time, and enjoy using my brain to solve problems.',
   ],
   resume: 'https://github.com/ozwaldorf',
   social: {
@@ -105,11 +105,27 @@ const projects = [
 
 const experiences = [
   {
-    name: 'Psychedelic DAO / Fleek.co / Jelly.xyz',
+    name: 'Fleek Network',
+    title: 'Backend Developer',
+    description:
+      'A Decentralized Content and Application Delivery Network. Fleek Network accelerates, caches, indexes, and replicates content. The underlying storage is protocol agnostic, using the IPLD structure, with IPFS, Filecoin, and traditional http supported.',
+    duration: 'September 2022 - Present',
+    stack: [
+      'Rust',
+      'libp2p',
+      'IPFS',
+      'Narwhal / Bullshark',
+      'terraform',
+      'docker',
+    ],
+    link: 'https://fleek.network/',
+  },
+  {
+    name: 'Psychedelic DAO',
     title: 'Fullstack Developer',
     description:
-      'A decentralized product studio focused on building Web3 products. Lead the development of the Jelly.xyz decentralized NFT marketplace protocol.',
-    duration: 'Feb 2022 - Present',
+      'A decentralized product studio focused on building Web3 products. Worked on core infrastructure projects like CAP (asset permanence/verifiable history), the ic-kit sdk, Plug wallet, and more. Lead the development of the Jelly.xyz decentralized NFT marketplace protocol.',
+    duration: 'Feb 2022 - November 2022',
     stack: ['Rust', 'Internet Computer', 'Web3'],
     link: 'https://psychedelic.ooo',
   },
@@ -123,7 +139,15 @@ const experiences = [
   },
 ]
 
-const skills = ['Rust,', 'Golang,', 'C (#),', 'Web,', 'React.js']
+const skills = [
+  'Rust,',
+  'Docker / CI,',
+  'Terraform,',
+  'Golang,',
+  'C (#),',
+  'Web,',
+  'React.js',
+]
 
 const contact = {
   email: 'self@ossian.dev',
