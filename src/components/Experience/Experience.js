@@ -1,4 +1,3 @@
-import uniqid from 'uniqid'
 import { experiences } from '../../portfolio'
 import './Experience.css'
 

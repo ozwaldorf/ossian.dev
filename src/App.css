@@ -6,7 +6,6 @@
   line-height: 1.5;
   color: var(--clr-fg);
   background-color: var(--clr-bg);
-  line-height: 150%;
 }
 
 .light {
@@ -56,27 +55,11 @@ main {
   position: relative;
   text-decoration: underline;
   display: inline;
+  padding: 2px 2px 0 2px;
 }
 
-.link:hover {
-  color: var(--clr-secondary);
-  background-color: var(--clr-primary);
-  color: var(--clr-bg);
-  text-decoration: none;
-}
-
-.link:hover::before,
-.link:focus::before {
-  width: 100%;
-}
-
-.link--nav {
-  color: var(--clr-primary);
-  font-weight: 800;
-}
-
-.link--nav--pressed {
-  color: var(--clr-secondary);
+.link:hover,
+.link--active {
   background-color: var(--clr-primary);
   color: var(--clr-bg);
   text-decoration: none;
