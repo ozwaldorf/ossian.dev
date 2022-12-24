@@ -1,13 +1,9 @@
 import { useContext, useState } from 'react'
 import { ThemeContext } from './contexts/theme'
-// import Header from "./components/Header/Header";
-// import Navbar from './components/Navbar/Navbar'
 import About from './components/About/About'
 import Projects from './components/Projects/Projects'
 import Experience from './components/Experience/Experience'
 import Skills from './components/Skills/Skills'
-// import ScrollToTop from './components/ScrollToTop/ScrollToTop'
-// import Contact from './components/Contact/Contact'
 import Current from './components/Current/Current'
 import Footer from './components/Footer/Footer'
 
