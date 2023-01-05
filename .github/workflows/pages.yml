@@ -3,9 +3,9 @@ name: Build & Deploy
 on:
   push:
     paths:
-      - "src"
-      - "package.json"
-      - ".github/workflows"
+      - "src/**"
+      - "**/package.json"
+      - ".github/workflows/**"
     branches:
       - main
   pull_request:
