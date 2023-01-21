@@ -6,8 +6,8 @@ const about = {
   name: 'Ossian Mapes',
   role: 'Software Developer, Musician',
   description: [
-    "Hi! I'm Ossian, a fullstack software developer.",
-    'I play piano in my free time, and enjoy using my brain to solve problems.',
+    '~ Plinking away at the keyboard ~',
+    "I'm a software developer with a passion for solving problems.",
   ],
   resume: 'https://github.com/ozwaldorf',
   social: {
@@ -18,6 +18,14 @@ const about = {
 }
 
 const projects = [
+  {
+    name: 'Punfetch',
+    description:
+      'A blazingly fast system fetcher with support for over 200 distributions',
+    stack: ['Rust', 'Cli'],
+    sourceCode: 'https://github.com/ozwaldorf/punfetch',
+    livePreview: 'https://punfetch.dev/',
+  },
   {
     name: 'Emporium',
     description: 'On chain discord bot - with dip20 rewards and a dip721 shop',

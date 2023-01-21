@@ -2,7 +2,7 @@ import { about } from '../../portfolio'
 import './About.css'
 
 const About = () => {
-  const { name, role, description, resume, social, email } = about
+  const { name, role, description, resume, social } = about
 
   return (
     <div className='grid-container'>
@@ -17,7 +17,7 @@ const About = () => {
 
         {role && <h2 className='about__role'>{role}</h2>}
         <p className='about__desc'>
-          {about.description.map((desc) => (
+          {description.map((desc) => (
             <p>{desc}</p>
           ))}
         </p>

@@ -58,17 +58,6 @@ jobs:
           name: github-pages
           retention-days: 7
 
-            # report:
-            # name: Report
-            # runs-on: ubuntu-latest
-            # needs: build
-            #
-            # steps:
-            # - name: Report build status
-            # run: 'gh api -X POST "repos/$GITHUB_REPOSITORY/pages/telemetry" \
-            # -F github_run_id="$GITHUB_RUN_ID" \
-          # -F conclusion="$CONCLUSION"'
-
   deploy:
     name: Deploy
     needs: build

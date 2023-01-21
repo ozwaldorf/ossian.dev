@@ -18,13 +18,12 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "unset CI && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
-    "deploy": "yarn build && fleek site:deploy"
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "browserslist": {
     "production": [
