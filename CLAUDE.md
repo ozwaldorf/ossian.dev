@@ -1,0 +1,1 @@
+- always use svelte 5 runes
