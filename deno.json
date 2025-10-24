@@ -6,10 +6,12 @@
     "check": "deno run -A npm:svelte-check --tsconfig ./tsconfig.json"
   },
   "imports": {
-    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.0",
-    "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.0",
-    "svelte": "npm:svelte@^5.0.0",
-    "vite": "npm:vite@^6.0.0"
+    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
+    "@iconify-json/carbon": "npm:@iconify-json/carbon@^1.2.14",
+    "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.1.1",
+    "unplugin-icons": "npm:unplugin-icons@^0.19.3",
+    "svelte": "npm:svelte@^5.41.4",
+    "vite": "npm:vite@^6.4.1"
   },
   "nodeModulesDir": "auto"
 }
