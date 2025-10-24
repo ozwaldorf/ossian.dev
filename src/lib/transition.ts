@@ -1,3 +1,5 @@
+import { crossfade } from "svelte/transition";
+
 export function typewriter(node: Node, { speed = 1 }) {
   if (node.childNodes.length !== 1) throw new Error(``);
   if (node.childNodes[0].nodeType !== Node.TEXT_NODE) {
@@ -13,3 +15,7 @@ export function typewriter(node: Node, { speed = 1 }) {
     },
   };
 }
+
+export const [send, receive] = crossfade({
+  duration: 500,
+});

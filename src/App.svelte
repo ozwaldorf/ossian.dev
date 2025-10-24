@@ -1,13 +1,18 @@
-<script>
-  import Hero from "./lib/Hero.svelte";
-  import Projects from "./lib/Projects.svelte";
-  import Work from "./lib/Work.svelte";
+<script lang="ts">
+  import Hero from "./app/Hero.svelte";
+  import Projects from "./app/Projects.svelte";
+  import Work from "./app/Work.svelte";
+  import { Router } from "@mateothegreat/svelte5-router";
+
+  const routes = [
+    { path: "/", component: Hero },
+    { path: "/work", component: Work },
+    { path: "/projects", component: Projects },
+  ];
 </script>
 
 <main>
-  <Hero />
-  <Work />
-  <Projects />
+  <Router {routes} hash />
 </main>
 
 <style>

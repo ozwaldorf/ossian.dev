@@ -3,7 +3,10 @@
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.5": "1.0.5_vite@6.4.1__picomatch@4.0.3",
     "npm:@iconify-json/carbon@^1.2.14": "1.2.14",
+    "npm:@mateothegreat/svelte5-router@*": "2.16.19_svelte@5.41.4__acorn@8.15.0",
+    "npm:@mateothegreat/svelte5-router@^2.16.19": "2.16.19_svelte@5.41.4__acorn@8.15.0",
     "npm:@sveltejs/vite-plugin-svelte@^5.1.1": "5.1.1_svelte@5.41.4__acorn@8.15.0_vite@6.4.1__picomatch@4.0.3",
+    "npm:svelte-check@*": "4.3.3_svelte@5.41.4__acorn@8.15.0_typescript@5.9.3",
     "npm:svelte@^5.41.4": "5.41.4_acorn@8.15.0",
     "npm:unplugin-icons@~0.19.3": "0.19.3",
     "npm:vite@*": "6.4.1_picomatch@4.0.3",
@@ -215,6 +218,12 @@
         "@jridgewell/sourcemap-codec"
       ]
     },
+    "@mateothegreat/svelte5-router@2.16.19_svelte@5.41.4__acorn@8.15.0": {
+      "integrity": "sha512-SNkR15x3b0HLNM33BORKF9U6elHHWZxg42yikNUKW1YNjkYRBLBgDkVSJTqRIC6aE8Wt4vqmKKmHzQTK2EKiqA==",
+      "dependencies": [
+        "svelte"
+      ]
+    },
     "@rollup/rollup-android-arm-eabi@4.52.5": {
       "integrity": "sha512-8c1vW4ocv3UOMp9K+gToY5zL2XiiVw3k7f1ksf4yO1FlDFQ1C2u72iACFnSOceJFsWskc2WZNqeRhFRPzv+wtQ==",
       "os": ["android"],
@@ -366,6 +375,12 @@
     "axobject-query@4.1.0": {
       "integrity": "sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ=="
     },
+    "chokidar@4.0.3": {
+      "integrity": "sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==",
+      "dependencies": [
+        "readdirp"
+      ]
+    },
     "clsx@2.1.1": {
       "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
     },
@@ -491,6 +506,9 @@
         "ufo"
       ]
     },
+    "mri@1.2.0": {
+      "integrity": "sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA=="
+    },
     "ms@2.1.3": {
       "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
@@ -543,6 +561,9 @@
     "quansync@0.2.11": {
       "integrity": "sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA=="
     },
+    "readdirp@4.1.2": {
+      "integrity": "sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg=="
+    },
     "rollup@4.52.5": {
       "integrity": "sha512-3GuObel8h7Kqdjt0gxkEzaifHTqLVW56Y/bjN7PSQtkKr0w3V/QYSdt6QWYtd7A1xUtYQigtdUfgj1RvWVtorw==",
       "dependencies": [
@@ -575,8 +596,27 @@
       ],
       "bin": true
     },
+    "sade@1.8.1": {
+      "integrity": "sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==",
+      "dependencies": [
+        "mri"
+      ]
+    },
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
+    },
+    "svelte-check@4.3.3_svelte@5.41.4__acorn@8.15.0_typescript@5.9.3": {
+      "integrity": "sha512-RYP0bEwenDXzfv0P1sKAwjZSlaRyqBn0Fz1TVni58lqyEiqgwztTpmodJrGzP6ZT2aHl4MbTvWP6gbmQ3FOnBg==",
+      "dependencies": [
+        "@jridgewell/trace-mapping",
+        "chokidar",
+        "fdir",
+        "picocolors",
+        "sade",
+        "svelte",
+        "typescript"
+      ],
+      "bin": true
     },
     "svelte@5.41.4_acorn@8.15.0": {
       "integrity": "sha512-sBrVmskY0eij5+CSSuMK1kOk1xSiRh0BRTEhUnxnd1x3p42GbQmm4rwq4WMD23rUG3QR53Nfv8kpaER3tV5F4A==",
@@ -609,6 +649,10 @@
         "fdir",
         "picomatch"
       ]
+    },
+    "typescript@5.9.3": {
+      "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+      "bin": true
     },
     "ufo@1.6.1": {
       "integrity": "sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA=="
@@ -667,6 +711,7 @@
     "dependencies": [
       "npm:@deno/vite-plugin@^1.0.5",
       "npm:@iconify-json/carbon@^1.2.14",
+      "npm:@mateothegreat/svelte5-router@^2.16.19",
       "npm:@sveltejs/vite-plugin-svelte@^5.1.1",
       "npm:svelte@^5.41.4",
       "npm:unplugin-icons@~0.19.3",

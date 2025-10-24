@@ -8,6 +8,7 @@
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
     "@iconify-json/carbon": "npm:@iconify-json/carbon@^1.2.14",
+    "@mateothegreat/svelte5-router": "npm:@mateothegreat/svelte5-router@^2.16.19",
     "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.1.1",
     "unplugin-icons": "npm:unplugin-icons@^0.19.3",
     "svelte": "npm:svelte@^5.41.4",

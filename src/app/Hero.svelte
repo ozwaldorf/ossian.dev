@@ -1,7 +1,8 @@
 <script lang="ts">
   import { fade, slide } from "svelte/transition";
-  import { typewriter } from "./transition";
+  import { send, typewriter } from "../lib/transition";
   import IconChevronDown from "~icons/carbon/chevron-down";
+  import { route } from "@mateothegreat/svelte5-router";
 
   let step = $state(0);
 </script>
@@ -10,41 +11,44 @@
   <div
     class="profile-image"
     in:fade={{ duration: 1000 }}
+    out:send={{ key: "profile-image" }}
     onintroend={() => (step = 1)}
   >
     <img src="./ossian.jpg" alt="Profile" />
   </div>
 
-  {#if step >= 1}
-    <div in:slide>
-      <h1
-        class="name"
-        in:typewriter={{ speed: 2 }}
-        onintroend={() => (step = 2)}
-      >
-        Ossian Mapes
-      </h1>
-    </div>
-  {/if}
+  <div out:send={{ key: "profile-name" }}>
+    {#if step >= 1}
+      <div in:slide>
+        <h1
+          class="name"
+          in:typewriter={{ speed: 2 }}
+          onintroend={() => (step = 2)}
+        >
+          Ossian Mapes
+        </h1>
+      </div>
+    {/if}
+  </div>
 
-  {#if step >= 2}
-    <div in:slide>
-      <h2
-        class="title"
-        in:typewriter={{ speed: 4 }}
-        onintroend={() => (step = 3)}
-      >
-        Full Stack Developer
-      </h2>
-    </div>
-  {/if}
+  <div out:send={{ key: "profile-title" }}>
+    {#if step >= 2}
+      <div in:slide>
+        <h2
+          class="title"
+          in:typewriter={{ speed: 2 }}
+          onintroend={() => (step = 3)}
+        >
+          Full Stack Developer
+        </h2>
+      </div>
+    {/if}
+  </div>
 
   {#if step >= 3}
-    <div in:slide>
-      <div class="chevron" in:fade>
-        <IconChevronDown height="100%" />
-      </div>
-    </div>
+    <a class="chevron" in:fade href="/#/work" use:route>
+      <IconChevronDown height="100%" />
+    </a>
   {/if}
 </div>
 
@@ -89,5 +93,16 @@
     height: 40px;
     color: rgba(255, 255, 255, 0.7);
     overflow: visible;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      transform 0.2s;
+  }
+
+  .chevron:hover {
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(5px);
   }
 </style>
