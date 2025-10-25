@@ -1,7 +1,6 @@
 <script lang="ts">
   import { fade, slide } from "svelte/transition";
   import { send, typewriter } from "../lib/transition.svelte";
-  import IconChevronDown from "~icons/carbon/chevron-down";
   import { route } from "@mateothegreat/svelte5-router";
 
   let step = $state(0);
@@ -46,15 +45,23 @@
   </div>
 
   {#if step >= 3}
-    <a class="chevron" in:fade href="/#/work" use:route>
-      <IconChevronDown height="100%" />
-    </a>
+    <div in:slide>
+      <nav class="hero-nav" in:fade>
+        <a href="#tech" use:route out:send={{ key: "nav-tech" }}>Tech</a>
+        <a href="#music" use:route out:send={{ key: "nav-music" }}>Music</a>
+      </nav>
+    </div>
   {/if}
 </div>
 
 <style>
   .hero {
     text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .profile-image {
@@ -88,21 +95,23 @@
     min-height: 1lh;
   }
 
-  .chevron {
+  .hero-nav {
     margin-top: 2rem;
-    height: 40px;
-    color: rgba(255, 255, 255, 0.7);
-    overflow: visible;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition:
-      color 0.2s,
-      transform 0.2s;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
   }
 
-  .chevron:hover {
+  .hero-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .hero-nav a:hover {
     color: rgba(255, 255, 255, 1);
-    transform: translateY(5px);
   }
 </style>

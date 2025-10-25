@@ -1,6 +1,6 @@
 <script lang="ts">
   import { receive } from "../lib/transition.svelte";
-  import { route, active } from "@mateothegreat/svelte5-router";
+  import { route } from "@mateothegreat/svelte5-router";
 </script>
 
 <header>
@@ -21,9 +21,9 @@
       <h2 class="title">Full Stack Developer</h2>
     </div>
     <nav>
-      <a href="/#/work" use:route use:active>Work</a>
-      <a href="/#/projects" use:route use:active>Projects</a>
-      <a href="/#/music" use:route use:active>Music</a>
+      <a href="./" use:route in:receive={{ key: "nav-home" }}>Home</a>
+      <a href="#tech" use:route in:receive={{ key: "nav-tech" }}>Tech</a>
+      <a href="#music" use:route in:receive={{ key: "nav-music" }}>Music</a>
     </nav>
   </div>
 </header>
@@ -42,8 +42,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
   }
 
   .profile-image {
