@@ -1,6 +1,9 @@
 <script lang="ts">
   import { receive } from "../lib/transition.svelte";
   import { route } from "@mateothegreat/svelte5-router";
+  import IconHome from "~icons/carbon/home";
+  import IconCode from "~icons/carbon/code";
+  import IconMusic from "~icons/carbon/music";
 </script>
 
 <header>
@@ -21,9 +24,18 @@
       <h2 class="title">Full Stack Developer</h2>
     </div>
     <nav>
-      <a href="./" use:route in:receive={{ key: "nav-home" }}>Home</a>
-      <a href="#tech" use:route in:receive={{ key: "nav-tech" }}>Tech</a>
-      <a href="#music" use:route in:receive={{ key: "nav-music" }}>Music</a>
+      <a href="./" use:route in:receive={{ key: "nav-home" }}>
+        <IconHome width="20" height="20" />
+        <span>Home</span>
+      </a>
+      <a href="#tech" use:route in:receive={{ key: "nav-tech" }}>
+        <IconCode width="20" height="20" />
+        <span>Tech</span>
+      </a>
+      <a href="#music" use:route in:receive={{ key: "nav-music" }}>
+        <IconMusic width="20" height="20" />
+        <span>Music</span>
+      </a>
     </nav>
   </div>
 </header>
@@ -84,6 +96,9 @@
     font-weight: 500;
     transition: color 0.2s;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   nav a:hover {

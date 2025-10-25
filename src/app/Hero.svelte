@@ -2,6 +2,8 @@
   import { fade, slide } from "svelte/transition";
   import { send, typewriter } from "../lib/transition.svelte";
   import { route } from "@mateothegreat/svelte5-router";
+  import IconCode from "~icons/carbon/code";
+  import IconMusic from "~icons/carbon/music";
 
   let step = $state(0);
 </script>
@@ -21,7 +23,7 @@
       <div in:slide>
         <h1
           class="name"
-          in:typewriter={{ speed: 2 }}
+          in:typewriter={{ speed: 1, delay: 200 }}
           onintroend={() => (step = 2)}
         >
           Ossian Mapes
@@ -33,25 +35,29 @@
   <div out:send={{ key: "profile-title" }}>
     {#if step >= 2}
       <div in:slide>
-        <h2
-          class="title"
-          in:typewriter={{ speed: 2 }}
-          onintroend={() => (step = 3)}
-        >
-          Full Stack Developer
-        </h2>
+        <nav class="hero-nav">
+          <a
+            href="#tech"
+            use:route
+            in:fade={{ delay: 600, duration: 400 }}
+            out:send={{ key: "nav-tech" }}
+          >
+            <IconCode width="20" height="20" />
+            <span>Tech</span>
+          </a>
+          <a
+            href="#music"
+            use:route
+            in:fade={{ delay: 1400, duration: 400 }}
+            out:send={{ key: "nav-music" }}
+          >
+            <IconMusic width="20" height="20" />
+            <span>Music</span>
+          </a>
+        </nav>
       </div>
     {/if}
   </div>
-
-  {#if step >= 3}
-    <div in:slide>
-      <nav class="hero-nav" in:fade>
-        <a href="#tech" use:route out:send={{ key: "nav-tech" }}>Tech</a>
-        <a href="#music" use:route out:send={{ key: "nav-music" }}>Music</a>
-      </nav>
-    </div>
-  {/if}
 </div>
 
 <style>
@@ -87,16 +93,7 @@
     min-height: 1lh;
   }
 
-  .title {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
-    min-height: 1lh;
-  }
-
   .hero-nav {
-    margin-top: 2rem;
     display: flex;
     gap: 2rem;
     justify-content: center;
@@ -109,6 +106,9 @@
     font-size: 1.1rem;
     transition: color 0.2s;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .hero-nav a:hover {
