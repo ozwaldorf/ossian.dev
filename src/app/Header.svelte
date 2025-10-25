@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { receive } from "../lib/transition";
+  import { receive } from "../lib/transition.svelte";
   import { route, active } from "@mateothegreat/svelte5-router";
 </script>
 

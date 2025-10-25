@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade, slide } from "svelte/transition";
-  import { send, typewriter } from "../lib/transition";
+  import { send, typewriter } from "../lib/transition.svelte";
   import IconChevronDown from "~icons/carbon/chevron-down";
   import { route } from "@mateothegreat/svelte5-router";
 
