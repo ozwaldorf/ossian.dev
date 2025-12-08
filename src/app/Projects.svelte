@@ -2,6 +2,53 @@
   import { githubState } from "../lib/github.svelte";
   import { fade } from "svelte/transition";
   import IconPin from "~icons/carbon/pin-filled";
+  import {
+    blue50,
+    blue30,
+    yellow30,
+    purple50,
+    orange40,
+    cyan40,
+    green40,
+    red50,
+    red40,
+    magenta50,
+    teal40,
+    gray10,
+    gray50,
+    gray60,
+    gray100,
+    white,
+  } from "@carbon/colors";
+
+  const languageColors: Record<string, string> = {
+    TypeScript: blue50,
+    JavaScript: yellow30,
+    Python: purple50,
+    Rust: red50,
+    Go: cyan40,
+    Java: orange40,
+    "C++": magenta50,
+    C: gray50,
+    "C#": purple50,
+    Ruby: red50,
+    PHP: purple50,
+    Swift: orange40,
+    Kotlin: purple50,
+    Scala: red50,
+    Shell: green40,
+    HTML: orange40,
+    CSS: purple50,
+    SCSS: magenta50,
+    Vue: teal40,
+    Svelte: orange40,
+    Nix: blue30,
+  };
+
+  function getLanguageColor(language: string | null): string {
+    if (!language) return gray50;
+    return languageColors[language] ?? gray50;
+  }
 
   // Adjust scroll speed based on number of items (5s per card)
   let scrollDuration = $derived(githubState.repos.length * 5);
@@ -43,6 +90,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="project-card pinned-card"
+              style="border-color: {getLanguageColor(repo.language)};"
             >
               {#key repo.name}
                 <div class="card-content" in:fade>
@@ -85,6 +133,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="project-card"
+              style="border-color: {getLanguageColor(repo.language)};"
             >
               {#key repo.name}
                 <div class="card-content" in:fade>
