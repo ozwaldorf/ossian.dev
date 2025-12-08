@@ -1,6 +1,7 @@
 <script lang="ts">
   import { githubState } from "../lib/github.svelte";
   import { fade } from "svelte/transition";
+  import IconPin from "~icons/carbon/pin-filled";
 
   // Adjust scroll speed based on number of items (5s per card)
   let scrollDuration = $derived(githubState.repos.length * 5);
@@ -46,7 +47,10 @@
               {#key repo.name}
                 <div class="card-content" in:fade>
                   <div class="card-header">
-                    <h3 class="project-name">{repo.name}</h3>
+                    <h3 class="project-name">
+                      {repo.name}
+                      <IconPin class="pin-icon" />
+                    </h3>
                     <div class="project-meta">
                       {#if repo.language}
                         <span class="language">{repo.language}</span>
@@ -255,6 +259,18 @@
     white-space: nowrap;
     flex: 1;
     min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .project-name :global(.pin-icon) {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    top: -2px;
   }
 
   .project-description {
