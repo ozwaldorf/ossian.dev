@@ -68,6 +68,24 @@
         ]
       : [],
   );
+
+  // Calculate language stats from all repos (pinned + regular)
+  let languageStats = $derived(() => {
+    const allRepos = [...githubState.pinned_repos, ...githubState.repos];
+    const counts: Record<string, number> = {};
+    for (const repo of allRepos) {
+      if (repo.language) {
+        counts[repo.language] = (counts[repo.language] || 0) + 1;
+      }
+    }
+    return Object.entries(counts)
+      .map(([language, count]) => ({
+        language,
+        count,
+        color: getLanguageColor(language),
+      }))
+      .sort((a, b) => b.count - a.count);
+  });
 </script>
 
 <div class="projects-header">
@@ -78,6 +96,18 @@
   {#if githubState.error}
     <div class="error">{githubState.error}</div>
   {:else}
+    {#if languageStats().length > 0}
+      <div class="language-legend">
+        {#each languageStats() as stat}
+          <div class="legend-item">
+            <span class="legend-dot" style="background-color: {stat.color};"></span>
+            <span class="legend-name">{stat.language}</span>
+            <span class="legend-count">({stat.count})</span>
+          </div>
+        {/each}
+      </div>
+    {/if}
+
     {#if displayPinnedRepos.length > 0}
       <div class="marquee-wrapper">
         <div
@@ -217,6 +247,38 @@
 
   .error {
     color: var(--red-50);
+  }
+
+  .language-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0 2rem 1.5rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-name {
+    font-size: 0.8rem;
+    color: var(--gray-40);
+  }
+
+  .legend-count {
+    font-size: 0.75rem;
+    color: var(--gray-50);
+    font-variant-numeric: tabular-nums;
   }
 
   .marquee-wrapper {
