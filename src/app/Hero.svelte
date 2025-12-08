@@ -76,7 +76,7 @@
     margin: 0 auto 2rem;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px color-mix(in oklab, var(--black) 30%, transparent);
   }
 
   .profile-image img {
@@ -88,7 +88,7 @@
   .name {
     font-size: 2.5rem;
     font-weight: 700;
-    color: white;
+    color: var(--white);
     margin: 0 0 1rem 0;
     min-height: 1lh;
   }
@@ -100,7 +100,7 @@
   }
 
   .hero-nav a {
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in oklab, var(--white) 70%, transparent);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -112,6 +112,6 @@
   }
 
   .hero-nav a:hover {
-    color: rgba(255, 255, 255, 1);
+    color: var(--white);
   }
 </style>

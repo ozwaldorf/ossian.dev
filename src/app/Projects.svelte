@@ -129,7 +129,7 @@
     margin: 0;
     font-size: 2rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    color: color-mix(in oklab, var(--gray-10) 90%, transparent);
   }
 
   .projects-container {
@@ -150,24 +150,24 @@
 
   .projects-container::before {
     left: 0;
-    background: linear-gradient(to right in oklab, #161616, transparent);
+    background: linear-gradient(to right in oklab, var(--gray-100), transparent);
   }
 
   .projects-container::after {
     right: 0;
-    background: linear-gradient(to left in oklab, #161616, transparent);
+    background: linear-gradient(to left in oklab, var(--gray-100), transparent);
   }
 
   .error,
   .empty {
     text-align: center;
     padding: 2rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--gray-60);
     font-size: 1rem;
   }
 
   .error {
-    color: #ff6b6b;
+    color: var(--red-50);
   }
 
   .marquee-wrapper {
@@ -214,14 +214,14 @@
     flex-shrink: 0;
     width: 280px;
     min-height: 160px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: color-mix(in oklab, var(--white) 3%, transparent);
+    border: 1px solid color-mix(in oklab, var(--white) 8%, transparent);
     border-radius: 8px;
     padding: 1.25rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
-    color: white;
+    color: var(--white);
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(10px);
@@ -229,9 +229,9 @@
 
   .project-card:hover {
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: color-mix(in oklab, var(--white) 6%, transparent);
+    border-color: color-mix(in oklab, var(--white) 20%, transparent);
+    box-shadow: 0 8px 32px color-mix(in oklab, var(--black) 30%, transparent);
   }
 
   .card-content {
@@ -252,7 +252,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-    color: #f4f4f4;
+    color: var(--gray-10);
     letter-spacing: -0.01em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -268,7 +268,7 @@
     flex-shrink: 0;
     width: 14px;
     height: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--gray-50);
     position: relative;
     top: -2px;
   }
@@ -276,7 +276,7 @@
   .project-description {
     font-size: 0.85rem;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--gray-50);
     margin: 0;
     flex-grow: 1;
     overflow: hidden;
@@ -291,13 +291,13 @@
     align-items: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--gray-40);
     flex-shrink: 0;
   }
 
   .language {
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--gray-50);
   }
 
   .stars {
@@ -314,21 +314,21 @@
   }
 
   .topic {
-    background: rgba(255, 255, 255, 0.06);
+    background: color-mix(in oklab, var(--white) 6%, transparent);
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
     font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--gray-50);
+    border: 1px solid color-mix(in oklab, var(--white) 5%, transparent);
   }
 
   .pinned-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: color-mix(in oklab, var(--white) 5%, transparent);
+    border-color: color-mix(in oklab, var(--white) 12%, transparent);
   }
 
   .pinned-card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.25);
+    background: color-mix(in oklab, var(--white) 8%, transparent);
+    border-color: color-mix(in oklab, var(--white) 25%, transparent);
   }
 </style>

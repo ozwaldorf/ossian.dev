@@ -30,7 +30,7 @@
     justify-content: center;
     gap: 1rem;
     height: 100%;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--gray-60);
   }
 
   .construction h2 {

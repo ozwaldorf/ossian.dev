@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "npm:@carbon/colors@^11.43.0": "11.43.0",
     "npm:@deno/vite-plugin@^1.0.5": "1.0.5_vite@6.4.1__picomatch@4.0.3",
     "npm:@iconify-json/carbon@^1.2.14": "1.2.14",
     "npm:@mateothegreat/svelte5-router@*": "2.16.19_svelte@5.41.4__acorn@8.15.0",
@@ -32,6 +33,13 @@
     },
     "@antfu/utils@8.1.1": {
       "integrity": "sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ=="
+    },
+    "@carbon/colors@11.43.0": {
+      "integrity": "sha512-Remz2fS6lreIi9qc6iQajaZCsbz68++bP7qNH3RyKmgm1R7xktGX7/WL2GpGi9kCOMe5+YxNLGygsqkzc28Vww==",
+      "dependencies": [
+        "@ibm/telemetry-js"
+      ],
+      "scripts": true
     },
     "@deno/vite-plugin@1.0.5_vite@6.4.1__picomatch@4.0.3": {
       "integrity": "sha512-tLja5n4dyMhcze1NzvSs2iiriBymfBlDCZIrjMTxb9O2ru0gvmV6mn5oBD2teNw5Sd92cj3YJzKwsAs8tMJXlg==",
@@ -168,6 +176,10 @@
       "integrity": "sha512-D7Hpz6A2L4hzsRpPaCYkQnGOotdUpDzSGRIv9I+1ITdHROSFUWW95ZPZWQmGka1Fg7W3zFJowyn9WGwMJ0+KPA==",
       "os": ["win32"],
       "cpu": ["x64"]
+    },
+    "@ibm/telemetry-js@1.10.2": {
+      "integrity": "sha512-F8+/NNUwtm8BuFz18O9KPvIFTFDo8GUSoyhPxPjEpk7nEyEzWGfhIiEPhL00B2NdHRLDSljh3AiCfSnL/tutiQ==",
+      "bin": true
     },
     "@iconify-json/carbon@1.2.14": {
       "integrity": "sha512-33u6uGiYJ79Dfp72peT+PBMcjxzi+NyJLpqYRX8pnw0zchsUW7Us2xecgvkWgD83KYcbe6hufyWlHFU9y7fb/Q==",
@@ -709,6 +721,7 @@
   },
   "workspace": {
     "dependencies": [
+      "npm:@carbon/colors@^11.43.0",
       "npm:@deno/vite-plugin@^1.0.5",
       "npm:@iconify-json/carbon@^1.2.14",
       "npm:@mateothegreat/svelte5-router@^2.16.19",

@@ -73,14 +73,14 @@
   .name {
     font-size: 1.25rem;
     font-weight: 700;
-    color: white;
+    color: var(--white);
     margin: 0;
   }
 
   .title {
     font-size: 1rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.8);
+    color: color-mix(in oklab, var(--white) 80%, transparent);
     margin: 0;
   }
 
@@ -91,7 +91,7 @@
   }
 
   nav a {
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in oklab, var(--white) 70%, transparent);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
@@ -102,6 +102,6 @@
   }
 
   nav a:hover {
-    color: rgba(255, 255, 255, 1);
+    color: var(--white);
   }
 </style>
