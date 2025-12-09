@@ -91,7 +91,7 @@
     left: 0;
     right: 0;
     z-index: 999;
-    padding: 1rem 1rem 4.5rem 1rem;
+    padding: 1rem 2rem 4.5rem 2rem;
     background: linear-gradient(
       to bottom in oklab,
       var(--cds-background) 0%,
