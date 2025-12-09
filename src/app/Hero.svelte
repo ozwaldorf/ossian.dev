@@ -91,7 +91,7 @@
     };
   });
 
-// Interpolate between hero (start) and header (target) positions
+  // Interpolate between hero (start) and header (target) positions
   // Hero positions come from live getBoundingClientRect, header positions are stored
   function lerp(start: number, end: number, t: number) {
     return start + (end - start) * t;
@@ -275,8 +275,6 @@
 </div>
 
 <style lang="scss">
-  @use '@carbon/colors';
-
   .hero.skeleton {
     opacity: 0;
     pointer-events: none;
@@ -299,7 +297,7 @@
     height: 160px;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 10px 40px color-mix(in oklab, #{colors.$black} 30%, transparent);
+    box-shadow: var(--cds-shadow);
   }
 
   .profile-image.morphing {
@@ -325,7 +323,7 @@
   .name {
     font-size: var(--name-size, 2.5rem);
     font-weight: 700;
-    color: #{colors.$white};
+    color: var(--cds-text-on-color);
     margin: 0;
     min-height: 1lh;
   }
@@ -342,7 +340,7 @@
   .title {
     font-size: var(--title-size, 1.5rem);
     font-weight: 400;
-    color: color-mix(in oklab, #{colors.$white} 50%, transparent);
+    color: var(--cds-text-secondary);
     white-space: nowrap;
   }
 
@@ -359,7 +357,7 @@
   }
 
   .nav-link {
-    color: color-mix(in oklab, #{colors.$white} 70%, transparent);
+    color: var(--cds-text-secondary);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -376,6 +374,6 @@
 
   .nav-link:hover,
   .nav-link.active {
-    color: #{colors.$white};
+    color: var(--cds-text-on-color);
   }
 </style>

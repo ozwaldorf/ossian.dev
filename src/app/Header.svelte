@@ -52,7 +52,7 @@
         <div bind:this={skeletonTitle} class="title">Full Stack Developer</div>
       </div>
       <nav>
-        <a bind:this={skeletonHomeLink} href="#" class="nav-link">
+        <a bind:this={skeletonHomeLink} href="./" class="nav-link">
           <IconHome width="20" height="20" />
           <span>Home</span>
         </a>
@@ -80,8 +80,6 @@
 </header>
 
 <style lang="scss">
-  @use '@carbon/colors';
-
   header.skeleton {
     opacity: 0;
     pointer-events: none;
@@ -93,11 +91,11 @@
     left: 0;
     right: 0;
     z-index: 999;
-    padding: 1rem 2rem 4rem;
+    padding: 1rem 1rem 4.5rem 1rem;
     background: linear-gradient(
       to bottom in oklab,
-      #{colors.$gray-60} 0%,
-      #{colors.$gray-100} 20%,
+      var(--cds-background) 0%,
+      var(--cds-background) 10%,
       transparent 100%
     );
   }
@@ -126,13 +124,13 @@
   .name {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #{colors.$white};
+    color: var(--cds-text-on-color);
   }
 
   .title {
     font-size: 1rem;
     font-weight: 400;
-    color: color-mix(in oklab, #{colors.$white} 50%, transparent);
+    color: var(--cds-text-secondary);
   }
 
   nav {
@@ -174,7 +172,7 @@
   }
 
   .nav-link {
-    color: color-mix(in oklab, #{colors.$white} 70%, transparent);
+    color: var(--cds-text-secondary);
     text-decoration: none;
     font-weight: 500;
     display: flex;
@@ -185,7 +183,7 @@
 
   .nav-link:hover,
   .nav-link.active {
-    color: #{colors.$white};
+    color: var(--cds-text-on-color);
   }
 
   .spacer {

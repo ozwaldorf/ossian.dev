@@ -11,7 +11,9 @@
   const footerOpacity = tweened(0, { duration: 400, easing: cubicOut });
 
   onMount(() => {
-    const unsubscribe = footerOpacity.subscribe((v) => (footerOpacityValue = v));
+    const unsubscribe = footerOpacity.subscribe(
+      (v) => (footerOpacityValue = v),
+    );
     return () => unsubscribe();
   });
 
@@ -59,8 +61,6 @@
 </footer>
 
 <style lang="scss">
-  @use '@carbon/colors';
-
   footer {
     width: 100%;
     position: relative;
@@ -75,7 +75,7 @@
     position: absolute;
     top: 35%;
     left: 15%;
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
     font-size: 1.5rem;
   }
 
@@ -93,13 +93,13 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #{colors.$gray-80};
+    color: var(--cds-layer-02);
     text-decoration: none;
     font-size: 1.5rem;
     transition: color 0.2s ease;
   }
 
   .footer-links a:hover {
-    color: #{colors.$gray-70};
+    color: var(--cds-layer-03);
   }
 </style>

@@ -9,7 +9,12 @@
       Music
     </h2>
     <p class="description">Bands I've seen live</p>
-    <a href="https://ossian.sawthat.band" target="_blank" rel="noopener noreferrer" class="sawthat-link">
+    <a
+      href="https://ossian.sawthat.band"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="sawthat-link"
+    >
       <span class="sawthat-text">ossian.sawthat.band</span>
       <span class="arrow">→</span>
     </a>
@@ -17,7 +22,7 @@
 </div>
 
 <style lang="scss">
-  @use '@carbon/colors';
+  @use "@carbon/colors";
 
   .music-section {
     padding: 4rem 0;
@@ -42,12 +47,12 @@
     gap: 0.75rem;
     font-size: 2rem;
     font-weight: 600;
-    color: #{colors.$gray-10};
+    color: var(--cds-text-primary);
     margin: 0;
   }
 
   .description {
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
     font-size: 1.1rem;
     margin: 0;
   }
@@ -58,7 +63,8 @@
     gap: 0.75rem;
     padding: 1rem 2rem;
     background: color-mix(in oklab, #{colors.$magenta-50} 15%, transparent);
-    border: 1px solid color-mix(in oklab, #{colors.$magenta-50} 30%, transparent);
+    border: 1px solid
+      color-mix(in oklab, #{colors.$magenta-50} 30%, transparent);
     border-radius: 8px;
     color: #{colors.$magenta-50};
     text-decoration: none;

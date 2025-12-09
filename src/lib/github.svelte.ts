@@ -77,7 +77,9 @@ export async function fetchRepos(username: string, pinned: string[]) {
     ]);
 
     if (!userResponse.ok || !reposResponse.ok) {
-      throw new Error(`GitHub API error: ${userResponse.status || reposResponse.status}`);
+      throw new Error(
+        `GitHub API error: ${userResponse.status || reposResponse.status}`,
+      );
     }
 
     const user: GitHubUser = await userResponse.json();

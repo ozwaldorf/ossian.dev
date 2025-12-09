@@ -297,7 +297,7 @@
     margin: 0;
     font-size: 2rem;
     font-weight: 600;
-    color: color-mix(in oklab, #{colors.$gray-10} 90%, transparent);
+    color: var(--cds-text-primary);
   }
 
   .projects-container {
@@ -320,7 +320,7 @@
     left: 0;
     background: linear-gradient(
       to right in oklab,
-      #{colors.$gray-100},
+      var(--cds-background),
       transparent
     );
   }
@@ -329,7 +329,7 @@
     right: 0;
     background: linear-gradient(
       to left in oklab,
-      #{colors.$gray-100},
+      var(--cds-background),
       transparent
     );
   }
@@ -338,12 +338,12 @@
   .empty {
     text-align: center;
     padding: 2rem;
-    color: #{colors.$gray-60};
+    color: var(--cds-text-helper);
     font-size: 1rem;
   }
 
   .error {
-    color: #{colors.$red-50};
+    color: var(--cds-support-error);
   }
 
   .github-stats {
@@ -359,23 +359,23 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    color: #{colors.$gray-30};
+    color: var(--cds-text-secondary);
     transition: color 0.2s ease;
   }
 
   .stat-item:hover {
-    color: #{colors.$gray-10};
+    color: var(--cds-text-primary);
   }
 
   .stat-item :global(.stat-icon) {
     width: 18px;
     height: 18px;
-    color: #{colors.$gray-50};
+    color: var(--cds-icon-secondary);
     transition: color 0.2s ease;
   }
 
   .stat-item:hover :global(.stat-icon.star) {
-    color: #{colors.$yellow-30};
+    color: var(--cds-support-warning);
   }
 
   .stat-item:hover :global(.stat-icon.fork) {
@@ -387,11 +387,11 @@
   }
 
   .stat-item:hover :global(.stat-icon.followers) {
-    color: #{colors.$green-40};
+    color: var(--cds-support-success);
   }
 
   .stat-item:hover :global(.stat-icon.calendar) {
-    color: #{colors.$blue-50};
+    color: var(--cds-support-info);
   }
 
   .stat-value {
@@ -402,7 +402,7 @@
 
   .stat-label {
     font-size: 0.85rem;
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
   }
 
   .language-legend {
@@ -428,12 +428,12 @@
 
   .legend-name {
     font-size: 0.8rem;
-    color: #{colors.$gray-40};
+    color: var(--cds-text-helper);
   }
 
   .legend-count {
     font-size: 0.75rem;
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
     font-variant-numeric: tabular-nums;
   }
 
@@ -481,14 +481,14 @@
     flex-shrink: 0;
     width: 280px;
     min-height: 160px;
-    background: color-mix(in oklab, #{colors.$white} 3%, transparent);
-    border: 1px solid color-mix(in oklab, #{colors.$white} 8%, transparent);
+    background: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-01);
     border-radius: 8px;
     padding: 1.25rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
-    color: #{colors.$white};
+    color: var(--cds-text-on-color);
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(10px);
@@ -496,10 +496,9 @@
 
   .project-card:hover {
     transform: translateY(-4px);
-    background: color-mix(in oklab, #{colors.$white} 6%, transparent);
-    border-color: color-mix(in oklab, #{colors.$white} 20%, transparent);
-    box-shadow: 0 8px 32px
-      color-mix(in oklab, #{colors.$black} 30%, transparent);
+    background: var(--cds-layer-hover-01);
+    border-color: var(--cds-border-strong-01);
+    box-shadow: var(--cds-shadow);
   }
 
   .card-content {
@@ -520,7 +519,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-    color: #{colors.$gray-10};
+    color: var(--cds-text-primary);
     letter-spacing: -0.01em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -536,7 +535,7 @@
     flex-shrink: 0;
     width: 14px;
     height: 14px;
-    color: #{colors.$gray-50};
+    color: var(--cds-icon-secondary);
     position: relative;
     top: -2px;
   }
@@ -544,7 +543,7 @@
   .project-description {
     font-size: 0.85rem;
     line-height: 1.4;
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
     margin: 0;
     flex-grow: 1;
     word-wrap: break-word;
@@ -556,13 +555,13 @@
     align-items: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    color: #{colors.$gray-40};
+    color: var(--cds-text-helper);
     flex-shrink: 0;
   }
 
   .language {
     font-weight: 500;
-    color: #{colors.$gray-50};
+    color: var(--cds-text-helper);
   }
 
   .stars {
@@ -579,21 +578,21 @@
   }
 
   .topic {
-    background: color-mix(in oklab, #{colors.$white} 6%, transparent);
+    background: var(--cds-layer-accent-01);
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
     font-size: 0.7rem;
-    color: #{colors.$gray-50};
-    border: 1px solid color-mix(in oklab, #{colors.$white} 5%, transparent);
+    color: var(--cds-text-helper);
+    border: 1px solid var(--cds-border-subtle-01);
   }
 
   .pinned-card {
-    background: color-mix(in oklab, #{colors.$white} 5%, transparent);
-    border-color: color-mix(in oklab, #{colors.$white} 12%, transparent);
+    background: var(--cds-layer-accent-01);
+    border-color: var(--cds-border-subtle-01);
   }
 
   .pinned-card:hover {
-    background: color-mix(in oklab, #{colors.$white} 8%, transparent);
-    border-color: color-mix(in oklab, #{colors.$white} 25%, transparent);
+    background: var(--cds-layer-accent-hover-01);
+    border-color: var(--cds-border-strong-01);
   }
 </style>
