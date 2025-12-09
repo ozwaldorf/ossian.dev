@@ -27,7 +27,7 @@
   let skeletonName: HTMLElement;
   let skeletonTitle: HTMLElement;
   let skeletonHomeLink: HTMLElement;
-  let skeletonTechLink: HTMLElement;
+  let skeletonCodeLink: HTMLElement;
   let skeletonMusicLink: HTMLElement;
 
   // Target positions from header skeleton (fixed, captured once)
@@ -47,7 +47,7 @@
       skeletonName &&
       skeletonTitle &&
       skeletonHomeLink &&
-      skeletonTechLink &&
+      skeletonCodeLink &&
       skeletonMusicLink
     ) {
       return {
@@ -55,7 +55,7 @@
         name: skeletonName.getBoundingClientRect(),
         title: skeletonTitle.getBoundingClientRect(),
         homeLink: skeletonHomeLink.getBoundingClientRect(),
-        techLink: skeletonTechLink.getBoundingClientRect(),
+        codeLink: skeletonCodeLink.getBoundingClientRect(),
         musicLink: skeletonMusicLink.getBoundingClientRect(),
       };
     }
@@ -115,8 +115,8 @@
   let nameLeft = $derived(getInterpolatedPos("name").left);
   let titleTop = $derived(getInterpolatedPos("title").top);
   let titleLeft = $derived(getInterpolatedPos("title").left);
-  let techLinkTop = $derived(getInterpolatedPos("techLink").top);
-  let techLinkLeft = $derived(getInterpolatedPos("techLink").left);
+  let codeLinkTop = $derived(getInterpolatedPos("codeLink").top);
+  let codeLinkLeft = $derived(getInterpolatedPos("codeLink").left);
   let musicLinkTop = $derived(getInterpolatedPos("musicLink").top);
   let musicLinkLeft = $derived(getInterpolatedPos("musicLink").left);
   let homeLinkTop = $derived(getInterpolatedPos("homeLink").top);
@@ -140,9 +140,9 @@
         <IconHome width="20" height="20" />
         <span>Home</span>
       </a>
-      <a bind:this={skeletonTechLink} href="#tech" class="nav-link">
+      <a bind:this={skeletonCodeLink} href="#code" class="nav-link">
         <IconCode width="20" height="20" />
-        <span>Tech</span>
+        <span>Code</span>
       </a>
       <a bind:this={skeletonMusicLink} href="#music" class="nav-link">
         <IconMusic width="20" height="20" />
@@ -231,23 +231,23 @@
             <span>Home</span>
           </a>
           <a
-            href="#tech"
+            href="#code"
             class="nav-link"
             class:morphing={scrollState.introComplete}
             style:top={scrollState.introComplete
-              ? `${techLinkTop}px`
+              ? `${codeLinkTop}px`
               : undefined}
             style:left={scrollState.introComplete
-              ? `${techLinkLeft}px`
+              ? `${codeLinkLeft}px`
               : undefined}
-            class:active={scrollState.currentSection === "tech"}
+            class:active={scrollState.currentSection === "code"}
             onclick={(e) => {
               e.preventDefault();
-              scrollToSection("tech");
+              scrollToSection("code");
             }}
           >
             <IconCode width="20" height="20" />
-            <span>Tech</span>
+            <span>Code</span>
           </a>
           <a
             href="#music"

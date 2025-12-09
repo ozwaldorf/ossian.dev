@@ -3,13 +3,13 @@
   import Work from "./Work.svelte";
 </script>
 
-<div class="tech-section">
+<div class="code-section">
   <Projects />
   <Work />
 </div>
 
 <style>
-  .tech-section {
+  .code-section {
     min-height: 100vh;
     padding-top: 80px;
   }

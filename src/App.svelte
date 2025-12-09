@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import Hero from "./app/Hero.svelte";
   import Music from "./app/Music.svelte";
-  import Tech from "./app/Tech.svelte";
+  import Code from "./app/Code.svelte";
   import Header from "./app/Header.svelte";
   import { fetchRepos } from "./lib/github.svelte";
   import { scrollState, updateMorphValues } from "./lib/scroll.svelte";
@@ -16,7 +16,7 @@
   ]);
 
   let heroSection: HTMLElement;
-  let techSection: HTMLElement;
+  let codeSection: HTMLElement;
   let musicSection: HTMLElement;
 
   function updateCurrentSection() {
@@ -26,7 +26,7 @@
 
     const sections = [
       { id: "hero" as const, el: heroSection },
-      { id: "tech" as const, el: techSection },
+      { id: "code" as const, el: codeSection },
       { id: "music" as const, el: musicSection },
     ].filter((s) => s.el);
 
@@ -46,7 +46,7 @@
   onMount(() => {
     // Handle initial hash navigation
     const hash = window.location.hash.slice(1);
-    if (hash && (hash === "tech" || hash === "music")) {
+    if (hash && (hash === "code" || hash === "music")) {
       // Skip intro animations if navigating directly to a section
       scrollState.introComplete = true;
       scrollState.currentSection = hash;
@@ -69,7 +69,7 @@
       if (heroSection && scrollState.introComplete) {
         const heroHeight = heroSection.offsetHeight;
         // Start morph immediately, complete when scrolled past hero
-        const morphEnd = heroHeight;
+        const morphEnd = heroHeight - 100;
 
         const progress = Math.max(0, Math.min(1, window.scrollY / morphEnd));
         scrollState.heroProgress = progress;
@@ -91,7 +91,7 @@
 
   // Re-run section detection when sections become available
   $effect(() => {
-    if (techSection && musicSection && scrollState.introComplete) {
+    if (codeSection && musicSection && scrollState.introComplete) {
       updateCurrentSection();
     }
   });
@@ -104,8 +104,8 @@
     <Hero />
   </section>
   {#if scrollState.introComplete}
-    <section id="tech" bind:this={techSection}>
-      <Tech />
+    <section id="code" bind:this={codeSection}>
+      <Code />
     </section>
     <section id="music" bind:this={musicSection}>
       <Music />
@@ -140,8 +140,8 @@
 
   .farewell {
     position: absolute;
-    top: 25%;
-    left: 15%;
+    top: 35%;
+    left: 30%;
     color: var(--gray-50);
   }
 </style>

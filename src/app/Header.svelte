@@ -13,7 +13,7 @@
   let skeletonName: HTMLElement;
   let skeletonTitle: HTMLElement;
   let skeletonHomeLink: HTMLElement;
-  let skeletonTechLink: HTMLElement;
+  let skeletonCodeLink: HTMLElement;
   let skeletonMusicLink: HTMLElement;
 
   function getTargetPositions() {
@@ -22,7 +22,7 @@
       !skeletonName ||
       !skeletonTitle ||
       !skeletonHomeLink ||
-      !skeletonTechLink ||
+      !skeletonCodeLink ||
       !skeletonMusicLink
     ) {
       return null;
@@ -32,7 +32,7 @@
       name: skeletonName.getBoundingClientRect(),
       title: skeletonTitle.getBoundingClientRect(),
       homeLink: skeletonHomeLink.getBoundingClientRect(),
-      techLink: skeletonTechLink.getBoundingClientRect(),
+      codeLink: skeletonCodeLink.getBoundingClientRect(),
       musicLink: skeletonMusicLink.getBoundingClientRect(),
     };
   }
@@ -59,9 +59,9 @@
           <IconHome width="20" height="20" />
           <span>Home</span>
         </a>
-        <a bind:this={skeletonTechLink} href="#tech" class="nav-link">
+        <a bind:this={skeletonCodeLink} href="#code" class="nav-link">
           <IconCode width="20" height="20" />
-          <span>Tech</span>
+          <span>Code</span>
         </a>
         <a bind:this={skeletonMusicLink} href="#music" class="nav-link">
           <IconMusic width="20" height="20" />

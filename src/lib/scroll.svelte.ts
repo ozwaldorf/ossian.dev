@@ -7,7 +7,7 @@ export type ElementPositions = {
   name: DOMRect;
   title: DOMRect;
   homeLink: DOMRect;
-  techLink: DOMRect;
+  codeLink: DOMRect;
   musicLink: DOMRect;
 };
 
@@ -15,7 +15,7 @@ export type ElementPositions = {
 export const scrollState = $state({
   scrollY: 0,
   heroProgress: 0, // 0 (top) to 1 (hero scrolled away) - raw value
-  currentSection: "hero" as "hero" | "tech" | "music",
+  currentSection: "hero" as "hero" | "code" | "music",
   introComplete: false,
 });
 
