@@ -115,7 +115,7 @@
 </main>
 
 <footer>
-  <span class="farewell">so long, and thanks for all the fish!</span>
+  <span class="farewell quotation">so long, and thanks for all the fish!</span>
   <img src="/track.png" alt="" />
 </footer>
 
@@ -144,7 +144,5 @@
     top: 25%;
     left: 15%;
     color: var(--gray-50);
-    font-style: italic;
-    font-size: 2.5vw;
   }
 </style>
