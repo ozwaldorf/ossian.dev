@@ -29,7 +29,7 @@
       { id: "hero" as const, el: heroSection },
       { id: "tech" as const, el: techSection },
       { id: "music" as const, el: musicSection },
-    ].filter(s => s.el);
+    ].filter((s) => s.el);
 
     for (let i = sections.length - 1; i >= 0; i--) {
       const section = sections[i];
@@ -72,10 +72,7 @@
         // Start morph immediately, complete when scrolled past hero
         const morphEnd = heroHeight;
 
-        const progress = Math.max(
-          0,
-          Math.min(1, window.scrollY / morphEnd)
-        );
+        const progress = Math.max(0, Math.min(1, window.scrollY / morphEnd));
         scrollState.heroProgress = progress;
         updateMorphValues(progress);
       }
@@ -117,6 +114,11 @@
   {/if}
 </main>
 
+<footer>
+  <span class="farewell">so long, and thanks for all the fish!</span>
+  <img src="/track.png" alt="" />
+</footer>
+
 <style>
   main {
     scroll-behavior: smooth;
@@ -125,5 +127,24 @@
   section {
     min-height: 100vh;
     position: relative;
+  }
+
+  footer {
+    width: 100%;
+    position: relative;
+  }
+
+  footer img {
+    width: 100%;
+    display: block;
+  }
+
+  .farewell {
+    position: absolute;
+    top: 25%;
+    left: 15%;
+    color: var(--gray-50);
+    font-style: italic;
+    font-size: 2.5vw;
   }
 </style>

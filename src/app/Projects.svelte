@@ -216,10 +216,10 @@
     position: relative;
   }
 
-  .projects-container::before,
-  .projects-container::after {
+  .marquee-wrapper::before,
+  .marquee-wrapper::after {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     bottom: 0;
     width: min(200px, 15vw);
@@ -227,12 +227,12 @@
     pointer-events: none;
   }
 
-  .projects-container::before {
+  .marquee-wrapper::before {
     left: 0;
     background: linear-gradient(to right in oklab, var(--gray-100), transparent);
   }
 
-  .projects-container::after {
+  .marquee-wrapper::after {
     right: 0;
     background: linear-gradient(to left in oklab, var(--gray-100), transparent);
   }
