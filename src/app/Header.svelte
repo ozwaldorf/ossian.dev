@@ -1,9 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import {
-    headerOpacity,
-    positionGetters,
-  } from "../lib/scroll.svelte";
+  import { headerOpacity, positionGetters } from "../lib/scroll.svelte";
   import IconHome from "~icons/carbon/home";
   import IconCode from "~icons/carbon/code";
   import IconMusic from "~icons/carbon/music";
@@ -82,7 +79,9 @@
   </div>
 </header>
 
-<style>
+<style lang="scss">
+  @use '@carbon/colors';
+
   header.skeleton {
     opacity: 0;
     pointer-events: none;
@@ -97,8 +96,8 @@
     padding: 1rem 2rem 4rem;
     background: linear-gradient(
       to bottom in oklab,
-      var(--gray-100) 0%,
-      var(--gray-100) 20%,
+      #{colors.$gray-60} 0%,
+      #{colors.$gray-100} 20%,
       transparent 100%
     );
   }
@@ -127,13 +126,13 @@
   .name {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--white);
+    color: #{colors.$white};
   }
 
   .title {
     font-size: 1rem;
     font-weight: 400;
-    color: color-mix(in oklab, var(--white) 50%, transparent);
+    color: color-mix(in oklab, #{colors.$white} 50%, transparent);
   }
 
   nav {
@@ -175,7 +174,7 @@
   }
 
   .nav-link {
-    color: color-mix(in oklab, var(--white) 70%, transparent);
+    color: color-mix(in oklab, #{colors.$white} 70%, transparent);
     text-decoration: none;
     font-weight: 500;
     display: flex;
@@ -186,7 +185,7 @@
 
   .nav-link:hover,
   .nav-link.active {
-    color: var(--white);
+    color: #{colors.$white};
   }
 
   .spacer {

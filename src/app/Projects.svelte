@@ -7,47 +7,35 @@
   import IconRepo from "~icons/carbon/catalog";
   import IconFollowers from "~icons/carbon/group";
   import IconCalendar from "~icons/carbon/calendar";
-  import {
-    blue50,
-    blue30,
-    yellow30,
-    purple50,
-    orange40,
-    cyan40,
-    green40,
-    red50,
-    magenta50,
-    teal40,
-    gray50,
-  } from "@carbon/colors";
+  import * as colors from "@carbon/colors";
 
   const languageColors: Record<string, string> = {
-    TypeScript: blue50,
-    JavaScript: yellow30,
-    Python: purple50,
-    Rust: red50,
-    Go: cyan40,
-    Java: orange40,
-    "C++": magenta50,
-    C: gray50,
-    "C#": purple50,
-    Ruby: red50,
-    PHP: purple50,
-    Swift: orange40,
-    Kotlin: purple50,
-    Scala: red50,
-    Shell: green40,
-    HTML: orange40,
-    CSS: purple50,
-    SCSS: magenta50,
-    Vue: teal40,
-    Svelte: orange40,
-    Nix: blue30,
+    TypeScript: colors.blue50,
+    JavaScript: colors.yellow30,
+    Python: colors.purple50,
+    Rust: colors.red50,
+    Go: colors.cyan40,
+    Java: colors.orange40,
+    "C++": colors.magenta50,
+    C: colors.gray50,
+    "C#": colors.purple50,
+    Ruby: colors.red50,
+    PHP: colors.purple50,
+    Swift: colors.orange40,
+    Kotlin: colors.purple50,
+    Scala: colors.red50,
+    Shell: colors.green40,
+    HTML: colors.orange40,
+    CSS: colors.purple50,
+    SCSS: colors.magenta50,
+    Vue: colors.teal40,
+    Svelte: colors.orange40,
+    Nix: colors.blue30,
   };
 
   function getLanguageColor(language: string | null): string {
-    if (!language) return gray50;
-    return languageColors[language] ?? gray50;
+    if (!language) return colors.gray50;
+    return languageColors[language] ?? colors.gray50;
   }
 
   // Adjust scroll speed based on number of items (5s per card)
@@ -90,8 +78,14 @@
   // Calculate aggregate stats
   let aggregateStats = $derived(() => {
     const allRepos = [...githubState.pinned_repos, ...githubState.repos];
-    const totalStars = allRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-    const totalForks = allRepos.reduce((sum, repo) => sum + repo.forks_count, 0);
+    const totalStars = allRepos.reduce(
+      (sum, repo) => sum + repo.stargazers_count,
+      0,
+    );
+    const totalForks = allRepos.reduce(
+      (sum, repo) => sum + repo.forks_count,
+      0,
+    );
     const yearsOnGitHub = githubState.user?.created_at
       ? Math.floor(
           (Date.now() - new Date(githubState.user.created_at).getTime()) /
@@ -119,7 +113,8 @@
     <div class="github-stats">
       {#if aggregateStats().yearsOnGitHub != null}
         <a
-          href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+          href={githubState.user?.html_url ??
+            `https://github.com/${githubState.username}`}
           target="_blank"
           rel="noopener noreferrer"
           class="stat-item"
@@ -136,27 +131,35 @@
         class="stat-item"
       >
         <IconFollowers class="stat-icon followers" />
-        <span class="stat-value">{aggregateStats().followers.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().followers.toLocaleString()}</span
+        >
         <span class="stat-label">followers</span>
       </a>
       <a
-        href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+        href={githubState.user?.html_url ??
+          `https://github.com/${githubState.username}`}
         target="_blank"
         rel="noopener noreferrer"
         class="stat-item"
       >
         <IconStar class="stat-icon star" />
-        <span class="stat-value">{aggregateStats().totalStars.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().totalStars.toLocaleString()}</span
+        >
         <span class="stat-label">stargazers</span>
       </a>
       <a
-        href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+        href={githubState.user?.html_url ??
+          `https://github.com/${githubState.username}`}
         target="_blank"
         rel="noopener noreferrer"
         class="stat-item"
       >
         <IconFork class="stat-icon fork" />
-        <span class="stat-value">{aggregateStats().totalForks.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().totalForks.toLocaleString()}</span
+        >
         <span class="stat-label">forkers</span>
       </a>
       <a
@@ -166,7 +169,9 @@
         class="stat-item"
       >
         <IconRepo class="stat-icon repo" />
-        <span class="stat-value">{aggregateStats().publicRepos.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().publicRepos.toLocaleString()}</span
+        >
         <span class="stat-label">repos</span>
       </a>
     </div>
@@ -175,7 +180,8 @@
       <div class="language-legend">
         {#each languageStats() as stat}
           <div class="legend-item">
-            <span class="legend-dot" style="background-color: {stat.color};"></span>
+            <span class="legend-dot" style="background-color: {stat.color};"
+            ></span>
             <span class="legend-name">{stat.language}</span>
             <span class="legend-count">({stat.count})</span>
           </div>
@@ -208,7 +214,10 @@
                       {#if repo.language}
                         <span class="language">{repo.language}</span>
                       {/if}
-                      <span class="stars"><IconStar style="color: var(--yellow-30)" /> {repo.stargazers_count}</span>
+                      <span class="stars"
+                        ><IconStar style="color: {colors.yellow30}" />
+                        {repo.stargazers_count}</span
+                      >
                     </div>
                   </div>
                   {#if repo.description}
@@ -248,7 +257,10 @@
                       {#if repo.language}
                         <span class="language">{repo.language}</span>
                       {/if}
-                      <span class="stars"><IconStar style="color: var(--yellow-30)" /> {repo.stargazers_count}</span>
+                      <span class="stars"
+                        ><IconStar style="color: {colors.yellow30}" />
+                        {repo.stargazers_count}</span
+                      >
                     </div>
                   </div>
                   {#if repo.description}
@@ -273,7 +285,9 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
+  @use "@carbon/colors";
+
   .projects-header {
     padding: 2rem 2rem 2rem 2rem;
     text-align: center;
@@ -283,7 +297,7 @@
     margin: 0;
     font-size: 2rem;
     font-weight: 600;
-    color: color-mix(in oklab, var(--gray-10) 90%, transparent);
+    color: color-mix(in oklab, #{colors.$gray-10} 90%, transparent);
   }
 
   .projects-container {
@@ -304,24 +318,32 @@
 
   .marquee-wrapper::before {
     left: 0;
-    background: linear-gradient(to right in oklab, var(--gray-100), transparent);
+    background: linear-gradient(
+      to right in oklab,
+      #{colors.$gray-100},
+      transparent
+    );
   }
 
   .marquee-wrapper::after {
     right: 0;
-    background: linear-gradient(to left in oklab, var(--gray-100), transparent);
+    background: linear-gradient(
+      to left in oklab,
+      #{colors.$gray-100},
+      transparent
+    );
   }
 
   .error,
   .empty {
     text-align: center;
     padding: 2rem;
-    color: var(--gray-60);
+    color: #{colors.$gray-60};
     font-size: 1rem;
   }
 
   .error {
-    color: var(--red-50);
+    color: #{colors.$red-50};
   }
 
   .github-stats {
@@ -337,39 +359,39 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    color: var(--gray-30);
+    color: #{colors.$gray-30};
     transition: color 0.2s ease;
   }
 
   .stat-item:hover {
-    color: var(--gray-10);
+    color: #{colors.$gray-10};
   }
 
   .stat-item :global(.stat-icon) {
     width: 18px;
     height: 18px;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
     transition: color 0.2s ease;
   }
 
   .stat-item:hover :global(.stat-icon.star) {
-    color: var(--yellow-30);
+    color: #{colors.$yellow-30};
   }
 
   .stat-item:hover :global(.stat-icon.fork) {
-    color: var(--cyan-40);
+    color: #{colors.$cyan-40};
   }
 
   .stat-item:hover :global(.stat-icon.repo) {
-    color: var(--purple-50);
+    color: #{colors.$purple-50};
   }
 
   .stat-item:hover :global(.stat-icon.followers) {
-    color: var(--green-40);
+    color: #{colors.$green-40};
   }
 
   .stat-item:hover :global(.stat-icon.calendar) {
-    color: var(--blue-50);
+    color: #{colors.$blue-50};
   }
 
   .stat-value {
@@ -380,7 +402,7 @@
 
   .stat-label {
     font-size: 0.85rem;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
   }
 
   .language-legend {
@@ -406,12 +428,12 @@
 
   .legend-name {
     font-size: 0.8rem;
-    color: var(--gray-40);
+    color: #{colors.$gray-40};
   }
 
   .legend-count {
     font-size: 0.75rem;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
     font-variant-numeric: tabular-nums;
   }
 
@@ -459,14 +481,14 @@
     flex-shrink: 0;
     width: 280px;
     min-height: 160px;
-    background: color-mix(in oklab, var(--white) 3%, transparent);
-    border: 1px solid color-mix(in oklab, var(--white) 8%, transparent);
+    background: color-mix(in oklab, #{colors.$white} 3%, transparent);
+    border: 1px solid color-mix(in oklab, #{colors.$white} 8%, transparent);
     border-radius: 8px;
     padding: 1.25rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
-    color: var(--white);
+    color: #{colors.$white};
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(10px);
@@ -474,9 +496,10 @@
 
   .project-card:hover {
     transform: translateY(-4px);
-    background: color-mix(in oklab, var(--white) 6%, transparent);
-    border-color: color-mix(in oklab, var(--white) 20%, transparent);
-    box-shadow: 0 8px 32px color-mix(in oklab, var(--black) 30%, transparent);
+    background: color-mix(in oklab, #{colors.$white} 6%, transparent);
+    border-color: color-mix(in oklab, #{colors.$white} 20%, transparent);
+    box-shadow: 0 8px 32px
+      color-mix(in oklab, #{colors.$black} 30%, transparent);
   }
 
   .card-content {
@@ -497,7 +520,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-    color: var(--gray-10);
+    color: #{colors.$gray-10};
     letter-spacing: -0.01em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -513,7 +536,7 @@
     flex-shrink: 0;
     width: 14px;
     height: 14px;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
     position: relative;
     top: -2px;
   }
@@ -521,7 +544,7 @@
   .project-description {
     font-size: 0.85rem;
     line-height: 1.4;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
     margin: 0;
     flex-grow: 1;
     word-wrap: break-word;
@@ -533,13 +556,13 @@
     align-items: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    color: var(--gray-40);
+    color: #{colors.$gray-40};
     flex-shrink: 0;
   }
 
   .language {
     font-weight: 500;
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
   }
 
   .stars {
@@ -556,21 +579,21 @@
   }
 
   .topic {
-    background: color-mix(in oklab, var(--white) 6%, transparent);
+    background: color-mix(in oklab, #{colors.$white} 6%, transparent);
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
     font-size: 0.7rem;
-    color: var(--gray-50);
-    border: 1px solid color-mix(in oklab, var(--white) 5%, transparent);
+    color: #{colors.$gray-50};
+    border: 1px solid color-mix(in oklab, #{colors.$white} 5%, transparent);
   }
 
   .pinned-card {
-    background: color-mix(in oklab, var(--white) 5%, transparent);
-    border-color: color-mix(in oklab, var(--white) 12%, transparent);
+    background: color-mix(in oklab, #{colors.$white} 5%, transparent);
+    border-color: color-mix(in oklab, #{colors.$white} 12%, transparent);
   }
 
   .pinned-card:hover {
-    background: color-mix(in oklab, var(--white) 8%, transparent);
-    border-color: color-mix(in oklab, var(--white) 25%, transparent);
+    background: color-mix(in oklab, #{colors.$white} 8%, transparent);
+    border-color: color-mix(in oklab, #{colors.$white} 25%, transparent);
   }
 </style>

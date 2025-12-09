@@ -274,7 +274,9 @@
   {/if}
 </div>
 
-<style>
+<style lang="scss">
+  @use '@carbon/colors';
+
   .hero.skeleton {
     opacity: 0;
     pointer-events: none;
@@ -297,7 +299,7 @@
     height: 160px;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 10px 40px color-mix(in oklab, var(--black) 30%, transparent);
+    box-shadow: 0 10px 40px color-mix(in oklab, #{colors.$black} 30%, transparent);
   }
 
   .profile-image.morphing {
@@ -323,7 +325,7 @@
   .name {
     font-size: var(--name-size, 2.5rem);
     font-weight: 700;
-    color: var(--white);
+    color: #{colors.$white};
     margin: 0;
     min-height: 1lh;
   }
@@ -340,7 +342,7 @@
   .title {
     font-size: var(--title-size, 1.5rem);
     font-weight: 400;
-    color: color-mix(in oklab, var(--white) 50%, transparent);
+    color: color-mix(in oklab, #{colors.$white} 50%, transparent);
     white-space: nowrap;
   }
 
@@ -357,7 +359,7 @@
   }
 
   .nav-link {
-    color: color-mix(in oklab, var(--white) 70%, transparent);
+    color: color-mix(in oklab, #{colors.$white} 70%, transparent);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -374,6 +376,6 @@
 
   .nav-link:hover,
   .nav-link.active {
-    color: var(--white);
+    color: #{colors.$white};
   }
 </style>

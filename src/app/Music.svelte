@@ -16,7 +16,9 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
+  @use '@carbon/colors';
+
   .music-section {
     padding: 4rem 0;
     display: flex;
@@ -40,12 +42,12 @@
     gap: 0.75rem;
     font-size: 2rem;
     font-weight: 600;
-    color: var(--gray-10);
+    color: #{colors.$gray-10};
     margin: 0;
   }
 
   .description {
-    color: var(--gray-50);
+    color: #{colors.$gray-50};
     font-size: 1.1rem;
     margin: 0;
   }
@@ -55,10 +57,10 @@
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: color-mix(in oklab, var(--magenta-50) 15%, transparent);
-    border: 1px solid color-mix(in oklab, var(--magenta-50) 30%, transparent);
+    background: color-mix(in oklab, #{colors.$magenta-50} 15%, transparent);
+    border: 1px solid color-mix(in oklab, #{colors.$magenta-50} 30%, transparent);
     border-radius: 8px;
-    color: var(--magenta-50);
+    color: #{colors.$magenta-50};
     text-decoration: none;
     font-size: 1.25rem;
     font-weight: 500;
@@ -66,8 +68,8 @@
   }
 
   .sawthat-link:hover {
-    background: color-mix(in oklab, var(--magenta-50) 25%, transparent);
-    border-color: var(--magenta-50);
+    background: color-mix(in oklab, #{colors.$magenta-50} 25%, transparent);
+    border-color: #{colors.$magenta-50};
     transform: translateY(-2px);
   }
 
