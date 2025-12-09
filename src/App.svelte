@@ -18,7 +18,6 @@
   let heroSection: HTMLElement;
   let techSection: HTMLElement;
   let musicSection: HTMLElement;
-  let headerComponent: Header;
 
   function updateCurrentSection() {
     if (!scrollState.introComplete) return;
@@ -98,7 +97,7 @@
   });
 </script>
 
-<Header bind:this={headerComponent} />
+<Header />
 
 <main>
   <section id="hero" bind:this={heroSection}>

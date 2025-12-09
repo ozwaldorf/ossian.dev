@@ -91,27 +91,7 @@
     };
   });
 
-  const linkWidth = 70;
-
-  // Default positions for when targetPos is null (before header mounts)
-  const defaultRect = {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: 0,
-    height: 0,
-  } as DOMRect;
-  const defaultPositions = {
-    profile: defaultRect,
-    name: defaultRect,
-    title: defaultRect,
-    homeLink: defaultRect,
-    techLink: defaultRect,
-    musicLink: defaultRect,
-  };
-
-  // Interpolate between hero (start) and header (target) positions
+// Interpolate between hero (start) and header (target) positions
   // Hero positions come from live getBoundingClientRect, header positions are stored
   function lerp(start: number, end: number, t: number) {
     return start + (end - start) * t;

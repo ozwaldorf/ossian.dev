@@ -8,6 +8,7 @@
     "npm:@mateothegreat/svelte5-router@*": "2.16.19_svelte@5.41.4__acorn@8.15.0",
     "npm:@mateothegreat/svelte5-router@^2.16.19": "2.16.19_svelte@5.41.4__acorn@8.15.0",
     "npm:@sveltejs/vite-plugin-svelte@^5.1.1": "5.1.1_svelte@5.41.4__acorn@8.15.0_vite@6.4.1__sass@1.93.2__picomatch@4.0.3_sass@1.93.2",
+    "npm:@types/carbon__colors@^10.31.3": "10.31.3",
     "npm:sass@^1.83.0": "1.93.2",
     "npm:svelte-check@*": "4.3.3_svelte@5.41.4__acorn@8.15.0_typescript@5.9.3",
     "npm:svelte@^5.41.4": "5.41.4_acorn@8.15.0",
@@ -490,6 +491,9 @@
         "vitefu"
       ]
     },
+    "@types/carbon__colors@10.31.3": {
+      "integrity": "sha512-FZiLSh4WeVNZiD5r3YA9FFMHcxLt4SoKfh8FwvsEw7/3jyHlzx2duwWsvl3QXI/eDEqsmxALR4mV4IhlokbbCA=="
+    },
     "@types/estree@1.0.8": {
       "integrity": "sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w=="
     },
@@ -909,6 +913,7 @@
       "npm:@iconify-json/carbon@^1.2.14",
       "npm:@mateothegreat/svelte5-router@^2.16.19",
       "npm:@sveltejs/vite-plugin-svelte@^5.1.1",
+      "npm:@types/carbon__colors@^10.31.3",
       "npm:sass@^1.83.0",
       "npm:svelte@^5.41.4",
       "npm:unplugin-icons@~0.19.3",

@@ -12,14 +12,9 @@
     cyan40,
     green40,
     red50,
-    red40,
     magenta50,
     teal40,
-    gray10,
     gray50,
-    gray60,
-    gray100,
-    white,
   } from "@carbon/colors";
 
   const languageColors: Record<string, string> = {
