@@ -8,6 +8,9 @@
   import { scrollState, updateMorphValues } from "./lib/scroll.svelte";
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
+  import IconLogoGithub from "~icons/carbon/logo-github";
+  import IconLogoTwitter from "~icons/carbon/logo-twitter";
+  import IconLogoInstagram from "~icons/carbon/logo-instagram";
 
   fetchRepos("ozwaldorf", [
     "lutgen-rs",
@@ -145,6 +148,24 @@
 
 <footer bind:this={footerElement} style:opacity={footerOpacityValue}>
   <span class="farewell quotation">so long, and thanks for all the fish!</span>
+  <div class="footer-links">
+    <a
+      href="https://github.com/ozwaldorf"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <IconLogoGithub width="32" />
+      <span>GitHub</span>
+    </a>
+    <a
+      href="https://twitter.com/ozwaldorf_"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <IconLogoTwitter width="32" />
+      <span>Twitter</span>
+    </a>
+  </div>
   <img src="/track.png" alt="" />
 </footer>
 
@@ -173,5 +194,30 @@
     top: 35%;
     left: 15%;
     color: var(--gray-50);
+    font-size: 1.5rem;
+  }
+
+  .footer-links {
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 25%;
+  }
+
+  .footer-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-80);
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--gray-70);
   }
 </style>
