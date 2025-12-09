@@ -125,4 +125,9 @@
     min-height: 100vh;
     position: relative;
   }
+
+  section#code,
+  section#music {
+    min-height: auto;
+  }
 </style>

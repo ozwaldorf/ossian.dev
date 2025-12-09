@@ -18,8 +18,7 @@
 
 <style>
   .music-section {
-    min-height: 100vh;
-    padding-top: 80px;
+    padding: 4rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
