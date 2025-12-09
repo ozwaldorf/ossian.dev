@@ -1,59 +1,113 @@
 <script lang="ts">
-  import { receive } from "../lib/transition.svelte";
-  import { route } from "@mateothegreat/svelte5-router";
+  import { onMount } from "svelte";
+  import {
+    headerOpacity,
+    positionGetters,
+  } from "../lib/scroll.svelte";
   import IconHome from "~icons/carbon/home";
   import IconCode from "~icons/carbon/code";
   import IconMusic from "~icons/carbon/music";
+
+  // Skeleton refs for position capture
+  let skeletonProfile: HTMLElement;
+  let skeletonName: HTMLElement;
+  let skeletonTitle: HTMLElement;
+  let skeletonHomeLink: HTMLElement;
+  let skeletonTechLink: HTMLElement;
+  let skeletonMusicLink: HTMLElement;
+
+  function getTargetPositions() {
+    if (
+      !skeletonProfile ||
+      !skeletonName ||
+      !skeletonTitle ||
+      !skeletonHomeLink ||
+      !skeletonTechLink ||
+      !skeletonMusicLink
+    ) {
+      return null;
+    }
+    return {
+      profile: skeletonProfile.getBoundingClientRect(),
+      name: skeletonName.getBoundingClientRect(),
+      title: skeletonTitle.getBoundingClientRect(),
+      homeLink: skeletonHomeLink.getBoundingClientRect(),
+      techLink: skeletonTechLink.getBoundingClientRect(),
+      musicLink: skeletonMusicLink.getBoundingClientRect(),
+    };
+  }
+
+  // Register position getter on mount
+  onMount(() => {
+    positionGetters.getHeaderPositions = getTargetPositions;
+  });
 </script>
 
-<header>
+<!-- Hidden skeleton for target position reference -->
+<header class="skeleton" aria-hidden="true">
   <div class="header-content">
-    <div class="profile-image" in:receive={{ key: "profile-image" }}>
-      <img src="./ossian.jpg" alt="Profile" />
+    <div bind:this={skeletonProfile} class="profile-image">
+      <img src="./ossian.jpg" alt="" />
     </div>
-    <div
-      in:receive={{ key: "profile-name" }}
-      onintrostart={() => console.log("Name receiving")}
-    >
-      <h1 class="name">Ossian Mapes</h1>
+    <div class="info">
+      <div class="name-title">
+        <div bind:this={skeletonName} class="name">Ossian Mapes</div>
+        <div bind:this={skeletonTitle} class="title">Full Stack Developer</div>
+      </div>
+      <nav>
+        <a bind:this={skeletonHomeLink} href="#" class="nav-link">
+          <IconHome width="20" height="20" />
+          <span>Home</span>
+        </a>
+        <a bind:this={skeletonTechLink} href="#tech" class="nav-link">
+          <IconCode width="20" height="20" />
+          <span>Tech</span>
+        </a>
+        <a bind:this={skeletonMusicLink} href="#music" class="nav-link">
+          <IconMusic width="20" height="20" />
+          <span>Music</span>
+        </a>
+      </nav>
     </div>
-    <div
-      in:receive={{ key: "profile-title" }}
-      onintrostart={() => console.log("Title receiving")}
-    >
-      <h2 class="title">Full Stack Developer</h2>
-    </div>
-    <nav>
-      <a href="./" use:route in:receive={{ key: "nav-home" }}>
-        <IconHome width="20" height="20" />
-        <span>Home</span>
-      </a>
-      <a href="#tech" use:route in:receive={{ key: "nav-tech" }}>
-        <IconCode width="20" height="20" />
-        <span>Tech</span>
-      </a>
-      <a href="#music" use:route in:receive={{ key: "nav-music" }}>
-        <IconMusic width="20" height="20" />
-        <span>Music</span>
-      </a>
-    </nav>
+  </div>
+</header>
+
+<!-- Visible header background -->
+<header
+  style:opacity={$headerOpacity}
+  style:pointer-events={$headerOpacity > 0.1 ? "auto" : "none"}
+>
+  <div class="header-content">
+    <div class="spacer"></div>
   </div>
 </header>
 
 <style>
+  header.skeleton {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
-    padding: 1rem 2rem;
+    z-index: 999;
+    padding: 1rem 2rem 4rem;
+    background: linear-gradient(
+      to bottom in oklab,
+      var(--gray-100) 0%,
+      var(--gray-100) 20%,
+      transparent 100%
+    );
   }
 
   .header-content {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .profile-image {
@@ -74,14 +128,12 @@
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--white);
-    margin: 0;
   }
 
   .title {
     font-size: 1rem;
     font-weight: 400;
-    color: color-mix(in oklab, var(--white) 80%, transparent);
-    margin: 0;
+    color: color-mix(in oklab, var(--white) 50%, transparent);
   }
 
   nav {
@@ -90,18 +142,54 @@
     gap: 2rem;
   }
 
-  nav a {
+  .info {
+    display: contents;
+  }
+
+  .name-title {
+    display: contents;
+  }
+
+  @media (max-width: 760px) {
+    .header-content {
+      flex-wrap: nowrap;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.25rem;
+    }
+
+    .name-title {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    nav {
+      margin-left: 0;
+      gap: 1rem;
+    }
+  }
+
+  .nav-link {
     color: color-mix(in oklab, var(--white) 70%, transparent);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s;
-    position: relative;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: color 0.2s;
   }
 
-  nav a:hover {
+  .nav-link:hover,
+  .nav-link.active {
     color: var(--white);
+  }
+
+  .spacer {
+    flex: 1;
   }
 </style>

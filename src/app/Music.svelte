@@ -1,26 +1,21 @@
 <script>
-  import { fade } from "svelte/transition";
   import IconConstruction from "~icons/carbon/construction";
-  import Header from "./Header.svelte";
 </script>
 
-<Header />
-<div class="page-container">
-  <div class="page-content" transition:fade>
-    <div class="construction">
-      <IconConstruction width="64" height="64" />
-      <h2>Under construction!</h2>
-    </div>
+<div class="music-section">
+  <div class="construction">
+    <IconConstruction width="64" height="64" />
+    <h2>Under construction!</h2>
   </div>
 </div>
 
 <style>
-  .page-container {
+  .music-section {
     min-height: 100vh;
-  }
-
-  .page-content {
     padding-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .construction {
