@@ -15,6 +15,7 @@
     "lutgen-rs",
     "flake",
     "carburetor",
+    "punfetch",
     "ozboar/zoom-sync",
   ]);
 </script>

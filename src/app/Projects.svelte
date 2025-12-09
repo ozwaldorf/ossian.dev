@@ -390,11 +390,8 @@
     color: var(--gray-50);
     margin: 0;
     flex-grow: 1;
-    overflow: hidden;
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .project-meta {
