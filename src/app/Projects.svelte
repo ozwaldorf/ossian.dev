@@ -3,6 +3,10 @@
   import { fade } from "svelte/transition";
   import IconPin from "~icons/carbon/pin-filled";
   import IconStar from "~icons/carbon/star-filled";
+  import IconFork from "~icons/carbon/branch";
+  import IconRepo from "~icons/carbon/catalog";
+  import IconFollowers from "~icons/carbon/group";
+  import IconCalendar from "~icons/carbon/calendar";
   import {
     blue50,
     blue30,
@@ -82,6 +86,26 @@
       }))
       .sort((a, b) => b.count - a.count);
   });
+
+  // Calculate aggregate stats
+  let aggregateStats = $derived(() => {
+    const allRepos = [...githubState.pinned_repos, ...githubState.repos];
+    const totalStars = allRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+    const totalForks = allRepos.reduce((sum, repo) => sum + repo.forks_count, 0);
+    const yearsOnGitHub = githubState.user?.created_at
+      ? Math.floor(
+          (Date.now() - new Date(githubState.user.created_at).getTime()) /
+            (1000 * 60 * 60 * 24 * 365.25),
+        )
+      : null;
+    return {
+      totalStars,
+      totalForks,
+      publicRepos: githubState.user?.public_repos ?? 0,
+      followers: githubState.user?.followers ?? 0,
+      yearsOnGitHub,
+    };
+  });
 </script>
 
 <div class="projects-header">
@@ -92,6 +116,61 @@
   {#if githubState.error}
     <div class="error">{githubState.error}</div>
   {:else}
+    <div class="github-stats">
+      {#if aggregateStats().yearsOnGitHub != null}
+        <a
+          href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="stat-item"
+        >
+          <IconCalendar class="stat-icon calendar" />
+          <span class="stat-value">{aggregateStats().yearsOnGitHub}</span>
+          <span class="stat-label">years on GitHub</span>
+        </a>
+      {/if}
+      <a
+        href={`https://github.com/${githubState.username}?tab=followers`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="stat-item"
+      >
+        <IconFollowers class="stat-icon followers" />
+        <span class="stat-value">{aggregateStats().followers.toLocaleString()}</span>
+        <span class="stat-label">followers</span>
+      </a>
+      <a
+        href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="stat-item"
+      >
+        <IconStar class="stat-icon star" />
+        <span class="stat-value">{aggregateStats().totalStars.toLocaleString()}</span>
+        <span class="stat-label">stargazers</span>
+      </a>
+      <a
+        href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="stat-item"
+      >
+        <IconFork class="stat-icon fork" />
+        <span class="stat-value">{aggregateStats().totalForks.toLocaleString()}</span>
+        <span class="stat-label">forkers</span>
+      </a>
+      <a
+        href={`https://github.com/${githubState.username}?tab=repositories`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="stat-item"
+      >
+        <IconRepo class="stat-icon repo" />
+        <span class="stat-value">{aggregateStats().publicRepos.toLocaleString()}</span>
+        <span class="stat-label">repos</span>
+      </a>
+    </div>
+
     {#if languageStats().length > 0}
       <div class="language-legend">
         {#each languageStats() as stat}
@@ -243,6 +322,65 @@
 
   .error {
     color: var(--red-50);
+  }
+
+  .github-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0 2rem 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--gray-30);
+    transition: color 0.2s ease;
+  }
+
+  .stat-item:hover {
+    color: var(--gray-10);
+  }
+
+  .stat-item :global(.stat-icon) {
+    width: 18px;
+    height: 18px;
+    color: var(--gray-50);
+    transition: color 0.2s ease;
+  }
+
+  .stat-item:hover :global(.stat-icon.star) {
+    color: var(--yellow-30);
+  }
+
+  .stat-item:hover :global(.stat-icon.fork) {
+    color: var(--cyan-40);
+  }
+
+  .stat-item:hover :global(.stat-icon.repo) {
+    color: var(--purple-50);
+  }
+
+  .stat-item:hover :global(.stat-icon.followers) {
+    color: var(--green-40);
+  }
+
+  .stat-item:hover :global(.stat-icon.calendar) {
+    color: var(--blue-50);
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--gray-50);
   }
 
   .language-legend {

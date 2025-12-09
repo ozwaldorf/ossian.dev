@@ -5,6 +5,7 @@ export interface GitHubRepo {
   description: string | null;
   html_url: string;
   stargazers_count: number;
+  forks_count: number;
   language: string | null;
   topics: string[];
   updated_at: string;
@@ -12,8 +13,19 @@ export interface GitHubRepo {
   pinned?: boolean;
 }
 
+export interface GitHubUser {
+  login: string;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  html_url: string;
+  created_at: string;
+}
+
 export interface GitHubReposState {
   username: string;
+  user: GitHubUser | null;
   repos: GitHubRepo[];
   pinned_repos: GitHubRepo[];
   loading: boolean;
@@ -28,6 +40,7 @@ const createPlaceholderRepo = (id: number): GitHubRepo => ({
   description: null,
   html_url: "",
   stargazers_count: 0,
+  forks_count: 0,
   language: null,
   topics: [],
   updated_at: new Date().toISOString(),
@@ -45,6 +58,7 @@ const placeholderPinnedRepos = Array.from(
 
 export const githubState = $state<GitHubReposState>({
   username: "",
+  user: null,
   repos: placeholderRepos,
   pinned_repos: placeholderPinnedRepos,
   loading: true,
@@ -54,16 +68,22 @@ export const githubState = $state<GitHubReposState>({
 export async function fetchRepos(username: string, pinned: string[]) {
   githubState.username = username;
   try {
-    // Fetch user repos
-    const response = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=stars&direction=reverse&per_page=100`,
-    );
+    // Fetch user profile and repos in parallel
+    const [userResponse, reposResponse] = await Promise.all([
+      fetch(`https://api.github.com/users/${username}`),
+      fetch(
+        `https://api.github.com/users/${username}/repos?sort=stars&direction=reverse&per_page=100`,
+      ),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
+    if (!userResponse.ok || !reposResponse.ok) {
+      throw new Error(`GitHub API error: ${userResponse.status || reposResponse.status}`);
     }
 
-    const repos: GitHubRepo[] = await response.json();
+    const user: GitHubUser = await userResponse.json();
+    const repos: GitHubRepo[] = await reposResponse.json();
+
+    githubState.user = user;
 
     // Clear placeholder data
     githubState.repos = [];
