@@ -2,6 +2,7 @@
   import { githubState } from "../lib/github.svelte";
   import { fade } from "svelte/transition";
   import IconPin from "~icons/carbon/pin-filled";
+  import IconStar from "~icons/carbon/star-filled";
   import {
     blue50,
     blue30,
@@ -133,7 +134,7 @@
                       {#if repo.language}
                         <span class="language">{repo.language}</span>
                       {/if}
-                      <span class="stars">⭐ {repo.stargazers_count}</span>
+                      <span class="stars"><IconStar style="color: var(--yellow-30)" /> {repo.stargazers_count}</span>
                     </div>
                   </div>
                   {#if repo.description}
@@ -173,7 +174,7 @@
                       {#if repo.language}
                         <span class="language">{repo.language}</span>
                       {/if}
-                      <span class="stars">⭐ {repo.stargazers_count}</span>
+                      <span class="stars"><IconStar style="color: var(--yellow-30)" /> {repo.stargazers_count}</span>
                     </div>
                   </div>
                   {#if repo.description}
