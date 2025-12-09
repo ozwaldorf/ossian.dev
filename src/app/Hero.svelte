@@ -17,7 +17,8 @@
   import IconHome from "~icons/carbon/home";
 
   // Check for hash to skip intro
-  const skipIntro = typeof window !== "undefined" && window.location.hash.length > 1;
+  const skipIntro =
+    typeof window !== "undefined" && window.location.hash.length > 1;
   let step = $state(skipIntro ? 4 : 0);
   let mounted = $state(false);
 
@@ -41,7 +42,14 @@
 
   // Get current hero skeleton positions (these move with scroll, so get them live)
   function getHeroPositions(): ElementPositions | null {
-    if (skeletonProfile && skeletonName && skeletonTitle && skeletonHomeLink && skeletonTechLink && skeletonMusicLink) {
+    if (
+      skeletonProfile &&
+      skeletonName &&
+      skeletonTitle &&
+      skeletonHomeLink &&
+      skeletonTechLink &&
+      skeletonMusicLink
+    ) {
       return {
         profile: skeletonProfile.getBoundingClientRect(),
         name: skeletonName.getBoundingClientRect(),
@@ -86,8 +94,22 @@
   const linkWidth = 70;
 
   // Default positions for when targetPos is null (before header mounts)
-  const defaultRect = { top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0 } as DOMRect;
-  const defaultPositions = { profile: defaultRect, name: defaultRect, title: defaultRect, homeLink: defaultRect, techLink: defaultRect, musicLink: defaultRect };
+  const defaultRect = {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: 0,
+    height: 0,
+  } as DOMRect;
+  const defaultPositions = {
+    profile: defaultRect,
+    name: defaultRect,
+    title: defaultRect,
+    homeLink: defaultRect,
+    techLink: defaultRect,
+    musicLink: defaultRect,
+  };
 
   // Interpolate between hero (start) and header (target) positions
   // Hero positions come from live getBoundingClientRect, header positions are stored
@@ -201,18 +223,29 @@
     {/if}
 
     {#if step >= 3}
-      <div in:fadeSlide={{ duration: 800 }} class="nav-container" onintroend={onIntroComplete}>
+      <div
+        in:fadeSlide={{ duration: 800 }}
+        class="nav-container"
+        onintroend={onIntroComplete}
+      >
         <nav class="hero-nav" class:morphing={scrollState.introComplete}>
           <a
-            href="#"
+            href="./"
             class="nav-link"
             class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete ? `${homeLinkTop}px` : undefined}
-            style:left={scrollState.introComplete ? `${homeLinkLeft}px` : undefined}
+            style:top={scrollState.introComplete
+              ? `${homeLinkTop}px`
+              : undefined}
+            style:left={scrollState.introComplete
+              ? `${homeLinkLeft}px`
+              : undefined}
             style:opacity={$headerOpacity}
             style:pointer-events={$headerOpacity > 0.5 ? "auto" : "none"}
             class:active={scrollState.currentSection === "hero"}
-            onclick={(e) => { e.preventDefault(); scrollToSection("hero"); }}
+            onclick={(e) => {
+              e.preventDefault();
+              scrollToSection("hero");
+            }}
           >
             <IconHome width="20" height="20" />
             <span>Home</span>
@@ -221,10 +254,17 @@
             href="#tech"
             class="nav-link"
             class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete ? `${techLinkTop}px` : undefined}
-            style:left={scrollState.introComplete ? `${techLinkLeft}px` : undefined}
+            style:top={scrollState.introComplete
+              ? `${techLinkTop}px`
+              : undefined}
+            style:left={scrollState.introComplete
+              ? `${techLinkLeft}px`
+              : undefined}
             class:active={scrollState.currentSection === "tech"}
-            onclick={(e) => { e.preventDefault(); scrollToSection("tech"); }}
+            onclick={(e) => {
+              e.preventDefault();
+              scrollToSection("tech");
+            }}
           >
             <IconCode width="20" height="20" />
             <span>Tech</span>
@@ -233,10 +273,17 @@
             href="#music"
             class="nav-link"
             class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete ? `${musicLinkTop}px` : undefined}
-            style:left={scrollState.introComplete ? `${musicLinkLeft}px` : undefined}
+            style:top={scrollState.introComplete
+              ? `${musicLinkTop}px`
+              : undefined}
+            style:left={scrollState.introComplete
+              ? `${musicLinkLeft}px`
+              : undefined}
             class:active={scrollState.currentSection === "music"}
-            onclick={(e) => { e.preventDefault(); scrollToSection("music"); }}
+            onclick={(e) => {
+              e.preventDefault();
+              scrollToSection("music");
+            }}
           >
             <IconMusic width="20" height="20" />
             <span>Music</span>
@@ -287,9 +334,6 @@
     object-fit: cover;
   }
 
-  .name-container {
-  }
-
   .name-container.morphing {
     position: fixed;
     z-index: 1001;
@@ -308,9 +352,6 @@
     margin: 0;
   }
 
-  .title-container {
-  }
-
   .title-container.morphing {
     position: fixed;
     z-index: 1001;
@@ -323,9 +364,6 @@
     white-space: nowrap;
   }
 
-  .nav-container {
-  }
-
   .hero-nav {
     display: flex;
     gap: 2rem;
@@ -336,9 +374,6 @@
   .hero-nav .nav-link.home-skeleton,
   .hero-nav .nav-link:first-child:not(.morphing) {
     position: absolute;
-  }
-
-  .hero-nav.morphing {
   }
 
   .nav-link {
