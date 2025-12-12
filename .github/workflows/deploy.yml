@@ -31,10 +31,7 @@ jobs:
         run: deno install
 
       - name: Build
-        run: deno task build
-        env:
-          VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY }}
-          VITE_SAWTHAT_BAND_ID: ${{ secrets.VITE_SAWTHAT_BAND_ID }}
+        run: VITE_YOUTUBE_API_KEY=${{ secrets.VITE_YOUTUBE_API_KEY }} deno task build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
