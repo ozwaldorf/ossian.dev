@@ -373,20 +373,33 @@
   }
 
   .band-info {
-    margin-top: -30cqi;
-    height: 45cqi;
+    margin-top: -70cqi;
+    height: 85cqi;
     padding: 0 0.75rem 0.75rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     gap: 0.25rem;
     text-align: center;
-    background: linear-gradient(
-      to bottom in oklab,
-      transparent 0,
-      var(--band-color, var(--cds-layer-01)) 30cqi,
-      var(--band-color, var(--cds-layer-01)) 100%
-    );
+    background:
+      radial-gradient(
+        ellipse 50% 90% at 0% 100% in oklab,
+        var(--band-color, var(--cds-layer-01)) 0%,
+        var(--band-color, var(--cds-layer-01)) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 50% 90% at 100% 100% in oklab,
+        var(--band-color, var(--cds-layer-01)) 0%,
+        var(--band-color, var(--cds-layer-01)) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 80% 55% at 50% 100% in oklab,
+        var(--band-color, var(--cds-layer-01)) 0%,
+        var(--band-color, var(--cds-layer-01)) 50%,
+        transparent 100%
+      );
   }
 
   .band-name {
