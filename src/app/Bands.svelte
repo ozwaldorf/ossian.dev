@@ -4,6 +4,7 @@
     sawThatState,
     hasSawThatConfig,
     type Band,
+    type Concert,
   } from "../lib/sawthat.svelte";
   import IconLaunch from "~icons/carbon/launch";
 
@@ -18,7 +19,7 @@
 
   interface BandConcert {
     band: Band;
-    concert: { date: string; location: string };
+    concert: Concert;
     id: string;
   }
 
@@ -229,11 +230,11 @@
             class="band-card"
             class:fading={fadingTile === i}
             class:loaded={loadedImages.has(item.id)}
-            class:light-bg={item.band.color?.isLight}
-            style:--band-color={item.band.color?.bg ?? "var(--cds-border-subtle-01)"}
+            class:light-bg={item.concert.color?.isLight}
+            style:--band-color={item.concert.color?.bg ?? "var(--cds-border-subtle-01)"}
           >
             <img
-              src={item.band.picture}
+              src={item.concert.picture ?? item.band.picture}
               alt={item.band.band}
               class="band-image"
               onload={() => onImageLoad(item.id)}

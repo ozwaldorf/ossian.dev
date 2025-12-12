@@ -5,14 +5,17 @@ declare const __BUILD_DATA__: {
   };
 };
 
-export interface Concert {
-  date: string;
-  location: string;
-}
-
 export interface BandColor {
   bg: string;
   isLight: boolean;
+}
+
+export interface Concert {
+  date: string;
+  location: string;
+  album?: string;
+  picture?: string;
+  color?: BandColor | null;
 }
 
 export interface Band {
@@ -20,7 +23,6 @@ export interface Band {
   band: string;
   picture: string;
   concerts: Concert[];
-  color: BandColor | null;
 }
 
 export interface SawThatState {

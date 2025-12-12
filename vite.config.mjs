@@ -4,6 +4,7 @@ import deno from "@deno/vite-plugin";
 import Icons from "unplugin-icons/vite";
 import { execSync } from "node:child_process";
 import { Jimp } from "jimp";
+import albumArt from "album-art";
 
 const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
 
@@ -129,6 +130,126 @@ async function extractColor(imageUrl) {
     console.warn(`Failed to extract color from ${imageUrl}:`, err.message);
     return null;
   }
+}
+
+// Fetch alternate album art from Spotify via album-art package
+async function fetchAlbumArt(bandName, albumName = null) {
+  try {
+    const options = { size: "large" };
+    if (albumName) options.album = albumName;
+    const url = await albumArt(bandName, options);
+    if (url && typeof url === "string" && url.startsWith("http")) {
+      return url;
+    }
+    return null;
+  } catch (err) {
+    console.warn(
+      `Failed to fetch album art for "${bandName}"${albumName ? ` (${albumName})` : ""}:`,
+      err.message,
+    );
+    return null;
+  }
+}
+
+// Deezer API helpers (no auth, no rate limiting)
+const DEEZER_BASE = "https://api.deezer.com";
+
+// Parse DD-MM-YYYY date format
+function parseDate(dateStr) {
+  if (!dateStr) return null;
+  const [day, month, year] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+// Find album closest to target date from album list
+function findClosestAlbum(albums, targetDate) {
+  if (!albums?.length) return null;
+  const targetTime = parseDate(targetDate)?.getTime();
+  if (!targetTime) return null;
+
+  let bestMatch = null;
+  let bestDiff = Infinity;
+
+  for (const album of albums) {
+    if (!album.release_date) continue;
+    const releaseTime = new Date(album.release_date).getTime();
+    if (releaseTime <= targetTime) {
+      const diff = targetTime - releaseTime;
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        bestMatch = album.title;
+      }
+    }
+  }
+  return bestMatch;
+}
+
+// Batch fetch from Deezer with chunking (limit: 50 req/5s)
+const CHUNK_SIZE = 10;
+const CHUNK_DELAY = 1000;
+
+async function batchFetchDeezerArtists(bandNames) {
+  const results = [];
+  for (let i = 0; i < bandNames.length; i += CHUNK_SIZE) {
+    const chunk = bandNames.slice(i, i + CHUNK_SIZE);
+    const chunkResults = await Promise.all(
+      chunk.map(async (name) => {
+        try {
+          const url = `${DEEZER_BASE}/search/artist?q=${encodeURIComponent(name)}&limit=1`;
+          const res = await fetch(url).then((r) => r.json());
+          return res?.data?.[0]?.id ?? null;
+        } catch {
+          return null;
+        }
+      }),
+    );
+    results.push(...chunkResults);
+    if (i + CHUNK_SIZE < bandNames.length) {
+      await new Promise((r) => setTimeout(r, CHUNK_DELAY));
+    }
+  }
+  return results;
+}
+
+async function batchFetchDeezerAlbums(artistIds) {
+  const results = [];
+  for (let i = 0; i < artistIds.length; i += CHUNK_SIZE) {
+    const chunk = artistIds.slice(i, i + CHUNK_SIZE);
+    const chunkResults = await Promise.all(
+      chunk.map(async (id) => {
+        if (!id) return null;
+        try {
+          const url = `${DEEZER_BASE}/artist/${id}/albums?limit=100`;
+          const res = await fetch(url).then((r) => r.json());
+          if (res?.error) return null;
+          return res?.data ?? null;
+        } catch {
+          return null;
+        }
+      }),
+    );
+    results.push(...chunkResults);
+    if (i + CHUNK_SIZE < artistIds.length) {
+      await new Promise((r) => setTimeout(r, CHUNK_DELAY));
+    }
+  }
+  return results;
+}
+
+// Batch fetch album art from Spotify (no rate limit needed)
+async function batchFetchAlbumArt(requests) {
+  return Promise.all(
+    requests.map(async ({ artist, album }) => {
+      try {
+        const options = { size: "large" };
+        if (album) options.album = album;
+        const url = await albumArt(artist, options);
+        return url && typeof url === "string" && url.startsWith("http") ? url : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
 }
 
 // Fetch and prune all dynamic content
@@ -265,22 +386,71 @@ async function fetchBuildData() {
       );
       if (response.ok) {
         const bands = await response.json();
+        const bandNames = bands.map((b) => b.band);
 
-        // Extract colors in parallel
-        const bandsWithColors = await Promise.all(
-          bands.map(async (band) => {
-            const color = await extractColor(band.picture);
-            return {
-              id: band.id,
-              band: band.band,
-              picture: band.picture,
-              concerts: band.concerts,
-              color,
-            };
-          }),
+        // Stage 1: Batch fetch Deezer artist IDs
+        console.log("  Fetching artist IDs...");
+        const artistIds = await batchFetchDeezerArtists(bandNames);
+        const foundArtists = artistIds.filter((id) => id !== null).length;
+        console.log(`  Found ${foundArtists}/${bandNames.length} artists on Deezer`);
+
+        // Stage 2: Batch fetch albums for all artists
+        console.log("  Fetching albums...");
+        const albumLists = await batchFetchDeezerAlbums(artistIds);
+
+        // Stage 3: Find closest album for each concert
+        console.log("  Matching albums to concerts...");
+        const concertAlbums = []; // flat list of {bandIdx, concertIdx, artist, album, date}
+        let matched = 0;
+
+        bands.forEach((band, bandIdx) => {
+          const albums = albumLists[bandIdx];
+          band.concerts?.forEach((concert, concertIdx) => {
+            const albumName = concert.date ? findClosestAlbum(albums, concert.date) : null;
+            concertAlbums.push({
+              bandIdx,
+              concertIdx,
+              artist: band.band,
+              album: albumName,
+              date: concert.date,
+            });
+            if (albumName) matched++;
+          });
+        });
+        console.log(`  Matched ${matched}/${concertAlbums.length} concerts to albums`);
+
+        // Stage 4: Batch fetch album art for all concerts
+        console.log("  Fetching artwork...");
+        const artUrls = await batchFetchAlbumArt(
+          concertAlbums.map(({ artist, album }) => ({ artist, album })),
         );
 
-        data.sawthat.bands = bandsWithColors;
+        // Stage 5: Batch extract colors for all concert artwork
+        console.log("  Extracting colors...");
+        const pictures = concertAlbums.map(({ bandIdx }, i) =>
+          artUrls[i] || bands[bandIdx].picture
+        );
+        const colors = await Promise.all(pictures.map(extractColor));
+
+        // Combine results - add album/picture/color to each concert
+        const bandsWithConcertArt = bands.map((band, bandIdx) => ({
+          id: band.id,
+          band: band.band,
+          picture: band.picture,
+          concerts: band.concerts?.map((concert, concertIdx) => {
+            const idx = concertAlbums.findIndex(
+              (c) => c.bandIdx === bandIdx && c.concertIdx === concertIdx,
+            );
+            return {
+              ...concert,
+              album: concertAlbums[idx]?.album,
+              picture: pictures[idx],
+              color: colors[idx],
+            };
+          }) ?? [],
+        }));
+
+        data.sawthat.bands = bandsWithConcertArt;
       }
       console.log(`✓ SawThat: ${data.sawthat.bands.length} bands`);
     } catch (error) {

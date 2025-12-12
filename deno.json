@@ -6,6 +6,7 @@
     "check": "deno run -A npm:svelte-check --tsconfig ./tsconfig.json"
   },
   "imports": {
+    "album-art": "npm:album-art@^4.0.0",
     "jimp": "npm:jimp@^1.6.0",
     "@carbon/colors": "npm:@carbon/colors@^11.43.0",
     "@carbon/styles": "npm:@carbon/styles@^1.96.0",
