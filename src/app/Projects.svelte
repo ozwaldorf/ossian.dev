@@ -29,7 +29,7 @@
     CSS: colors.purple50,
     SCSS: colors.magenta50,
     Vue: colors.teal40,
-    Svelte: colors.orange40,
+    Svelte: colors.orange50,
     Nix: colors.blue30,
   };
 
@@ -451,6 +451,8 @@
   .donut-chart {
     width: 400px;
     height: 400px;
+    max-width: calc(100vw - 6rem);
+    max-height: calc(100vw - 6rem);
     overflow: visible;
   }
 
