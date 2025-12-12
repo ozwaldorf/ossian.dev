@@ -1,13 +1,12 @@
 <script lang="ts">
   import IconLogoGithub from "~icons/carbon/logo-github";
   import IconLogoX from "~icons/carbon/logo-x";
-  import IconLink from "~icons/carbon/link";
   import IconLaunch from "~icons/carbon/launch";
 </script>
 
 <div class="links-section">
   <div class="links-header">
-    <h2 class="section-heading"><IconLink width="52" height="52" /> Links</h2>
+    <h2 class="section-heading">Links</h2>
   </div>
 
   <div class="links-list">
@@ -88,5 +87,12 @@
 
   .link-card :global(.launch-icon) {
     color: var(--cds-icon-secondary);
+  }
+
+  @media (max-width: 760px) {
+    .links-section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 </style>

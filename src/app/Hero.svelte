@@ -131,9 +131,9 @@
 
 <!-- Hidden skeleton for position reference - always in DOM -->
 <div class="hero skeleton" aria-hidden="true">
-  <div bind:this={skeletonProfile} class="profile-image">
+  <a href="./" bind:this={skeletonProfile} class="profile-image">
     <img src="./ossian.webp" alt="" />
-  </div>
+  </a>
   <div bind:this={skeletonName} class="name-container">
     <h1 class="name">Ossian Mapes</h1>
   </div>
@@ -142,7 +142,7 @@
   </div>
   <div class="nav-container">
     <nav class="hero-nav">
-      <a bind:this={skeletonHomeLink} href="./" class="nav-link home-skeleton">
+<a bind:this={skeletonHomeLink} href="./" class="nav-link home-link home-skeleton">
         <IconHome width="20" height="20" />
         <span>Home</span>
       </a>
@@ -166,7 +166,8 @@
 <div class="hero">
   {#if skipIntro || mounted}
     <!-- Normal intro animation flow -->
-    <div
+<a
+      href="./"
       class="profile-image"
       class:morphing={scrollState.introComplete}
       style:--profile-size="{$profileSize}px"
@@ -174,9 +175,13 @@
       style:left={scrollState.introComplete ? `${profileLeft}px` : undefined}
       in:fade={{ duration: 1000 }}
       onintroend={() => (step = 1)}
+      onclick={(e) => {
+        e.preventDefault();
+        scrollToSection("hero");
+      }}
     >
       <img src="./ossian.webp" alt="Profile" />
-    </div>
+    </a>
 
     <div
       class="name-container"
@@ -219,9 +224,9 @@
         onintroend={onIntroComplete}
       >
         <nav class="hero-nav" class:morphing={scrollState.introComplete}>
-          <a
+<a
             href="./"
-            class="nav-link"
+            class="nav-link home-link"
             class:morphing={scrollState.introComplete}
             style:top={scrollState.introComplete
               ? `${homeLinkTop}px`
@@ -406,5 +411,11 @@
   .nav-link:hover,
   .nav-link.active {
     color: var(--cds-text-on-color);
+  }
+
+  @media (max-width: 760px) {
+    .hero-nav .home-link {
+      display: none !important;
+    }
   }
 </style>

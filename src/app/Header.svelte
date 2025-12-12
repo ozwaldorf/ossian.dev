@@ -47,16 +47,16 @@
 <!-- Hidden skeleton for target position reference -->
 <header class="skeleton" aria-hidden="true">
   <div class="header-content">
-    <div bind:this={skeletonProfile} class="profile-image">
+<a href="./" bind:this={skeletonProfile} class="profile-image">
       <img src="./ossian.webp" alt="" />
-    </div>
+    </a>
     <div class="info">
       <div class="name-title">
         <div bind:this={skeletonName} class="name">Ossian Mapes</div>
         <div bind:this={skeletonTitle} class="title">Full Stack Developer</div>
       </div>
       <nav>
-        <a bind:this={skeletonHomeLink} href="./" class="nav-link">
+<a bind:this={skeletonHomeLink} href="./" class="nav-link home-link">
           <IconHome width="20" height="20" />
           <span>Home</span>
         </a>
@@ -99,7 +99,12 @@
     left: 0;
     right: 0;
     z-index: 999;
-    padding: 1rem 2rem 4.5rem 2rem;
+    padding: 1rem 2rem 4.5rem;
+
+    @media (max-width: 760px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
     background: linear-gradient(
       to bottom in oklab,
       var(--cds-background) 0%,
@@ -176,6 +181,10 @@
     nav {
       margin-left: 0;
       gap: 1rem;
+    }
+
+    nav .home-link {
+      display: none !important;
     }
   }
 

@@ -7,7 +7,6 @@
   import IconRepo from "~icons/carbon/catalog";
   import IconFollowers from "~icons/carbon/group";
   import IconCalendar from "~icons/carbon/calendar";
-  import IconCode from "~icons/carbon/code";
   import * as colors from "@carbon/colors";
 
   const languageColors: Record<string, string> = {
@@ -104,9 +103,7 @@
 </script>
 
 <div class="projects-header">
-  <h2 class="section-heading">
-    <IconCode width="52" height="52" /> Open Source Projects
-  </h2>
+<h2 class="section-heading">Open Source Projects</h2>
 </div>
 
 <div class="projects-container">
@@ -628,5 +625,22 @@
     background: var(--cds-layer-accent-hover-01);
     border-color: var(--cds-border-strong-01);
     box-shadow: var(--cds-shadow);
+  }
+
+  @media (max-width: 760px) {
+    .projects-header {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .profile-section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .languages-section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 </style>

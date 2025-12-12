@@ -53,17 +53,34 @@
   function updateSectionOpacity(
     el: HTMLElement | undefined,
     tween: typeof sectionOpacity.code,
+    skipFadeOut = false,
   ) {
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const visibleThreshold = viewportHeight * 0.5;
 
+    // For elements that skip fade-out (like footer), check if fully visible
+    // or if we've scrolled to the bottom of the page
+    if (skipFadeOut) {
+      const atPageBottom =
+        window.scrollY + viewportHeight >= document.body.scrollHeight - 10;
+      if ((rect.top >= 0 && rect.bottom <= viewportHeight + 10) || atPageBottom) {
+        tween.set(1);
+        return;
+      }
+    }
+
     const visibleFromBottom = viewportHeight - rect.top;
     const fadeInProgress = Math.max(
       0,
       Math.min(1, visibleFromBottom / visibleThreshold),
     );
+
+    if (skipFadeOut) {
+      tween.set(fadeInProgress);
+      return;
+    }
 
     const visibleFromTop = rect.bottom;
     const fadeOutProgress = Math.max(
@@ -110,7 +127,7 @@
         updateSectionOpacity(musicSection, sectionOpacity.music);
         updateSectionOpacity(bandsSection, sectionOpacity.bands);
         updateSectionOpacity(linksSection, sectionOpacity.links);
-        updateSectionOpacity(footerSection, sectionOpacity.footer);
+        updateSectionOpacity(footerSection, sectionOpacity.footer, true);
       }
 
       updateCurrentSection();

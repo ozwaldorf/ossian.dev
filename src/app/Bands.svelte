@@ -490,4 +490,11 @@
     color: var(--cds-support-error);
     font-size: 0.9rem;
   }
+
+  @media (max-width: 760px) {
+    .bands-section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
 </style>

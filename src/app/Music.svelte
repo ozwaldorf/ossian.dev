@@ -1,6 +1,5 @@
 <script lang="ts">
   import { youtubeState } from "../lib/youtube.svelte";
-  import IconMusic from "~icons/carbon/music";
   import IconYoutube from "~icons/carbon/logo-youtube";
   import IconShuffle from "~icons/carbon/shuffle";
   import IconLaunch from "~icons/carbon/launch";
@@ -30,10 +29,7 @@
 
 <div class="music-section">
   <div class="music-header">
-    <h2 class="section-heading">
-      <IconMusic width="52" height="52" />
-      Music
-    </h2>
+<h2 class="section-heading">Music</h2>
   </div>
 
   <div class="phoz-section">
@@ -309,5 +305,12 @@
     padding: 2rem;
     color: var(--cds-support-error);
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 760px) {
+    .music-section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 </style>
