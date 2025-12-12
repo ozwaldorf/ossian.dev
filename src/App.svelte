@@ -25,6 +25,7 @@
       { id: "hero" as const, el: heroSection },
       { id: "code" as const, el: codeSection },
       { id: "music" as const, el: musicSection },
+      { id: "bands" as const, el: bandsSection },
       { id: "links" as const, el: linksSection },
     ].filter((s) => s.el);
 
