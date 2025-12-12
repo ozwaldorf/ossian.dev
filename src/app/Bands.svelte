@@ -189,6 +189,7 @@
 
   let displayedConcerts = $state<BandConcert[]>([]);
   let fadingTile = $state<number | null>(null);
+  let loadedImages = $state<Set<string>>(new Set());
   let initialized = false;
   let allConcerts = $derived(flattenBandConcerts(sawThatState.bands));
 
@@ -206,6 +207,11 @@
     const available = allConcerts.filter((c) => !displayedIds.has(c.id));
     if (available.length === 0) return null;
     return available[Math.floor(Math.random() * available.length)];
+  }
+
+  function onImageLoad(id: string) {
+    loadedImages.add(id);
+    loadedImages = new Set(loadedImages);
   }
 
   function initializeGrid() {
@@ -295,6 +301,7 @@
             use:loadColor={item.band}
             class="band-card"
             class:fading={fadingTile === i}
+            class:loaded={loadedImages.has(item.id)}
             class:light-bg={colorInfo?.isLight}
             style:--band-color={colorInfo?.bg ?? "var(--cds-border-subtle-01)"}
           >
@@ -302,6 +309,7 @@
               src={item.band.picture}
               alt={item.band.band}
               class="band-image"
+              onload={() => onImageLoad(item.id)}
             />
             <div class="band-info">
               <h4 class="band-name" use:fitText={{ max: 14, min: 5 }}>
@@ -376,7 +384,7 @@
     border: 2px solid var(--band-color, var(--cds-border-subtle-01));
     border-radius: 12px;
     overflow: hidden;
-    opacity: 1;
+    opacity: 0;
     container-type: inline-size;
     text-decoration: none;
     color: inherit;
@@ -386,6 +394,10 @@
       border-color 300ms ease,
       transform 0.2s ease,
       box-shadow 0.2s ease;
+  }
+
+  .band-card.loaded {
+    opacity: 1;
   }
 
   .band-card:hover {
