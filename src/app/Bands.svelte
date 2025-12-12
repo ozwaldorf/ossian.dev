@@ -262,7 +262,7 @@
         rel="noopener noreferrer"
         class="header-link"
       >
-        <h3>I saw that band ... <IconLaunch width="28" height="28" /></h3>
+        <h3 class="section-heading">I saw that band ... <IconLaunch width="28" height="28" /></h3>
       </a>
     </div>
 
@@ -313,7 +313,6 @@
 
 <style lang="scss">
   @use "@carbon/colors";
-  @use "@carbon/styles/scss/type";
 
   .bands-section {
     display: flex;
@@ -348,14 +347,7 @@
   }
 
   .bands-header h3 {
-    @include type.type-style("fluid-quotation-02", true);
-    letter-spacing: 0.02em;
-    color: var(--cds-text-primary);
-    margin: 0;
     transition: color 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
   }
 
   .bands-grid {

@@ -104,7 +104,7 @@
 </script>
 
 <div class="projects-header">
-  <h2><IconCode width="28" height="28" /> Open Source Projects</h2>
+  <h2 class="section-heading"><IconCode width="52" height="52" /> Open Source Projects</h2>
 </div>
 
 <div class="projects-container">
@@ -294,16 +294,6 @@
     text-align: center;
   }
 
-  .projects-header h2 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--cds-text-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-  }
 
   .projects-container {
     overflow: hidden;

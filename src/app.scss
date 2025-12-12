@@ -12,6 +12,18 @@
   letter-spacing: 0.02em;
 }
 
+.section-heading {
+  @include type.type-style("fluid-quotation-02", true);
+  letter-spacing: 0.02em;
+  color: var(--cds-text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+}
+
 :root {
   @include theme.theme();
   color-scheme: dark;

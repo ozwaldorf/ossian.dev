@@ -7,7 +7,7 @@
 
 <div class="links-section">
   <div class="links-header">
-    <h2><IconLink width="28" height="28" /> Links</h2>
+    <h2 class="section-heading"><IconLink width="52" height="52" /> Links</h2>
   </div>
 
   <div class="links-list">
@@ -53,15 +53,6 @@
     gap: 2rem;
   }
 
-  .links-header h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--cds-text-primary);
-    margin: 0;
-  }
 
   .links-list {
     display: flex;

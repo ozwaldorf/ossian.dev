@@ -31,8 +31,8 @@
 
 <div class="music-section">
   <div class="music-header">
-    <h2>
-      <IconMusic width="28" height="28" />
+    <h2 class="section-heading">
+      <IconMusic width="52" height="52" />
       Music
     </h2>
   </div>
@@ -114,15 +114,6 @@
     gap: 2rem;
   }
 
-  .music-header h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--cds-text-primary);
-    margin: 0;
-  }
 
   .phoz-section {
     display: flex;
