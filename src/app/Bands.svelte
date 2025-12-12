@@ -16,11 +16,6 @@
   const MIN_COLS = 2;
   const MIN_ROWS = 1;
 
-  interface BandColorInfo {
-    bg: string;
-    isLight: boolean;
-  }
-
   interface BandConcert {
     band: Band;
     concert: { date: string; location: string };
@@ -40,73 +35,7 @@
   let cols = $state(3);
   let rows = $state(2);
   let gridSize = $derived(cols * rows);
-  let bandColors = $state<Map<string, BandColorInfo>>(new Map());
   let containerEl = $state<HTMLElement | undefined>(undefined);
-
-  function getLuminance(r: number, g: number, b: number): number {
-    const [rs, gs, bs] = [r, g, b].map((c) => {
-      c = c / 255;
-      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-    });
-    return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-  }
-
-  async function extractColor(imageUrl: string): Promise<BandColorInfo> {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          resolve({ bg: "transparent", isLight: false });
-          return;
-        }
-
-        canvas.width = 50;
-        canvas.height = 50;
-        ctx.drawImage(img, 0, 0, 50, 50);
-
-        const imageData = ctx.getImageData(0, 0, 50, 50).data;
-        let r = 0,
-          g = 0,
-          b = 0,
-          count = 0;
-
-        for (let i = 0; i < imageData.length; i += 4) {
-          r += imageData[i];
-          g += imageData[i + 1];
-          b += imageData[i + 2];
-          count++;
-        }
-
-        r = Math.round(r / count);
-        g = Math.round(g / count);
-        b = Math.round(b / count);
-
-        const luminance = getLuminance(r, g, b);
-        resolve({ bg: `rgb(${r}, ${g}, ${b})`, isLight: luminance > 0.4 });
-      };
-      img.onerror = () => resolve({ bg: "transparent", isLight: false });
-      img.src = imageUrl;
-    });
-  }
-
-  async function loadBandColor(band: Band) {
-    if (bandColors.has(band.id)) return;
-    const colorInfo = await extractColor(band.picture);
-    bandColors.set(band.id, colorInfo);
-    bandColors = new Map(bandColors);
-  }
-
-  function loadColor(_node: HTMLElement, band: Band) {
-    loadBandColor(band);
-    return {
-      update(newBand: Band) {
-        loadBandColor(newBand);
-      },
-    };
-  }
 
   function fitText(
     node: HTMLElement,
@@ -292,18 +221,16 @@
     {:else}
       <div class="bands-grid" style:grid-template-columns="repeat({cols}, 1fr)">
         {#each displayedConcerts as item, i}
-          {@const colorInfo = bandColors.get(item.band.id)}
           {@const concertUrl = `https://${sawThatState.username}.sawthat.band/${encodeURIComponent(item.band.band)}/${item.band.id}?&date=${item.concert.date}`}
           <a
             href={concertUrl}
             target="_blank"
             rel="noopener noreferrer"
-            use:loadColor={item.band}
             class="band-card"
             class:fading={fadingTile === i}
             class:loaded={loadedImages.has(item.id)}
-            class:light-bg={colorInfo?.isLight}
-            style:--band-color={colorInfo?.bg ?? "var(--cds-border-subtle-01)"}
+            class:light-bg={item.band.color?.isLight}
+            style:--band-color={item.band.color?.bg ?? "var(--cds-border-subtle-01)"}
           >
             <img
               src={item.band.picture}

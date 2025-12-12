@@ -3,6 +3,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import deno from "@deno/vite-plugin";
 import Icons from "unplugin-icons/vite";
 import { execSync } from "node:child_process";
+import { Jimp } from "jimp";
 
 const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
 
@@ -24,6 +25,49 @@ const SAWTHAT_USER_ID = "a320940a-b493-4515-9f25-d393ebb540e6";
 // Build info
 const commitHash = execSync("git rev-parse --short=8 HEAD").toString().trim();
 const buildDate = new Date().toISOString();
+
+// Color extraction for album art
+function getLuminance(r, g, b) {
+  const [rs, gs, bs] = [r, g, b].map((c) => {
+    c = c / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+async function extractColor(imageUrl) {
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) return null;
+
+    const buffer = await response.arrayBuffer();
+    const image = await Jimp.read(Buffer.from(buffer));
+    image.resize({ w: 50, h: 50 });
+
+    let r = 0, g = 0, b = 0;
+    const { width, height } = image;
+    const pixelCount = width * height;
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const pixel = image.getPixelColor(x, y);
+        r += (pixel >> 24) & 0xff;
+        g += (pixel >> 16) & 0xff;
+        b += (pixel >> 8) & 0xff;
+      }
+    }
+
+    r = Math.round(r / pixelCount);
+    g = Math.round(g / pixelCount);
+    b = Math.round(b / pixelCount);
+
+    const luminance = getLuminance(r, g, b);
+    return { bg: `rgb(${r}, ${g}, ${b})`, isLight: luminance > 0.4 };
+  } catch (err) {
+    console.warn(`Failed to extract color from ${imageUrl}:`, err.message);
+    return null;
+  }
+}
 
 // Fetch and prune all dynamic content
 async function fetchBuildData() {
@@ -159,12 +203,22 @@ async function fetchBuildData() {
       );
       if (response.ok) {
         const bands = await response.json();
-        data.sawthat.bands = bands.map((band) => ({
-          id: band.id,
-          band: band.band,
-          picture: band.picture,
-          concerts: band.concerts,
-        }));
+
+        // Extract colors in parallel
+        const bandsWithColors = await Promise.all(
+          bands.map(async (band) => {
+            const color = await extractColor(band.picture);
+            return {
+              id: band.id,
+              band: band.band,
+              picture: band.picture,
+              concerts: band.concerts,
+              color,
+            };
+          }),
+        );
+
+        data.sawthat.bands = bandsWithColors;
       }
       console.log(`✓ SawThat: ${data.sawthat.bands.length} bands`);
     } catch (error) {

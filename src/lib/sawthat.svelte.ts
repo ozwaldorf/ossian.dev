@@ -10,11 +10,17 @@ export interface Concert {
   location: string;
 }
 
+export interface BandColor {
+  bg: string;
+  isLight: boolean;
+}
+
 export interface Band {
   id: string;
   band: string;
   picture: string;
   concerts: Concert[];
+  color: BandColor | null;
 }
 
 export interface SawThatState {
