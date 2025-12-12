@@ -48,7 +48,7 @@
 <header class="skeleton" aria-hidden="true">
   <div class="header-content">
     <div bind:this={skeletonProfile} class="profile-image">
-      <img src="./ossian.jpg" alt="" />
+      <img src="./ossian.webp" alt="" />
     </div>
     <div class="info">
       <div class="name-title">

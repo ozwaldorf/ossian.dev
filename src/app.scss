@@ -4,7 +4,6 @@
 
 @include type.reset();
 @include type.default-type();
-@include type.type-classes();
 
 .quotation {
   @include type.type-style("fluid-quotation-02", true);

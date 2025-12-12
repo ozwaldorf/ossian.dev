@@ -11,7 +11,7 @@
 </script>
 
 <div class="footer-content">
-  <img src="/track.png" alt="" />
+  <img src="/track.webp" alt="" />
   <span class="farewell quotation">so long, and thanks for all the fish!</span>
   <div class="footer-meta">
     <span>(c) {year} Ossian Mapes</span>

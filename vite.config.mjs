@@ -187,11 +187,36 @@ export default defineConfig({
   },
   plugins: [
     deno(),
-    svelte(),
+    svelte({
+      compilerOptions: {
+        cssHash: ({ hash, css }) => `s${hash(css)}`, // shorter class names
+      },
+    }),
     Icons({
       compiler: "svelte",
     }),
   ],
+  build: {
+    target: "esnext", // no transpilation for modern browsers
+    modulePreload: { polyfill: false }, // skip polyfill for modern browsers
+    cssMinify: "lightningcss",
+    rollupOptions: {
+      output: {
+        // shorter chunk names
+        entryFileNames: "assets/[hash].js",
+        chunkFileNames: "assets/[hash].js",
+        assetFileNames: "assets/[hash][extname]",
+      },
+      treeshake: {
+        preset: "recommended",
+        moduleSideEffects: false,
+      },
+    },
+  },
+  esbuild: {
+    legalComments: "none", // strip license comments
+    drop: ["console", "debugger"],
+  },
   server: {
     proxy: {
       "/api/sawthat": {

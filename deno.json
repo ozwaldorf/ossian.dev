@@ -10,6 +10,7 @@
     "@carbon/styles": "npm:@carbon/styles@^1.96.0",
     "@types/carbon__colors": "npm:@types/carbon__colors@^10.31.3",
     "@carbon/type": "npm:@carbon/type@^11.45.0",
+    "lightningcss": "npm:lightningcss@^1.30.2",
     "sass": "npm:sass@^1.83.0",
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
     "@iconify-json/carbon": "npm:@iconify-json/carbon@^1.2.14",

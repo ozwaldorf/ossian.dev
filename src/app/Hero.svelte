@@ -132,7 +132,7 @@
 <!-- Hidden skeleton for position reference - always in DOM -->
 <div class="hero skeleton" aria-hidden="true">
   <div bind:this={skeletonProfile} class="profile-image">
-    <img src="./ossian.jpg" alt="" />
+    <img src="./ossian.webp" alt="" />
   </div>
   <div bind:this={skeletonName} class="name-container">
     <h1 class="name">Ossian Mapes</h1>
@@ -175,7 +175,7 @@
       in:fade={{ duration: 1000 }}
       onintroend={() => (step = 1)}
     >
-      <img src="./ossian.jpg" alt="Profile" />
+      <img src="./ossian.webp" alt="Profile" />
     </div>
 
     <div
