@@ -8,7 +8,8 @@
   import Footer from "./app/Footer.svelte";
   import { fetchRepos } from "./lib/github.svelte";
   import { fetchYouTubeChannel } from "./lib/youtube.svelte";
-  import { scrollState, updateMorphValues } from "./lib/scroll.svelte";
+  import { fetchBands } from "./lib/sawthat.svelte";
+  import { scrollState, updateMorphValues, sectionOpacity } from "./lib/scroll.svelte";
 
   fetchRepos("ozwaldorf", [
     "lutgen-rs",
@@ -19,11 +20,13 @@
   ]);
 
   fetchYouTubeChannel("UChDWgGHETbLiwXREBHKucAA", "officialphoz");
+  fetchBands();
 
   let heroSection: HTMLElement;
   let codeSection: HTMLElement;
   let musicSection: HTMLElement;
   let linksSection: HTMLElement;
+  let footerSection: HTMLElement;
 
   function updateCurrentSection() {
     if (!scrollState.introComplete) return;
@@ -50,6 +53,27 @@
     }
   }
 
+  function updateSectionOpacity(
+    el: HTMLElement | undefined,
+    tween: typeof sectionOpacity.code,
+  ) {
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const visibleThreshold = viewportHeight * 0.5;
+
+    // Fade in as section enters viewport from below
+    const visibleFromBottom = viewportHeight - rect.top;
+    const fadeInProgress = Math.max(0, Math.min(1, visibleFromBottom / visibleThreshold));
+
+    // Fade out as section leaves viewport from top
+    const visibleFromTop = rect.bottom;
+    const fadeOutProgress = Math.max(0, Math.min(1, visibleFromTop / visibleThreshold));
+
+    // Combine: section is visible when both conditions are met
+    tween.set(Math.min(fadeInProgress, fadeOutProgress));
+  }
+
   onMount(() => {
     // Handle initial hash navigation
     const hash = window.location.hash.slice(1);
@@ -58,6 +82,10 @@
       scrollState.introComplete = true;
       scrollState.currentSection = hash;
       updateMorphValues(1, true);
+      // Set all section opacities to 1 instantly
+      sectionOpacity.code.set(1, { duration: 0 });
+      sectionOpacity.music.set(1, { duration: 0 });
+      sectionOpacity.links.set(1, { duration: 0 });
       // Wait for sections to render, then scroll
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -81,6 +109,12 @@
         const progress = Math.max(0, Math.min(1, window.scrollY / morphEnd));
         scrollState.heroProgress = progress;
         updateMorphValues(progress);
+
+        // Update section opacities
+        updateSectionOpacity(codeSection, sectionOpacity.code);
+        updateSectionOpacity(musicSection, sectionOpacity.music);
+        updateSectionOpacity(linksSection, sectionOpacity.links);
+        updateSectionOpacity(footerSection, sectionOpacity.footer);
       }
 
       updateCurrentSection();
@@ -111,19 +145,21 @@
     <Hero />
   </section>
   {#if scrollState.introComplete}
-    <section id="code" bind:this={codeSection}>
+    <section id="code" bind:this={codeSection} style:opacity={sectionOpacity.code.current}>
       <Code />
     </section>
-    <section id="music" bind:this={musicSection}>
+    <section id="music" bind:this={musicSection} style:opacity={sectionOpacity.music.current}>
       <Music />
     </section>
-    <section id="links" bind:this={linksSection}>
+    <section id="links" bind:this={linksSection} style:opacity={sectionOpacity.links.current}>
       <Links />
     </section>
   {/if}
 </main>
 
-<Footer />
+<footer bind:this={footerSection} style:opacity={sectionOpacity.footer.current}>
+  <Footer />
+</footer>
 
 <style>
   main {

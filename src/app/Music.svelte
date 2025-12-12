@@ -1,5 +1,6 @@
 <script lang="ts">
   import { youtubeState } from "../lib/youtube.svelte";
+  import Bands from "./Bands.svelte";
   import IconMusic from "~icons/carbon/music";
   import IconYoutube from "~icons/carbon/logo-youtube";
   import IconShuffle from "~icons/carbon/shuffle";
@@ -98,6 +99,8 @@
       </div>
     {/if}
   </div>
+
+  <Bands />
 </div>
 
 <style lang="scss">

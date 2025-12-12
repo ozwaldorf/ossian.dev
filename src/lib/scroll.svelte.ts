@@ -1,5 +1,14 @@
 import { tweened } from "svelte/motion";
+import { Tween } from "svelte/motion";
 import { cubicOut } from "svelte/easing";
+
+// Section opacity tweens for scroll animations
+export const sectionOpacity = {
+  code: new Tween(0, { duration: 400, easing: cubicOut }),
+  music: new Tween(0, { duration: 400, easing: cubicOut }),
+  links: new Tween(0, { duration: 400, easing: cubicOut }),
+  footer: new Tween(0, { duration: 400, easing: cubicOut }),
+};
 
 // Position types
 export type ElementPositions = {

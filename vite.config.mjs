@@ -11,4 +11,13 @@ export default defineConfig({
       compiler: "svelte",
     }),
   ],
+  server: {
+    proxy: {
+      "/api/sawthat": {
+        target: "https://server.sawthat.band",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/sawthat/, "/api"),
+      },
+    },
+  },
 });
