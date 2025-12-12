@@ -77,12 +77,31 @@
 
   // On mount: capture header positions and handle skip intro
   onMount(() => {
-    captureHeaderPositions();
-    if (skipIntro) {
-      scrollState.introComplete = true;
+    // Capture positions after fonts are loaded and layout is stable
+    const captureWhenReady = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          captureHeaderPositions();
+          // For skipIntro, only set mounted after positions are ready
+          if (skipIntro) {
+            scrollState.introComplete = true;
+            mounted = true;
+          }
+        });
+      });
+    };
+
+    // Wait for fonts to load before capturing positions
+    if (document.fonts.ready) {
+      document.fonts.ready.then(captureWhenReady);
+    } else {
+      captureWhenReady();
     }
-    // Trigger mount after a tick so transitions can fire
-    mounted = true;
+
+    // For normal intro, trigger mount immediately so transitions can fire
+    if (!skipIntro) {
+      mounted = true;
+    }
 
     // Recapture header positions on resize
     const handleResize = () => {
@@ -164,7 +183,7 @@
 
 <!-- Visible elements -->
 <div class="hero">
-  {#if skipIntro || mounted}
+  {#if mounted}
     <!-- Normal intro animation flow -->
 <a
       href="./"
@@ -173,8 +192,8 @@
       style:--profile-size="{$profileSize}px"
       style:top={scrollState.introComplete ? `${profileTop}px` : undefined}
       style:left={scrollState.introComplete ? `${profileLeft}px` : undefined}
-      in:fade={{ duration: 1000 }}
-      onintroend={() => (step = 1)}
+      in:fade={{ duration: skipIntro ? 0 : 1000 }}
+      onintroend={() => !skipIntro && (step = 1)}
       onclick={(e) => {
         e.preventDefault();
         scrollToSection("hero");
@@ -191,11 +210,11 @@
       style:left={scrollState.introComplete ? `${nameLeft}px` : undefined}
     >
       {#if step >= 1}
-        <div in:slide>
+        <div in:slide={{ duration: skipIntro ? 0 : 400 }}>
           <h1
             class="name"
-            in:typewriter={{ speed: 2, delay: 200 }}
-            onintroend={() => setTimeout(() => (step = 2), 300)}
+            in:typewriter={{ speed: skipIntro ? 0 : 2, delay: skipIntro ? 0 : 200 }}
+            onintroend={() => !skipIntro && setTimeout(() => (step = 2), 300)}
           >
             Ossian Mapes
           </h1>
@@ -210,8 +229,8 @@
         style:--title-size="{$titleSize}rem"
         style:top={scrollState.introComplete ? `${titleTop}px` : undefined}
         style:left={scrollState.introComplete ? `${titleLeft}px` : undefined}
-        in:fadeSlide={{ duration: 800 }}
-        onintroend={() => setTimeout(() => (step = 3), 300)}
+        in:fadeSlide={{ duration: skipIntro ? 0 : 800 }}
+        onintroend={() => !skipIntro && setTimeout(() => (step = 3), 300)}
       >
         <span class="title">Full Stack Developer</span>
       </div>
@@ -219,9 +238,9 @@
 
     {#if step >= 3}
       <div
-        in:fadeSlide={{ duration: 800 }}
+        in:fadeSlide={{ duration: skipIntro ? 0 : 800 }}
         class="nav-container"
-        onintroend={onIntroComplete}
+        onintroend={() => !skipIntro && onIntroComplete()}
       >
         <nav class="hero-nav" class:morphing={scrollState.introComplete}>
 <a

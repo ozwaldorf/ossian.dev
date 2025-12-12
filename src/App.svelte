@@ -3,7 +3,6 @@
   import type { Component } from "svelte";
   import Hero from "./app/Hero.svelte";
   import Header from "./app/Header.svelte";
-  import { scrollState } from "./lib/scroll.svelte";
 
   let heroSection = $state<HTMLElement | undefined>(undefined);
 
