@@ -254,6 +254,13 @@
   </div>
 {/if}
 
+<svg width="0" height="0" style="position: absolute;">
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+    <feColorMatrix type="saturate" values="0" />
+  </filter>
+</svg>
+
 <style lang="scss">
   @use "@carbon/colors";
 
@@ -306,6 +313,7 @@
   }
 
   .band-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     border: 2px solid var(--band-color, var(--cds-border-subtle-01));
@@ -321,6 +329,18 @@
       border-color 300ms ease,
       transform 0.2s ease,
       box-shadow 0.2s ease;
+  }
+
+  .band-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: gray;
+    filter: url(#noise) contrast(150%);
+    mix-blend-mode: overlay;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .band-card.loaded {
