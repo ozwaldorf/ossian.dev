@@ -85,7 +85,9 @@
   }
 
   .link-card:hover {
+    transform: translateY(-4px);
     background: var(--cds-layer-selected-01);
+    box-shadow: var(--cds-shadow);
   }
 
   .link-text {

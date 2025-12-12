@@ -597,7 +597,9 @@
   }
 
   .pinned-card:hover {
+    transform: translateY(-4px);
     background: var(--cds-layer-accent-hover-01);
     border-color: var(--cds-border-strong-01);
+    box-shadow: var(--cds-shadow);
   }
 </style>

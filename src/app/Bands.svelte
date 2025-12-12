@@ -375,11 +375,14 @@
     color: inherit;
     transition:
       opacity 400ms ease,
-      border-color 300ms ease;
+      border-color 300ms ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .band-card:hover {
-    filter: brightness(1.1);
+    transform: translateY(-4px);
+    box-shadow: var(--cds-shadow);
   }
 
   .band-card.fading {
@@ -392,7 +395,7 @@
 
   .band-card.light-bg .band-time,
   .band-card.light-bg .band-location {
-    color: #525252;
+    color: #161616;
   }
 
   .band-image {
@@ -427,12 +430,12 @@
 
   .band-time {
     font-size: 0.75rem;
-    color: var(--cds-text-secondary);
+    color: var(--cds-text-primary);
     margin: 0;
   }
 
   .band-location {
-    color: var(--cds-text-secondary);
+    color: var(--cds-text-primary);
     margin: 0;
   }
 
