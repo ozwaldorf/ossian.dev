@@ -21,6 +21,22 @@
     isLight: boolean;
   }
 
+  interface BandConcert {
+    band: Band;
+    concert: { date: string; location: string };
+    id: string;
+  }
+
+  function flattenBandConcerts(bands: Band[]): BandConcert[] {
+    return bands.flatMap((band) =>
+      band.concerts.map((concert, i) => ({
+        band,
+        concert,
+        id: `${band.id}-${i}`,
+      }))
+    );
+  }
+
   let cols = $state(3);
   let rows = $state(2);
   let gridSize = $derived(cols * rows);
@@ -151,17 +167,6 @@
     }
   }
 
-  function getLatestConcert(concerts: { date: string; location: string }[]) {
-    if (!concerts || concerts.length === 0) return null;
-    return concerts.reduce((latest, concert) => {
-      const [d1, m1, y1] = latest.date.split("-").map(Number);
-      const [d2, m2, y2] = concert.date.split("-").map(Number);
-      const date1 = new Date(y1, m1 - 1, d1);
-      const date2 = new Date(y2, m2 - 1, d2);
-      return date2 > date1 ? concert : latest;
-    });
-  }
-
   function getRelativeTime(dateString: string): string {
     const [day, month, year] = dateString.split("-").map(Number);
     const date = new Date(year, month - 1, day);
@@ -182,9 +187,10 @@
     return `${diffYears} years ago`;
   }
 
-  let displayedBands = $state<Band[]>([]);
+  let displayedConcerts = $state<BandConcert[]>([]);
   let fadingTile = $state<number | null>(null);
   let initialized = false;
+  let allConcerts = $derived(flattenBandConcerts(sawThatState.bands));
 
   function shuffleArray<T>(array: T[]): T[] {
     const result = [...array];
@@ -195,37 +201,35 @@
     return result;
   }
 
-  function getRandomBandNotDisplayed(): Band | null {
-    const bands = sawThatState.bands;
-    const displayedIds = new Set(displayedBands.map((b) => b.id));
-    const available = bands.filter((b) => !displayedIds.has(b.id));
+  function getRandomConcertNotDisplayed(): BandConcert | null {
+    const displayedIds = new Set(displayedConcerts.map((c) => c.id));
+    const available = allConcerts.filter((c) => !displayedIds.has(c.id));
     if (available.length === 0) return null;
     return available[Math.floor(Math.random() * available.length)];
   }
 
   function initializeGrid() {
     if (initialized) return;
-    const bands = sawThatState.bands;
-    if (bands.length === 0) return;
+    if (allConcerts.length === 0) return;
 
-    const shuffled = shuffleArray(bands);
-    displayedBands = shuffled.slice(0, Math.min(gridSize, shuffled.length));
+    const shuffled = shuffleArray(allConcerts);
+    displayedConcerts = shuffled.slice(0, Math.min(gridSize, shuffled.length));
     initialized = true;
   }
 
   function swapRandomTile() {
-    if (sawThatState.bands.length <= gridSize) return;
+    if (allConcerts.length <= gridSize) return;
     if (fadingTile !== null) return;
-    if (displayedBands.length === 0) return;
+    if (displayedConcerts.length === 0) return;
 
-    const newBand = getRandomBandNotDisplayed();
-    if (!newBand) return;
+    const newConcert = getRandomConcertNotDisplayed();
+    if (!newConcert) return;
 
-    const tileIndex = Math.floor(Math.random() * displayedBands.length);
+    const tileIndex = Math.floor(Math.random() * displayedConcerts.length);
     fadingTile = tileIndex;
 
     setTimeout(() => {
-      displayedBands[tileIndex] = newBand;
+      displayedConcerts[tileIndex] = newConcert;
       setTimeout(() => {
         fadingTile = null;
       }, 50);
@@ -277,29 +281,30 @@
       </div>
     {:else}
       <div class="bands-grid" style:grid-template-columns="repeat({cols}, 1fr)">
-        {#each displayedBands as band, i}
-          {@const concert = getLatestConcert(band.concerts)}
-          {@const colorInfo = bandColors.get(band.id)}
-          <div
-            use:loadColor={band}
+        {#each displayedConcerts as item, i}
+          {@const colorInfo = bandColors.get(item.band.id)}
+          {@const concertUrl = `https://ossian.sawthat.band/${encodeURIComponent(item.band.band)}/${item.band.id}?&date=${item.concert.date}`}
+          <a
+            href={concertUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            use:loadColor={item.band}
             class="band-card"
             class:fading={fadingTile === i}
             class:light-bg={colorInfo?.isLight}
             style:--band-color={colorInfo?.bg ?? "var(--cds-border-subtle-01)"}
           >
-            <img src={band.picture} alt={band.band} class="band-image" />
+            <img src={item.band.picture} alt={item.band.band} class="band-image" />
             <div class="band-info">
               <h4 class="band-name" use:fitText={{ max: 14, min: 5 }}>
-                {band.band}
+                {item.band.band}
               </h4>
-              {#if concert}
-                <p class="band-time">{getRelativeTime(concert.date)}</p>
-                <p class="band-location" use:fitText={{ max: 11, min: 5 }}>
-                  {concert.location}
-                </p>
-              {/if}
+              <p class="band-time">{getRelativeTime(item.concert.date)}</p>
+              <p class="band-location" use:fitText={{ max: 11, min: 5 }}>
+                {item.concert.location}
+              </p>
             </div>
-          </div>
+          </a>
         {/each}
       </div>
     {/if}
@@ -366,9 +371,15 @@
     overflow: hidden;
     opacity: 1;
     container-type: inline-size;
+    text-decoration: none;
+    color: inherit;
     transition:
       opacity 400ms ease,
       border-color 300ms ease;
+  }
+
+  .band-card:hover {
+    filter: brightness(1.1);
   }
 
   .band-card.fading {
@@ -392,17 +403,18 @@
   }
 
   .band-info {
-    --overlap: 30cqi;
-    margin-top: calc(-1 * var(--overlap));
-    padding: 1.75rem 0.75rem 0.75rem;
+    margin-top: -30cqi;
+    height: 45cqi;
+    padding: 0 0.75rem 0.75rem;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     gap: 0.25rem;
     text-align: center;
     background: linear-gradient(
       to bottom in oklab,
       transparent 0,
-      var(--band-color, var(--cds-layer-01)) var(--overlap),
+      var(--band-color, var(--cds-layer-01)) 30cqi,
       var(--band-color, var(--cds-layer-01)) 100%
     );
   }
@@ -411,7 +423,6 @@
     font-weight: 600;
     color: var(--cds-text-primary);
     margin: 0;
-    white-space: nowrap;
   }
 
   .band-time {
@@ -423,7 +434,6 @@
   .band-location {
     color: var(--cds-text-secondary);
     margin: 0;
-    white-space: nowrap;
   }
 
   .band-card.loading {
