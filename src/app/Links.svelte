@@ -1,105 +1,100 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { tweened } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
-  import { scrollState } from "../lib/scroll.svelte";
   import IconLogoGithub from "~icons/carbon/logo-github";
-  import IconLogoTwitter from "~icons/carbon/logo-twitter";
-
-  let footerElement: HTMLElement;
-  let footerOpacityValue = $state(0);
-  const footerOpacity = tweened(0, { duration: 400, easing: cubicOut });
-
-  onMount(() => {
-    const unsubscribe = footerOpacity.subscribe(
-      (v) => (footerOpacityValue = v),
-    );
-    return () => unsubscribe();
-  });
-
-  // Footer fade in based on scroll position
-  $effect(() => {
-    if (!footerElement || !scrollState.introComplete) return;
-
-    // Track scrollY to make this reactive
-    const _ = scrollState.scrollY;
-
-    const footerRect = footerElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    // Fade starts when footer top enters viewport, completes when footer bottom reaches viewport bottom
-    const fadeStart = viewportHeight;
-    const fadeEnd = -footerRect.height + viewportHeight;
-    const fadeProgress = Math.max(
-      0,
-      Math.min(1, (fadeStart - footerRect.top) / (fadeStart - fadeEnd)),
-    );
-    footerOpacity.set(fadeProgress);
-  });
+  import IconLogoX from "~icons/carbon/logo-x";
+  import IconLink from "~icons/carbon/link";
+  import IconLaunch from "~icons/carbon/launch";
 </script>
 
-<footer bind:this={footerElement} style:opacity={footerOpacityValue}>
-  <span class="farewell quotation">so long, and thanks for all the fish!</span>
-  <div class="footer-links">
+<div class="links-section">
+  <div class="links-header">
+    <h2><IconLink width="28" height="28" /> Links</h2>
+  </div>
+
+  <div class="links-list">
     <a
       href="https://github.com/ozwaldorf"
       target="_blank"
       rel="noopener noreferrer"
+      class="link-card"
     >
-      <IconLogoGithub width="32" />
-      <span>GitHub</span>
+      <IconLogoGithub width="24" height="24" />
+      <span class="link-text">GitHub</span>
+      <IconLaunch class="launch-icon" width="20" height="20" />
     </a>
     <a
-      href="https://twitter.com/ozwaldorf_"
+      href="https://x.com/ozwaldorf_"
       target="_blank"
       rel="noopener noreferrer"
+      class="link-card"
     >
-      <IconLogoTwitter width="32" />
-      <span>Twitter</span>
+      <IconLogoX width="24" height="24" />
+      <span class="link-text">x.com</span>
+      <IconLaunch class="launch-icon" width="20" height="20" />
+    </a>
+    <a
+      href="https://ossian.sawthat.band"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-card"
+    >
+      <span>✌️</span>
+      <span class="link-text">sawthat.band</span>
+      <IconLaunch class="launch-icon" width="20" height="20" />
     </a>
   </div>
-  <img src="/track.png" alt="" />
-</footer>
+</div>
 
 <style lang="scss">
-  footer {
-    width: 100%;
-    position: relative;
-  }
-
-  footer img {
-    width: 100%;
-    display: block;
-  }
-
-  .farewell {
-    position: absolute;
-    top: 35%;
-    left: 15%;
-    color: var(--cds-text-helper);
-    font-size: 1.5rem;
-  }
-
-  .footer-links {
-    position: absolute;
-    bottom: 15%;
-    left: 0;
-    right: 0;
+  .links-section {
+    padding: 4rem 2rem;
     display: flex;
-    justify-content: space-evenly;
-    padding: 0 25%;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
 
-  .footer-links a {
+  .links-header h2 {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--cds-layer-02);
-    text-decoration: none;
-    font-size: 1.5rem;
-    transition: color 0.2s ease;
+    gap: 0.75rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    margin: 0;
   }
 
-  .footer-links a:hover {
-    color: var(--cds-layer-03);
+  .links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1rem 1.25rem;
+    background: var(--cds-layer-01);
+    border: 1px solid var(--cds-border-subtle-01);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--cds-text-primary);
+    transition: all 0.2s ease;
+  }
+
+  .link-card:hover {
+    background: var(--cds-layer-selected-01);
+  }
+
+  .link-text {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .link-card :global(.launch-icon) {
+    color: var(--cds-icon-secondary);
   }
 </style>

@@ -9,13 +9,14 @@ export type ElementPositions = {
   homeLink: DOMRect;
   codeLink: DOMRect;
   musicLink: DOMRect;
+  linksLink: DOMRect;
 };
 
 // Raw scroll state using Svelte 5 runes
 export const scrollState = $state({
   scrollY: 0,
   heroProgress: 0, // 0 (top) to 1 (hero scrolled away) - raw value
-  currentSection: "hero" as "hero" | "code" | "music",
+  currentSection: "hero" as "hero" | "code" | "music" | "links",
   introComplete: false,
 });
 

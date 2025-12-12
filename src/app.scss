@@ -7,7 +7,7 @@
 @include type.type-classes();
 
 .quotation {
-  @include type.type-style("fluid-quotation-01", true);
+  @include type.type-style("fluid-quotation-02", true);
   font-style: italic;
   letter-spacing: 0.02em;
 }

@@ -7,6 +7,7 @@
   import IconRepo from "~icons/carbon/catalog";
   import IconFollowers from "~icons/carbon/group";
   import IconCalendar from "~icons/carbon/calendar";
+  import IconCode from "~icons/carbon/code";
   import * as colors from "@carbon/colors";
 
   const languageColors: Record<string, string> = {
@@ -103,7 +104,7 @@
 </script>
 
 <div class="projects-header">
-  <h2>Open Source Projects</h2>
+  <h2><IconCode width="28" height="28" /> Open Source Projects</h2>
 </div>
 
 <div class="projects-container">
@@ -298,6 +299,10 @@
     font-size: 2rem;
     font-weight: 600;
     color: var(--cds-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
   }
 
   .projects-container {

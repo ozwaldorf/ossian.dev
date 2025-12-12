@@ -15,6 +15,7 @@
   import IconCode from "~icons/carbon/code";
   import IconMusic from "~icons/carbon/music";
   import IconHome from "~icons/carbon/home";
+  import IconLink from "~icons/carbon/link";
 
   // Check for hash to skip intro
   const skipIntro =
@@ -29,6 +30,7 @@
   let skeletonHomeLink: HTMLElement;
   let skeletonCodeLink: HTMLElement;
   let skeletonMusicLink: HTMLElement;
+  let skeletonLinksLink: HTMLElement;
 
   // Target positions from header skeleton (fixed, captured once)
   let targetPos = $state<ElementPositions | null>(null);
@@ -48,7 +50,8 @@
       skeletonTitle &&
       skeletonHomeLink &&
       skeletonCodeLink &&
-      skeletonMusicLink
+      skeletonMusicLink &&
+      skeletonLinksLink
     ) {
       return {
         profile: skeletonProfile.getBoundingClientRect(),
@@ -57,6 +60,7 @@
         homeLink: skeletonHomeLink.getBoundingClientRect(),
         codeLink: skeletonCodeLink.getBoundingClientRect(),
         musicLink: skeletonMusicLink.getBoundingClientRect(),
+        linksLink: skeletonLinksLink.getBoundingClientRect(),
       };
     }
     return null;
@@ -121,6 +125,8 @@
   let musicLinkLeft = $derived(getInterpolatedPos("musicLink").left);
   let homeLinkTop = $derived(getInterpolatedPos("homeLink").top);
   let homeLinkLeft = $derived(getInterpolatedPos("homeLink").left);
+  let linksLinkTop = $derived(getInterpolatedPos("linksLink").top);
+  let linksLinkLeft = $derived(getInterpolatedPos("linksLink").left);
 </script>
 
 <!-- Hidden skeleton for position reference - always in DOM -->
@@ -147,6 +153,10 @@
       <a bind:this={skeletonMusicLink} href="#music" class="nav-link">
         <IconMusic width="20" height="20" />
         <span>Music</span>
+      </a>
+      <a bind:this={skeletonLinksLink} href="#links" class="nav-link">
+        <IconLink width="20" height="20" />
+        <span>Links</span>
       </a>
     </nav>
   </div>
@@ -268,6 +278,25 @@
             <IconMusic width="20" height="20" />
             <span>Music</span>
           </a>
+          <a
+            href="#links"
+            class="nav-link"
+            class:morphing={scrollState.introComplete}
+            style:top={scrollState.introComplete
+              ? `${linksLinkTop}px`
+              : undefined}
+            style:left={scrollState.introComplete
+              ? `${linksLinkLeft}px`
+              : undefined}
+            class:active={scrollState.currentSection === "links"}
+            onclick={(e) => {
+              e.preventDefault();
+              scrollToSection("links");
+            }}
+          >
+            <IconLink width="20" height="20" />
+            <span>Links</span>
+          </a>
         </nav>
       </div>
     {/if}
@@ -349,6 +378,7 @@
     gap: 2rem;
     justify-content: center;
     position: relative;
+    margin-top: 0.75rem;
   }
 
   .hero-nav .nav-link.home-skeleton,

@@ -4,6 +4,7 @@
   import IconHome from "~icons/carbon/home";
   import IconCode from "~icons/carbon/code";
   import IconMusic from "~icons/carbon/music";
+  import IconLink from "~icons/carbon/link";
 
   // Skeleton refs for position capture
   let skeletonProfile: HTMLElement;
@@ -12,6 +13,7 @@
   let skeletonHomeLink: HTMLElement;
   let skeletonCodeLink: HTMLElement;
   let skeletonMusicLink: HTMLElement;
+  let skeletonLinksLink: HTMLElement;
 
   function getTargetPositions() {
     if (
@@ -20,7 +22,8 @@
       !skeletonTitle ||
       !skeletonHomeLink ||
       !skeletonCodeLink ||
-      !skeletonMusicLink
+      !skeletonMusicLink ||
+      !skeletonLinksLink
     ) {
       return null;
     }
@@ -31,6 +34,7 @@
       homeLink: skeletonHomeLink.getBoundingClientRect(),
       codeLink: skeletonCodeLink.getBoundingClientRect(),
       musicLink: skeletonMusicLink.getBoundingClientRect(),
+      linksLink: skeletonLinksLink.getBoundingClientRect(),
     };
   }
 
@@ -63,6 +67,10 @@
         <a bind:this={skeletonMusicLink} href="#music" class="nav-link">
           <IconMusic width="20" height="20" />
           <span>Music</span>
+        </a>
+        <a bind:this={skeletonLinksLink} href="#links" class="nav-link">
+          <IconLink width="20" height="20" />
+          <span>Links</span>
         </a>
       </nav>
     </div>

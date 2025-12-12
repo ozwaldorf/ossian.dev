@@ -5,7 +5,9 @@
   import Code from "./app/Code.svelte";
   import Header from "./app/Header.svelte";
   import Links from "./app/Links.svelte";
+  import Footer from "./app/Footer.svelte";
   import { fetchRepos } from "./lib/github.svelte";
+  import { fetchYouTubeChannel } from "./lib/youtube.svelte";
   import { scrollState, updateMorphValues } from "./lib/scroll.svelte";
 
   fetchRepos("ozwaldorf", [
@@ -16,9 +18,12 @@
     "ozboar/zoom-sync",
   ]);
 
+  fetchYouTubeChannel("UChDWgGHETbLiwXREBHKucAA", "officialphoz");
+
   let heroSection: HTMLElement;
   let codeSection: HTMLElement;
   let musicSection: HTMLElement;
+  let linksSection: HTMLElement;
 
   function updateCurrentSection() {
     if (!scrollState.introComplete) return;
@@ -29,6 +34,7 @@
       { id: "hero" as const, el: heroSection },
       { id: "code" as const, el: codeSection },
       { id: "music" as const, el: musicSection },
+      { id: "links" as const, el: linksSection },
     ].filter((s) => s.el);
 
     for (let i = sections.length - 1; i >= 0; i--) {
@@ -47,7 +53,7 @@
   onMount(() => {
     // Handle initial hash navigation
     const hash = window.location.hash.slice(1);
-    if (hash && (hash === "code" || hash === "music")) {
+    if (hash && (hash === "code" || hash === "music" || hash === "links")) {
       // Skip intro animations if navigating directly to a section
       scrollState.introComplete = true;
       scrollState.currentSection = hash;
@@ -92,7 +98,7 @@
 
   // Re-run section detection when sections become available
   $effect(() => {
-    if (codeSection && musicSection && scrollState.introComplete) {
+    if (codeSection && musicSection && linksSection && scrollState.introComplete) {
       updateCurrentSection();
     }
   });
@@ -111,10 +117,13 @@
     <section id="music" bind:this={musicSection}>
       <Music />
     </section>
+    <section id="links" bind:this={linksSection}>
+      <Links />
+    </section>
   {/if}
 </main>
 
-<Links />
+<Footer />
 
 <style>
   main {
@@ -127,7 +136,8 @@
   }
 
   section#code,
-  section#music {
+  section#music,
+  section#links {
     min-height: auto;
   }
 </style>

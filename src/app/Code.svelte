@@ -10,7 +10,6 @@
 
 <style>
   .code-section {
-    min-height: 100vh;
     padding-top: 80px;
   }
 </style>
