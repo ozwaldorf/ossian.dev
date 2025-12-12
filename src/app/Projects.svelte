@@ -111,85 +111,6 @@
   {#if githubState.error}
     <div class="error">{githubState.error}</div>
   {:else}
-    <div class="github-stats">
-      {#if aggregateStats().yearsOnGitHub != null}
-        <a
-          href={githubState.user?.html_url ??
-            `https://github.com/${githubState.username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="stat-item"
-        >
-          <IconCalendar class="stat-icon calendar" />
-          <span class="stat-value">{aggregateStats().yearsOnGitHub}</span>
-          <span class="stat-label">years on GitHub</span>
-        </a>
-      {/if}
-      <a
-        href={`https://github.com/${githubState.username}?tab=followers`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="stat-item"
-      >
-        <IconFollowers class="stat-icon followers" />
-        <span class="stat-value"
-          >{aggregateStats().followers.toLocaleString()}</span
-        >
-        <span class="stat-label">followers</span>
-      </a>
-      <a
-        href={githubState.user?.html_url ??
-          `https://github.com/${githubState.username}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="stat-item"
-      >
-        <IconStar class="stat-icon star" />
-        <span class="stat-value"
-          >{aggregateStats().totalStars.toLocaleString()}</span
-        >
-        <span class="stat-label">stargazers</span>
-      </a>
-      <a
-        href={githubState.user?.html_url ??
-          `https://github.com/${githubState.username}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="stat-item"
-      >
-        <IconFork class="stat-icon fork" />
-        <span class="stat-value"
-          >{aggregateStats().totalForks.toLocaleString()}</span
-        >
-        <span class="stat-label">forkers</span>
-      </a>
-      <a
-        href={`https://github.com/${githubState.username}?tab=repositories`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="stat-item"
-      >
-        <IconRepo class="stat-icon repo" />
-        <span class="stat-value"
-          >{aggregateStats().publicRepos.toLocaleString()}</span
-        >
-        <span class="stat-label">repos</span>
-      </a>
-    </div>
-
-    {#if languageStats().length > 0}
-      <div class="language-legend">
-        {#each languageStats() as stat}
-          <div class="legend-item">
-            <span class="legend-dot" style="background-color: {stat.color};"
-            ></span>
-            <span class="legend-name">{stat.language}</span>
-            <span class="legend-count">({stat.count})</span>
-          </div>
-        {/each}
-      </div>
-    {/if}
-
     {#if displayPinnedRepos.length > 0}
       <div class="marquee-wrapper">
         <div
@@ -283,6 +204,99 @@
     {:else if displayPinnedRepos.length === 0}
       <div class="empty">No projects found</div>
     {/if}
+
+    <a
+      href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="profile-section"
+    >
+      <div class="profile-header">
+        {#if githubState.user?.avatar_url}
+          <img
+            src={githubState.user.avatar_url}
+            alt={githubState.username}
+            class="profile-avatar"
+          />
+        {/if}
+        <span class="profile-username">@{githubState.username}</span>
+      </div>
+      {#if aggregateStats().yearsOnGitHub != null}
+        <div class="profile-stat">
+          <IconCalendar class="stat-icon calendar" />
+          <span class="stat-value">{aggregateStats().yearsOnGitHub}</span>
+          <span class="stat-label">years</span>
+        </div>
+      {/if}
+      <div class="profile-stat">
+        <IconFollowers class="stat-icon followers" />
+        <span class="stat-value">{aggregateStats().followers.toLocaleString()}</span>
+        <span class="stat-label">followers</span>
+      </div>
+      <div class="profile-stat">
+        <IconStar class="stat-icon star" />
+        <span class="stat-value">{aggregateStats().totalStars.toLocaleString()}</span>
+        <span class="stat-label">stars</span>
+      </div>
+      <div class="profile-stat">
+        <IconFork class="stat-icon fork" />
+        <span class="stat-value">{aggregateStats().totalForks.toLocaleString()}</span>
+        <span class="stat-label">forks</span>
+      </div>
+      <div class="profile-stat">
+        <IconRepo class="stat-icon repo" />
+        <span class="stat-value">{aggregateStats().publicRepos.toLocaleString()}</span>
+        <span class="stat-label">repos</span>
+      </div>
+    </a>
+
+    {#if languageStats().length > 0}
+      {@const total = languageStats().reduce((sum, s) => sum + s.count, 0)}
+      {@const radius = 70}
+      {@const labelRadius = 115}
+      <div class="languages-section">
+        <svg class="donut-chart" viewBox="0 0 200 200">
+          {#each languageStats() as stat, i}
+            {@const startAngle = languageStats().slice(0, i).reduce((sum, s) => sum + s.count, 0) / total * 360}
+            {@const sweepAngle = (stat.count / total) * 360}
+            {@const midAngle = (startAngle + sweepAngle / 2 - 90) * (Math.PI / 180)}
+            {@const largeArc = sweepAngle > 180 ? 1 : 0}
+            {@const startRad = (startAngle - 90) * (Math.PI / 180)}
+            {@const endRad = (startAngle + sweepAngle - 90) * (Math.PI / 180)}
+            {@const x1 = 100 + radius * Math.cos(startRad)}
+            {@const y1 = 100 + radius * Math.sin(startRad)}
+            {@const x2 = 100 + radius * Math.cos(endRad)}
+            {@const y2 = 100 + radius * Math.sin(endRad)}
+            {@const labelX = 100 + labelRadius * Math.cos(midAngle)}
+            {@const labelY = 100 + labelRadius * Math.sin(midAngle)}
+            <path
+              d="M {x1} {y1} A {radius} {radius} 0 {largeArc} 1 {x2} {y2}"
+              fill="none"
+              stroke={stat.color}
+              stroke-width="28"
+            />
+            <text
+              x={labelX}
+              y={labelY - 5}
+              text-anchor="middle"
+              dominant-baseline="middle"
+              class="donut-label"
+            >
+              {stat.language}
+            </text>
+            <text
+              x={labelX}
+              y={labelY + 5}
+              text-anchor="middle"
+              dominant-baseline="middle"
+              class="donut-label donut-label-percent"
+            >
+              {Math.round((stat.count / total) * 100)}%
+            </text>
+          {/each}
+        </svg>
+      </div>
+    {/if}
   {/if}
 </div>
 
@@ -341,58 +355,73 @@
     color: var(--cds-support-error);
   }
 
-  .github-stats {
+  .profile-section {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 0 2rem 1.5rem;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding: 2rem 2rem 1rem;
+    text-decoration: none;
+    color: inherit;
   }
 
-  .stat-item {
+  .profile-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--cds-text-secondary);
-    transition: color 0.2s ease;
+    gap: 0.75rem;
   }
 
-  .stat-item:hover {
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--cds-border-subtle-01);
+  }
+
+  .profile-username {
+    font-size: 1.25rem;
+    font-weight: 600;
     color: var(--cds-text-primary);
   }
 
-  .stat-item :global(.stat-icon) {
-    width: 18px;
-    height: 18px;
-    color: var(--cds-icon-secondary);
+  .profile-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     transition: color 0.2s ease;
   }
 
-  .stat-item:hover :global(.stat-icon.star) {
+  .profile-stat :global(.stat-icon) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .profile-stat :global(.stat-icon.star) {
     color: var(--cds-support-warning);
   }
 
-  .stat-item:hover :global(.stat-icon.fork) {
+  .profile-stat :global(.stat-icon.fork) {
     color: #{colors.$cyan-40};
   }
 
-  .stat-item:hover :global(.stat-icon.repo) {
+  .profile-stat :global(.stat-icon.repo) {
     color: #{colors.$purple-50};
   }
 
-  .stat-item:hover :global(.stat-icon.followers) {
+  .profile-stat :global(.stat-icon.followers) {
     color: var(--cds-support-success);
   }
 
-  .stat-item:hover :global(.stat-icon.calendar) {
+  .profile-stat :global(.stat-icon.calendar) {
     color: var(--cds-support-info);
   }
 
   .stat-value {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
+    color: var(--cds-text-primary);
   }
 
   .stat-label {
@@ -400,42 +429,34 @@
     color: var(--cds-text-helper);
   }
 
-  .language-legend {
+  .languages-section {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
-    padding: 0 2rem 1.5rem;
+    padding: 5rem 2rem 6rem;
   }
 
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  .donut-chart {
+    width: 400px;
+    height: 400px;
+    overflow: visible;
   }
 
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
+  .donut-label {
+    font-size: 8px;
+    fill: var(--cds-text-helper);
   }
 
-  .legend-name {
-    font-size: 0.8rem;
-    color: var(--cds-text-helper);
-  }
-
-  .legend-count {
-    font-size: 0.75rem;
-    color: var(--cds-text-helper);
-    font-variant-numeric: tabular-nums;
+  .donut-label-percent {
+    font-size: 6px;
+    fill: var(--cds-text-placeholder);
   }
 
   .marquee-wrapper {
     overflow: hidden;
     position: relative;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .marquee {

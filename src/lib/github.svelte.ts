@@ -15,6 +15,7 @@ export interface GitHubRepo {
 
 export interface GitHubUser {
   login: string;
+  avatar_url: string;
   public_repos: number;
   public_gists: number;
   followers: number;
