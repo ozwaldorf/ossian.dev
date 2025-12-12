@@ -56,7 +56,7 @@
     align-items: center;
     gap: 0.5rem;
     white-space: nowrap;
-    font-family: monospace;
+    font-family: "IBM Plex Mono", monospace;
     font-size: clamp(0.5rem, 1.5vw, 1rem);
     color: var(--cds-background);
     z-index: 10;
