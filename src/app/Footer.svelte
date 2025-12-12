@@ -44,7 +44,7 @@
     top: 35%;
     left: 15%;
     color: var(--cds-text-helper);
-    font-size: clamp(1rem, 3vw, 2.625rem);
+    font-size: clamp(0.5rem, 3vw, 2.625rem);
   }
 
   .footer-meta {
@@ -55,8 +55,9 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    white-space: nowrap;
     font-family: monospace;
-    font-size: clamp(0.6rem, 1.5vw, 0.85rem);
+    font-size: clamp(0.5rem, 1.5vw, 1rem);
     color: var(--cds-background);
     z-index: 10;
   }
