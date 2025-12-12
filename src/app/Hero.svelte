@@ -142,7 +142,7 @@
   </div>
   <div class="nav-container">
     <nav class="hero-nav">
-      <a bind:this={skeletonHomeLink} href="#" class="nav-link home-skeleton">
+      <a bind:this={skeletonHomeLink} href="./" class="nav-link home-skeleton">
         <IconHome width="20" height="20" />
         <span>Home</span>
       </a>

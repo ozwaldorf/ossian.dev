@@ -9,12 +9,12 @@
   import Footer from "./app/Footer.svelte";
   import { scrollState, updateMorphValues, sectionOpacity } from "./lib/scroll.svelte";
 
-  let heroSection: HTMLElement;
-  let codeSection: HTMLElement;
-  let musicSection: HTMLElement;
-  let bandsSection: HTMLElement;
-  let linksSection: HTMLElement;
-  let footerSection: HTMLElement;
+  let heroSection = $state<HTMLElement | undefined>(undefined);
+  let codeSection = $state<HTMLElement | undefined>(undefined);
+  let musicSection = $state<HTMLElement | undefined>(undefined);
+  let bandsSection = $state<HTMLElement | undefined>(undefined);
+  let linksSection = $state<HTMLElement | undefined>(undefined);
+  let footerSection = $state<HTMLElement | undefined>(undefined);
 
   function updateCurrentSection() {
     if (!scrollState.introComplete) return;
@@ -31,7 +31,7 @@
 
     for (let i = sections.length - 1; i >= 0; i--) {
       const section = sections[i];
-      if (section.el.offsetTop <= viewportCenter) {
+      if (section.el && section.el.offsetTop <= viewportCenter) {
         if (scrollState.currentSection !== section.id) {
           scrollState.currentSection = section.id;
           const newHash = section.id === "hero" ? "" : `#${section.id}`;

@@ -1,7 +1,9 @@
-<script lang="ts">
+<script module lang="ts">
   declare const __COMMIT_HASH__: string;
   declare const __BUILD_DATE__: string;
+</script>
 
+<script lang="ts">
   const commitHash = __COMMIT_HASH__;
   const buildDateObj = new Date(__BUILD_DATE__);
   const buildDate = `${buildDateObj.toLocaleDateString("en-US", { month: "short" })} ${buildDateObj.getDate()}`;

@@ -41,7 +41,7 @@
   let rows = $state(2);
   let gridSize = $derived(cols * rows);
   let bandColors = $state<Map<string, BandColorInfo>>(new Map());
-  let containerEl: HTMLElement;
+  let containerEl = $state<HTMLElement | undefined>(undefined);
 
   function getLuminance(r: number, g: number, b: number): number {
     const [rs, gs, bs] = [r, g, b].map((c) => {
@@ -99,7 +99,7 @@
     bandColors = new Map(bandColors);
   }
 
-  function loadColor(node: HTMLElement, band: Band) {
+  function loadColor(_node: HTMLElement, band: Band) {
     loadBandColor(band);
     return {
       update(newBand: Band) {

@@ -189,8 +189,7 @@
     transition: color 0.2s;
   }
 
-  .nav-link:hover,
-  .nav-link.active {
+  .nav-link:hover {
     color: var(--cds-text-on-color);
   }
 

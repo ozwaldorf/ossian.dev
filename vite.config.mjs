@@ -4,6 +4,8 @@ import deno from "@deno/vite-plugin";
 import Icons from "unplugin-icons/vite";
 import { execSync } from "node:child_process";
 
+const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
+
 // Data source configuration
 const GITHUB_USERNAME = "ozwaldorf";
 const GITHUB_PINNED = [
@@ -25,8 +27,6 @@ const buildDate = new Date().toISOString();
 
 // Fetch and prune all dynamic content
 async function fetchBuildData() {
-  const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
-
   const data = {
     github: { user: null, repos: [], pinned_repos: [] },
     youtube: { channel: null, videos: [] },
