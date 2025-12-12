@@ -42,9 +42,15 @@ function rgbToOklab(r, g, b) {
   const lg = srgbToLinear(g);
   const lb = srgbToLinear(b);
 
-  const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
-  const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
-  const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+  const l = Math.cbrt(
+    0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb,
+  );
+  const m = Math.cbrt(
+    0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb,
+  );
+  const s = Math.cbrt(
+    0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb,
+  );
 
   return {
     L: 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
@@ -93,8 +99,10 @@ async function extractColor(imageUrl) {
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         // Skip center region
-        if (x >= marginX && x < width - marginX &&
-            y >= marginY && y < height - marginY) {
+        if (
+          x >= marginX && x < width - marginX &&
+          y >= marginY && y < height - marginY
+        ) {
           continue;
         }
 
