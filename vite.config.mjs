@@ -26,13 +26,51 @@ const SAWTHAT_USER_ID = "a320940a-b493-4515-9f25-d393ebb540e6";
 const commitHash = execSync("git rev-parse --short=8 HEAD").toString().trim();
 const buildDate = new Date().toISOString();
 
-// Color extraction for album art
-function getLuminance(r, g, b) {
-  const [rs, gs, bs] = [r, g, b].map((c) => {
-    c = c / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+// Color extraction for album art using Oklab for perceptual uniformity
+function srgbToLinear(c) {
+  c = c / 255;
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function linearToSrgb(c) {
+  c = Math.max(0, Math.min(1, c));
+  return c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+}
+
+function rgbToOklab(r, g, b) {
+  const lr = srgbToLinear(r);
+  const lg = srgbToLinear(g);
+  const lb = srgbToLinear(b);
+
+  const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
+  const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
+  const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+
+  return {
+    L: 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+    a: 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+    b: 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s,
+  };
+}
+
+function oklabToRgb(L, a, b) {
+  const l = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s = L - 0.0894841775 * a - 1.2914855480 * b;
+
+  const l3 = l * l * l;
+  const m3 = m * m * m;
+  const s3 = s * s * s;
+
+  const lr = 4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3;
+  const lg = -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3;
+  const lb = -0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3;
+
+  return {
+    r: Math.round(linearToSrgb(lr) * 255),
+    g: Math.round(linearToSrgb(lg) * 255),
+    b: Math.round(linearToSrgb(lb) * 255),
+  };
 }
 
 async function extractColor(imageUrl) {
@@ -44,25 +82,41 @@ async function extractColor(imageUrl) {
     const image = await Jimp.read(Buffer.from(buffer));
     image.resize({ w: 50, h: 50 });
 
-    let r = 0, g = 0, b = 0;
+    let sumL = 0, sumA = 0, sumB = 0;
+    let pixelCount = 0;
     const { width, height } = image;
-    const pixelCount = width * height;
+
+    // Define center exclusion zone (middle 66%)
+    const marginX = Math.floor(width / 6);
+    const marginY = Math.floor(height / 6);
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
+        // Skip center region
+        if (x >= marginX && x < width - marginX &&
+            y >= marginY && y < height - marginY) {
+          continue;
+        }
+
         const pixel = image.getPixelColor(x, y);
-        r += (pixel >> 24) & 0xff;
-        g += (pixel >> 16) & 0xff;
-        b += (pixel >> 8) & 0xff;
+        const r = (pixel >> 24) & 0xff;
+        const g = (pixel >> 16) & 0xff;
+        const b = (pixel >> 8) & 0xff;
+
+        const oklab = rgbToOklab(r, g, b);
+        sumL += oklab.L;
+        sumA += oklab.a;
+        sumB += oklab.b;
+        pixelCount++;
       }
     }
 
-    r = Math.round(r / pixelCount);
-    g = Math.round(g / pixelCount);
-    b = Math.round(b / pixelCount);
+    const avgL = sumL / pixelCount;
+    const avgA = sumA / pixelCount;
+    const avgB = sumB / pixelCount;
 
-    const luminance = getLuminance(r, g, b);
-    return { bg: `rgb(${r}, ${g}, ${b})`, isLight: luminance > 0.4 };
+    const rgb = oklabToRgb(avgL, avgA, avgB);
+    return { bg: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, isLight: avgL > 0.6 };
   } catch (err) {
     console.warn(`Failed to extract color from ${imageUrl}:`, err.message);
     return null;
