@@ -7,21 +7,7 @@
   import Header from "./app/Header.svelte";
   import Links from "./app/Links.svelte";
   import Footer from "./app/Footer.svelte";
-  import { fetchRepos } from "./lib/github.svelte";
-  import { fetchYouTubeChannel } from "./lib/youtube.svelte";
-  import { fetchBands } from "./lib/sawthat.svelte";
   import { scrollState, updateMorphValues, sectionOpacity } from "./lib/scroll.svelte";
-
-  fetchRepos("ozwaldorf", [
-    "lutgen-rs",
-    "flake",
-    "carburetor",
-    "punfetch",
-    "ozboar/zoom-sync",
-  ]);
-
-  fetchYouTubeChannel("UChDWgGHETbLiwXREBHKucAA", "officialphoz");
-  fetchBands();
 
   let heroSection: HTMLElement;
   let codeSection: HTMLElement;

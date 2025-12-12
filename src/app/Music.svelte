@@ -58,7 +58,7 @@
             <IconYoutube width="24" height="24" />
             {youtubeState.channel?.name ?? "Phoz"}
           </h2>
-          <p class="channel-description">{youtubeState.channel?.description?.split('\n')[0] ?? ""}</p>
+          <p class="channel-description">{youtubeState.channel?.description ?? ""}</p>
         </div>
         <IconLaunch class="launch-icon" width="24" height="24" />
       </a>
