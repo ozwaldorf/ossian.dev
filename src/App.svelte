@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Hero from "./app/Hero.svelte";
   import Music from "./app/Music.svelte";
+  import Bands from "./app/Bands.svelte";
   import Code from "./app/Code.svelte";
   import Header from "./app/Header.svelte";
   import Links from "./app/Links.svelte";
@@ -25,6 +26,7 @@
   let heroSection: HTMLElement;
   let codeSection: HTMLElement;
   let musicSection: HTMLElement;
+  let bandsSection: HTMLElement;
   let linksSection: HTMLElement;
   let footerSection: HTMLElement;
 
@@ -77,7 +79,7 @@
   onMount(() => {
     // Handle initial hash navigation
     const hash = window.location.hash.slice(1);
-    if (hash && (hash === "code" || hash === "music" || hash === "links")) {
+    if (hash && (hash === "code" || hash === "music" || hash === "bands" || hash === "links")) {
       // Skip intro animations if navigating directly to a section
       scrollState.introComplete = true;
       scrollState.currentSection = hash;
@@ -85,6 +87,7 @@
       // Set all section opacities to 1 instantly
       sectionOpacity.code.set(1, { duration: 0 });
       sectionOpacity.music.set(1, { duration: 0 });
+      sectionOpacity.bands.set(1, { duration: 0 });
       sectionOpacity.links.set(1, { duration: 0 });
       // Wait for sections to render, then scroll
       requestAnimationFrame(() => {
@@ -113,6 +116,7 @@
         // Update section opacities
         updateSectionOpacity(codeSection, sectionOpacity.code);
         updateSectionOpacity(musicSection, sectionOpacity.music);
+        updateSectionOpacity(bandsSection, sectionOpacity.bands);
         updateSectionOpacity(linksSection, sectionOpacity.links);
         updateSectionOpacity(footerSection, sectionOpacity.footer);
       }
@@ -151,6 +155,9 @@
     <section id="music" bind:this={musicSection} style:opacity={sectionOpacity.music.current}>
       <Music />
     </section>
+    <section id="bands" bind:this={bandsSection} style:opacity={sectionOpacity.bands.current}>
+      <Bands />
+    </section>
     <section id="links" bind:this={linksSection} style:opacity={sectionOpacity.links.current}>
       <Links />
     </section>
@@ -173,6 +180,7 @@
 
   section#code,
   section#music,
+  section#bands,
   section#links {
     min-height: auto;
   }

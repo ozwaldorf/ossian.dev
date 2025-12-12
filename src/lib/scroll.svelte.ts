@@ -6,6 +6,7 @@ import { cubicOut } from "svelte/easing";
 export const sectionOpacity = {
   code: new Tween(0, { duration: 400, easing: cubicOut }),
   music: new Tween(0, { duration: 400, easing: cubicOut }),
+  bands: new Tween(0, { duration: 400, easing: cubicOut }),
   links: new Tween(0, { duration: 400, easing: cubicOut }),
   footer: new Tween(0, { duration: 400, easing: cubicOut }),
 };
@@ -25,7 +26,7 @@ export type ElementPositions = {
 export const scrollState = $state({
   scrollY: 0,
   heroProgress: 0, // 0 (top) to 1 (hero scrolled away) - raw value
-  currentSection: "hero" as "hero" | "code" | "music" | "links",
+  currentSection: "hero" as "hero" | "code" | "music" | "bands" | "links",
   introComplete: false,
 });
 

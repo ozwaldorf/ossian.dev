@@ -41,6 +41,7 @@
   let rows = $state(2);
   let gridSize = $derived(cols * rows);
   let bandColors = $state<Map<string, BandColorInfo>>(new Map());
+  let containerEl: HTMLElement;
 
   function getLuminance(r: number, g: number, b: number): number {
     const [rs, gs, bs] = [r, g, b].map((c) => {
@@ -145,10 +146,9 @@
   }
 
   function computeGrid() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const availableWidth = Math.min(vw - 64, 1200);
-    const availableHeight = vh * 0.6;
+    if (!containerEl) return;
+    const availableWidth = containerEl.clientWidth;
+    const availableHeight = window.innerHeight * 0.6;
 
     const newCols = Math.max(
       MIN_COLS,
@@ -243,7 +243,9 @@
   });
 
   onMount(() => {
-    computeGrid();
+    requestAnimationFrame(() => {
+      computeGrid();
+    });
     window.addEventListener("resize", computeGrid);
     const interval = setInterval(swapRandomTile, SWAP_INTERVAL);
     return () => {
@@ -254,7 +256,7 @@
 </script>
 
 {#if hasSawThatConfig()}
-  <div class="bands-section">
+  <div class="bands-section" bind:this={containerEl}>
     <div class="bands-header">
       <a
         href="https://ossian.sawthat.band"
@@ -317,10 +319,14 @@
   .bands-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
     width: 100%;
     max-width: 1200px;
-    padding-top: 6rem;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .bands-header {
@@ -354,6 +360,8 @@
   .bands-grid {
     display: grid;
     gap: 1rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   .band-card {
@@ -366,6 +374,7 @@
     container-type: inline-size;
     text-decoration: none;
     color: inherit;
+    min-width: 0;
     transition:
       opacity 400ms ease,
       border-color 300ms ease,

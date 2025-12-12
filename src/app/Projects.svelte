@@ -236,12 +236,12 @@
       <div class="profile-stat">
         <IconStar class="stat-icon star" />
         <span class="stat-value">{aggregateStats().totalStars.toLocaleString()}</span>
-        <span class="stat-label">stars</span>
+        <span class="stat-label">stargazers</span>
       </div>
       <div class="profile-stat">
         <IconFork class="stat-icon fork" />
         <span class="stat-value">{aggregateStats().totalForks.toLocaleString()}</span>
-        <span class="stat-label">forks</span>
+        <span class="stat-label">forkers</span>
       </div>
       <div class="profile-stat">
         <IconRepo class="stat-icon repo" />
