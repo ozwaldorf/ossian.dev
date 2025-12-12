@@ -29,7 +29,7 @@ jobs:
           deno-version: v2.x
 
       - name: Install dependencies
-        run: deno install
+        run: deno install --allow-scripts
 
       - name: Build
         run: VITE_YOUTUBE_API_KEY=${{ secrets.VITE_YOUTUBE_API_KEY }} deno task build
