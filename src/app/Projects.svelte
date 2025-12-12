@@ -104,7 +104,9 @@
 </script>
 
 <div class="projects-header">
-  <h2 class="section-heading"><IconCode width="52" height="52" /> Open Source Projects</h2>
+  <h2 class="section-heading">
+    <IconCode width="52" height="52" /> Open Source Projects
+  </h2>
 </div>
 
 <div class="projects-container">
@@ -206,7 +208,8 @@
     {/if}
 
     <a
-      href={githubState.user?.html_url ?? `https://github.com/${githubState.username}`}
+      href={githubState.user?.html_url ??
+        `https://github.com/${githubState.username}`}
       target="_blank"
       rel="noopener noreferrer"
       class="profile-section"
@@ -230,22 +233,30 @@
       {/if}
       <div class="profile-stat">
         <IconFollowers class="stat-icon followers" />
-        <span class="stat-value">{aggregateStats().followers.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().followers.toLocaleString()}</span
+        >
         <span class="stat-label">followers</span>
       </div>
       <div class="profile-stat">
         <IconStar class="stat-icon star" />
-        <span class="stat-value">{aggregateStats().totalStars.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().totalStars.toLocaleString()}</span
+        >
         <span class="stat-label">stargazers</span>
       </div>
       <div class="profile-stat">
         <IconFork class="stat-icon fork" />
-        <span class="stat-value">{aggregateStats().totalForks.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().totalForks.toLocaleString()}</span
+        >
         <span class="stat-label">forkers</span>
       </div>
       <div class="profile-stat">
         <IconRepo class="stat-icon repo" />
-        <span class="stat-value">{aggregateStats().publicRepos.toLocaleString()}</span>
+        <span class="stat-value"
+          >{aggregateStats().publicRepos.toLocaleString()}</span
+        >
         <span class="stat-label">repos</span>
       </div>
     </a>
@@ -257,9 +268,15 @@
       <div class="languages-section">
         <svg class="donut-chart" viewBox="0 0 200 200">
           {#each languageStats() as stat, i}
-            {@const startAngle = languageStats().slice(0, i).reduce((sum, s) => sum + s.count, 0) / total * 360}
+            {@const startAngle =
+              (languageStats()
+                .slice(0, i)
+                .reduce((sum, s) => sum + s.count, 0) /
+                total) *
+              360}
             {@const sweepAngle = (stat.count / total) * 360}
-            {@const midAngle = (startAngle + sweepAngle / 2 - 90) * (Math.PI / 180)}
+            {@const midAngle =
+              (startAngle + sweepAngle / 2 - 90) * (Math.PI / 180)}
             {@const largeArc = sweepAngle > 180 ? 1 : 0}
             {@const startRad = (startAngle - 90) * (Math.PI / 180)}
             {@const endRad = (startAngle + sweepAngle - 90) * (Math.PI / 180)}
@@ -307,7 +324,6 @@
     padding: 2rem 2rem 2rem 2rem;
     text-align: center;
   }
-
 
   .projects-container {
     overflow: hidden;

@@ -39,7 +39,8 @@
   <div class="phoz-section">
     <div class="phoz-header">
       <a
-        href={youtubeState.channel?.url ?? "https://www.youtube.com/@officialphoz"}
+        href={youtubeState.channel?.url ??
+          "https://www.youtube.com/@officialphoz"}
         target="_blank"
         rel="noopener noreferrer"
         class="channel-link"
@@ -58,7 +59,9 @@
             <IconYoutube width="24" height="24" />
             {youtubeState.channel?.name ?? "Phoz"}
           </h2>
-          <p class="channel-description">{youtubeState.channel?.description ?? ""}</p>
+          <p class="channel-description">
+            {youtubeState.channel?.description ?? ""}
+          </p>
         </div>
         <IconLaunch class="launch-icon" width="24" height="24" />
       </a>
@@ -79,13 +82,19 @@
             alt={youtubeState.randomVideo.title}
             class="video-thumbnail"
           />
-          <button class="shuffle-button" onclick={shuffleVideo} title="Random video">
+          <button
+            class="shuffle-button"
+            onclick={shuffleVideo}
+            title="Random video"
+          >
             <IconShuffle width="18" height="18" />
           </button>
         </div>
         <div class="video-info">
           <h3 class="video-title">{youtubeState.randomVideo.title}</h3>
-          <p class="video-date">{formatDate(youtubeState.randomVideo.published)}</p>
+          <p class="video-date">
+            {formatDate(youtubeState.randomVideo.published)}
+          </p>
         </div>
       </a>
     {:else if youtubeState.loading}
@@ -110,7 +119,6 @@
     align-items: center;
     gap: 2rem;
   }
-
 
   .phoz-section {
     display: flex;

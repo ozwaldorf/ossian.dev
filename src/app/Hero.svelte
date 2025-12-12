@@ -269,7 +269,8 @@
             style:left={scrollState.introComplete
               ? `${musicLinkLeft}px`
               : undefined}
-            class:active={scrollState.currentSection === "music" || scrollState.currentSection === "bands"}
+            class:active={scrollState.currentSection === "music" ||
+              scrollState.currentSection === "bands"}
             onclick={(e) => {
               e.preventDefault();
               scrollToSection("music");

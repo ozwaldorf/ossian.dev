@@ -5,7 +5,11 @@
   import Code from "./Code.svelte";
   import Links from "./Links.svelte";
   import Footer from "./Footer.svelte";
-  import { scrollState, updateMorphValues, sectionOpacity } from "../lib/scroll.svelte";
+  import {
+    scrollState,
+    updateMorphValues,
+    sectionOpacity,
+  } from "../lib/scroll.svelte";
 
   interface Props {
     heroSection: HTMLElement | undefined;
@@ -56,10 +60,16 @@
     const visibleThreshold = viewportHeight * 0.5;
 
     const visibleFromBottom = viewportHeight - rect.top;
-    const fadeInProgress = Math.max(0, Math.min(1, visibleFromBottom / visibleThreshold));
+    const fadeInProgress = Math.max(
+      0,
+      Math.min(1, visibleFromBottom / visibleThreshold),
+    );
 
     const visibleFromTop = rect.bottom;
-    const fadeOutProgress = Math.max(0, Math.min(1, visibleFromTop / visibleThreshold));
+    const fadeOutProgress = Math.max(
+      0,
+      Math.min(1, visibleFromTop / visibleThreshold),
+    );
 
     tween.set(Math.min(fadeInProgress, fadeOutProgress));
   }
@@ -68,7 +78,8 @@
     // Handle initial hash navigation
     if (initialHash) {
       scrollState.introComplete = true;
-      scrollState.currentSection = initialHash as typeof scrollState.currentSection;
+      scrollState.currentSection =
+        initialHash as typeof scrollState.currentSection;
       updateMorphValues(1, true);
       sectionOpacity.code.set(1, { duration: 0 });
       sectionOpacity.music.set(1, { duration: 0 });
@@ -114,22 +125,43 @@
   });
 
   $effect(() => {
-    if (codeSection && musicSection && linksSection && scrollState.introComplete) {
+    if (
+      codeSection &&
+      musicSection &&
+      linksSection &&
+      scrollState.introComplete
+    ) {
       updateCurrentSection();
     }
   });
 </script>
 
-<section id="code" bind:this={codeSection} style:opacity={sectionOpacity.code.current}>
+<section
+  id="code"
+  bind:this={codeSection}
+  style:opacity={sectionOpacity.code.current}
+>
   <Code />
 </section>
-<section id="music" bind:this={musicSection} style:opacity={sectionOpacity.music.current}>
+<section
+  id="music"
+  bind:this={musicSection}
+  style:opacity={sectionOpacity.music.current}
+>
   <Music />
 </section>
-<section id="bands" bind:this={bandsSection} style:opacity={sectionOpacity.bands.current}>
+<section
+  id="bands"
+  bind:this={bandsSection}
+  style:opacity={sectionOpacity.bands.current}
+>
   <Bands />
 </section>
-<section id="links" bind:this={linksSection} style:opacity={sectionOpacity.links.current}>
+<section
+  id="links"
+  bind:this={linksSection}
+  style:opacity={sectionOpacity.links.current}
+>
   <Links />
 </section>
 <footer bind:this={footerSection} style:opacity={sectionOpacity.footer.current}>

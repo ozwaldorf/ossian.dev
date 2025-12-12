@@ -53,7 +53,6 @@
     gap: 2rem;
   }
 
-
   .links-list {
     display: flex;
     flex-direction: column;

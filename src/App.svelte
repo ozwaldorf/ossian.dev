@@ -8,12 +8,16 @@
   let heroSection = $state<HTMLElement | undefined>(undefined);
 
   // Check for initial hash to determine if we should load content immediately
-  const initialHash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+  const initialHash =
+    typeof window !== "undefined" ? window.location.hash.slice(1) : "";
   const validHashes = ["code", "music", "bands", "links"];
   const hasValidHash = validHashes.includes(initialHash);
 
   // Dynamic import of content chunk
-  let Content = $state<Component<{ heroSection: HTMLElement | undefined; initialHash?: string }> | null>(null);
+  let Content = $state<Component<{
+    heroSection: HTMLElement | undefined;
+    initialHash?: string;
+  }> | null>(null);
   let loading = false;
 
   async function loadContent() {
@@ -31,7 +35,6 @@
       requestIdleCallback(() => loadContent());
     }
   });
-
 </script>
 
 <Header />
@@ -41,7 +44,10 @@
     <Hero />
   </section>
   {#if Content}
-    <Content {heroSection} initialHash={hasValidHash ? initialHash : undefined} />
+    <Content
+      {heroSection}
+      initialHash={hasValidHash ? initialHash : undefined}
+    />
   {/if}
 </main>
 

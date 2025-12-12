@@ -33,7 +33,7 @@
         band,
         concert,
         id: `${band.id}-${i}`,
-      }))
+      })),
     );
   }
 
@@ -264,7 +264,9 @@
         rel="noopener noreferrer"
         class="header-link"
       >
-        <h3 class="section-heading">I saw that band ... <IconLaunch width="28" height="28" /></h3>
+        <h3 class="section-heading">
+          I saw that band ... <IconLaunch width="28" height="28" />
+        </h3>
       </a>
     </div>
 
@@ -296,7 +298,11 @@
             class:light-bg={colorInfo?.isLight}
             style:--band-color={colorInfo?.bg ?? "var(--cds-border-subtle-01)"}
           >
-            <img src={item.band.picture} alt={item.band.band} class="band-image" />
+            <img
+              src={item.band.picture}
+              alt={item.band.band}
+              class="band-image"
+            />
             <div class="band-info">
               <h4 class="band-name" use:fitText={{ max: 14, min: 5 }}>
                 {item.band.band}
