@@ -12,9 +12,12 @@ const GITHUB_PINNED = [
   "carburetor",
   "punfetch",
   "ozboar/zoom-sync",
+  "fleek-network/lightning",
 ];
 const YOUTUBE_CHANNEL_ID = "UChDWgGHETbLiwXREBHKucAA";
 const YOUTUBE_HANDLE = "officialphoz";
+const SAWTHAT_USER_NAME = "ossian";
+const SAWTHAT_USER_ID = "a320940a-b493-4515-9f25-d393ebb540e6";
 
 // Build info
 const commitHash = execSync("git rev-parse --short=8 HEAD").toString().trim();
@@ -23,12 +26,11 @@ const buildDate = new Date().toISOString();
 // Fetch and prune all dynamic content
 async function fetchBuildData() {
   const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
-  const SAWTHAT_USER_ID = process.env.VITE_SAWTHAT_BAND_ID;
 
   const data = {
     github: { user: null, repos: [], pinned_repos: [] },
     youtube: { channel: null, videos: [] },
-    sawthat: { bands: [] },
+    sawthat: { username: SAWTHAT_USER_NAME, bands: [] },
   };
 
   // Fetch GitHub data

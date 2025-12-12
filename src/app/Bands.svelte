@@ -259,7 +259,7 @@
   <div class="bands-section" bind:this={containerEl}>
     <div class="bands-header">
       <a
-        href="https://ossian.sawthat.band"
+        href="https://{sawThatState.username}.sawthat.band"
         target="_blank"
         rel="noopener noreferrer"
         class="header-link"
@@ -285,7 +285,7 @@
       <div class="bands-grid" style:grid-template-columns="repeat({cols}, 1fr)">
         {#each displayedConcerts as item, i}
           {@const colorInfo = bandColors.get(item.band.id)}
-          {@const concertUrl = `https://ossian.sawthat.band/${encodeURIComponent(item.band.band)}/${item.band.id}?&date=${item.concert.date}`}
+          {@const concertUrl = `https://${sawThatState.username}.sawthat.band/${encodeURIComponent(item.band.band)}/${item.band.id}?&date=${item.concert.date}`}
           <a
             href={concertUrl}
             target="_blank"

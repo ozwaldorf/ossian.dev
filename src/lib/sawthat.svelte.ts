@@ -1,5 +1,6 @@
 declare const __BUILD_DATA__: {
   sawthat: {
+    username: string;
     bands: Band[];
   };
 };
@@ -17,6 +18,7 @@ export interface Band {
 }
 
 export interface SawThatState {
+  username: string;
   bands: Band[];
   loading: boolean;
   error: string | null;
@@ -25,6 +27,7 @@ export interface SawThatState {
 const buildData = __BUILD_DATA__.sawthat;
 
 export const sawThatState = $state<SawThatState>({
+  username: buildData.username,
   bands: buildData.bands,
   loading: false,
   error: null,
