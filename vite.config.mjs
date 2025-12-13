@@ -92,10 +92,11 @@ async function extractColor(imageUrl) {
     const marginX = Math.floor(width / 6);
     const marginY = Math.floor(height / 6);
 
-    // Collect unique colors and their counts
+    // Collect unique colors and their weights (favoring bottom of image)
     const colorCounts = new Map();
 
     for (let y = 0; y < height; y++) {
+      const yWeight = (y + 1) / height; // 0.02 at top, 1.0 at bottom
       for (let x = 0; x < width; x++) {
         // Skip center region
         if (
@@ -109,13 +110,13 @@ async function extractColor(imageUrl) {
         const rgb = pixel >> 8; // strip alpha
 
         if (colorCounts.has(rgb)) {
-          colorCounts.get(rgb).count++;
+          colorCounts.get(rgb).weight += yWeight;
         } else {
           const r = (pixel >> 24) & 0xff;
           const g = (pixel >> 16) & 0xff;
           const b = (pixel >> 8) & 0xff;
           const oklab = rgbToOklab(r, g, b);
-          colorCounts.set(rgb, { oklab, count: 1 });
+          colorCounts.set(rgb, { oklab, weight: yWeight });
         }
       }
     }
@@ -126,12 +127,12 @@ async function extractColor(imageUrl) {
     let sumL = 0, sumA = 0, sumB = 0;
     let totalWeight = 0;
 
-    for (const { oklab, count } of colorCounts.values()) {
-      const weight = Math.pow(count, sharpness);
-      sumL += oklab.L * weight;
-      sumA += oklab.a * weight;
-      sumB += oklab.b * weight;
-      totalWeight += weight;
+    for (const { oklab, weight } of colorCounts.values()) {
+      const w = Math.pow(weight, sharpness);
+      sumL += oklab.L * w;
+      sumA += oklab.a * w;
+      sumB += oklab.b * w;
+      totalWeight += w;
     }
 
     const L = sumL / totalWeight;
