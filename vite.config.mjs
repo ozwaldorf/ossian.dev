@@ -55,11 +55,6 @@ function srgbToLinear(c) {
   return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
 
-function linearToSrgb(c) {
-  c = Math.max(0, Math.min(1, c));
-  return c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
-}
-
 function rgbToOklab(r, g, b) {
   const lr = srgbToLinear(r);
   const lg = srgbToLinear(g);
@@ -79,26 +74,6 @@ function rgbToOklab(r, g, b) {
     L: 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
     a: 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
     b: 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s,
-  };
-}
-
-function oklabToRgb(L, a, b) {
-  const l = L + 0.3963377774 * a + 0.2158037573 * b;
-  const m = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s = L - 0.0894841775 * a - 1.2914855480 * b;
-
-  const l3 = l * l * l;
-  const m3 = m * m * m;
-  const s3 = s * s * s;
-
-  const lr = 4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3;
-  const lg = -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3;
-  const lb = -0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3;
-
-  return {
-    r: Math.round(linearToSrgb(lr) * 255),
-    g: Math.round(linearToSrgb(lg) * 255),
-    b: Math.round(linearToSrgb(lb) * 255),
   };
 }
 
@@ -159,12 +134,11 @@ async function extractColor(imageUrl) {
       totalWeight += weight;
     }
 
-    const avgL = sumL / totalWeight;
-    const avgA = sumA / totalWeight;
-    const avgB = sumB / totalWeight;
+    const L = sumL / totalWeight;
+    const a = sumA / totalWeight;
+    const b = sumB / totalWeight;
 
-    const rgb = oklabToRgb(avgL, avgA, avgB);
-    return { bg: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, isLight: avgL > 0.6 };
+    return { bg: `oklab(${L.toFixed(3)} ${a.toFixed(3)} ${b.toFixed(3)})`, isLight: L > 0.6 };
   } catch (err) {
     console.warn(`Failed to extract color from ${imageUrl}:`, err.message);
     return null;
