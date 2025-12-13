@@ -3,8 +3,30 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import deno from "@deno/vite-plugin";
 import Icons from "unplugin-icons/vite";
 import { execSync } from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
 import { Jimp } from "jimp";
 import albumArt from "album-art";
+
+// Data cache
+const CACHE_PATH = "src/.data.json";
+const CACHE_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
+
+function loadCache() {
+  try {
+    const cache = JSON.parse(readFileSync(CACHE_PATH, "utf-8"));
+    if (cache.timestamp && Date.now() - cache.timestamp < CACHE_MAX_AGE) {
+      return cache;
+    }
+  } catch { }
+  return null;
+}
+
+function saveCache(data) {
+  writeFileSync(
+    CACHE_PATH,
+    JSON.stringify({ data, timestamp: Date.now() }, null, 2),
+  );
+}
 
 const YOUTUBE_API_KEY = process.env.VITE_YOUTUBE_API_KEY;
 
@@ -89,13 +111,14 @@ async function extractColor(imageUrl) {
     const image = await Jimp.read(Buffer.from(buffer));
     image.resize({ w: 50, h: 50 });
 
-    let sumL = 0, sumA = 0, sumB = 0;
-    let pixelCount = 0;
     const { width, height } = image;
 
     // Define center exclusion zone (middle 66%)
     const marginX = Math.floor(width / 6);
     const marginY = Math.floor(height / 6);
+
+    // Collect unique colors and their counts
+    const colorCounts = new Map();
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
@@ -108,21 +131,37 @@ async function extractColor(imageUrl) {
         }
 
         const pixel = image.getPixelColor(x, y);
-        const r = (pixel >> 24) & 0xff;
-        const g = (pixel >> 16) & 0xff;
-        const b = (pixel >> 8) & 0xff;
+        const rgb = pixel >> 8; // strip alpha
 
-        const oklab = rgbToOklab(r, g, b);
-        sumL += oklab.L;
-        sumA += oklab.a;
-        sumB += oklab.b;
-        pixelCount++;
+        if (colorCounts.has(rgb)) {
+          colorCounts.get(rgb).count++;
+        } else {
+          const r = (pixel >> 24) & 0xff;
+          const g = (pixel >> 16) & 0xff;
+          const b = (pixel >> 8) & 0xff;
+          const oklab = rgbToOklab(r, g, b);
+          colorCounts.set(rgb, { oklab, count: 1 });
+        }
       }
     }
 
-    const avgL = sumL / pixelCount;
-    const avgA = sumA / pixelCount;
-    const avgB = sumB / pixelCount;
+    // Weighted average in Oklab space
+    // Sharpness exponent: >1 favors dominant colors, <1 blends more, 1 = linear
+    const sharpness = 4;
+    let sumL = 0, sumA = 0, sumB = 0;
+    let totalWeight = 0;
+
+    for (const { oklab, count } of colorCounts.values()) {
+      const weight = Math.pow(count, sharpness);
+      sumL += oklab.L * weight;
+      sumA += oklab.a * weight;
+      sumB += oklab.b * weight;
+      totalWeight += weight;
+    }
+
+    const avgL = sumL / totalWeight;
+    const avgA = sumA / totalWeight;
+    const avgB = sumB / totalWeight;
 
     const rgb = oklabToRgb(avgL, avgA, avgB);
     return { bg: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, isLight: avgL > 0.6 };
@@ -144,7 +183,8 @@ async function fetchAlbumArt(bandName, albumName = null) {
     return null;
   } catch (err) {
     console.warn(
-      `Failed to fetch album art for "${bandName}"${albumName ? ` (${albumName})` : ""}:`,
+      `Failed to fetch album art for "${bandName}"${albumName ? ` (${albumName})` : ""
+      }:`,
       err.message,
     );
     return null;
@@ -195,7 +235,8 @@ async function batchFetchDeezerArtists(bandNames) {
     const chunkResults = await Promise.all(
       chunk.map(async (name) => {
         try {
-          const url = `${DEEZER_BASE}/search/artist?q=${encodeURIComponent(name)}&limit=1`;
+          const url = `${DEEZER_BASE}/search/artist?q=${encodeURIComponent(name)
+            }&limit=1`;
           const res = await fetch(url).then((r) => r.json());
           return res?.data?.[0]?.id ?? null;
         } catch {
@@ -244,7 +285,9 @@ async function batchFetchAlbumArt(requests) {
         const options = { size: "large" };
         if (album) options.album = album;
         const url = await albumArt(artist, options);
-        return url && typeof url === "string" && url.startsWith("http") ? url : null;
+        return url && typeof url === "string" && url.startsWith("http")
+          ? url
+          : null;
       } catch {
         return null;
       }
@@ -254,6 +297,14 @@ async function batchFetchAlbumArt(requests) {
 
 // Fetch and prune all dynamic content
 async function fetchBuildData() {
+  const cache = loadCache();
+  if (cache) {
+    console.log(
+      `✓ Using cached data from ${new Date(cache.timestamp).toISOString()}`,
+    );
+    return cache.data;
+  }
+
   const data = {
     github: { user: null, repos: [], pinned_repos: [] },
     youtube: { channel: null, videos: [] },
@@ -392,7 +443,9 @@ async function fetchBuildData() {
         console.log("  Fetching artist IDs...");
         const artistIds = await batchFetchDeezerArtists(bandNames);
         const foundArtists = artistIds.filter((id) => id !== null).length;
-        console.log(`  Found ${foundArtists}/${bandNames.length} artists on Deezer`);
+        console.log(
+          `  Found ${foundArtists}/${bandNames.length} artists on Deezer`,
+        );
 
         // Stage 2: Batch fetch albums for all artists
         console.log("  Fetching albums...");
@@ -406,7 +459,9 @@ async function fetchBuildData() {
         bands.forEach((band, bandIdx) => {
           const albums = albumLists[bandIdx];
           band.concerts?.forEach((concert, concertIdx) => {
-            const albumName = concert.date ? findClosestAlbum(albums, concert.date) : null;
+            const albumName = concert.date
+              ? findClosestAlbum(albums, concert.date)
+              : null;
             concertAlbums.push({
               bandIdx,
               concertIdx,
@@ -417,7 +472,9 @@ async function fetchBuildData() {
             if (albumName) matched++;
           });
         });
-        console.log(`  Matched ${matched}/${concertAlbums.length} concerts to albums`);
+        console.log(
+          `  Matched ${matched}/${concertAlbums.length} concerts to albums`,
+        );
 
         // Stage 4: Batch fetch album art for all concerts
         console.log("  Fetching artwork...");
@@ -460,6 +517,7 @@ async function fetchBuildData() {
     console.log("⚠ SawThat: No user ID configured");
   }
 
+  saveCache(data);
   return data;
 }
 
