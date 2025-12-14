@@ -17,7 +17,7 @@ function loadCache() {
     if (cache.timestamp && Date.now() - cache.timestamp < CACHE_MAX_AGE) {
       return cache;
     }
-  } catch { }
+  } catch {}
   return null;
 }
 
@@ -139,7 +139,10 @@ async function extractColor(imageUrl) {
     const a = sumA / totalWeight;
     const b = sumB / totalWeight;
 
-    return { bg: `oklab(${L.toFixed(3)} ${a.toFixed(3)} ${b.toFixed(3)})`, isLight: L > 0.6 };
+    return {
+      bg: `oklab(${L.toFixed(3)} ${a.toFixed(3)} ${b.toFixed(3)})`,
+      isLight: L > 0.6,
+    };
   } catch (err) {
     console.warn(`Failed to extract color from ${imageUrl}:`, err.message);
     return null;
@@ -158,7 +161,8 @@ async function fetchAlbumArt(bandName, albumName = null) {
     return null;
   } catch (err) {
     console.warn(
-      `Failed to fetch album art for "${bandName}"${albumName ? ` (${albumName})` : ""
+      `Failed to fetch album art for "${bandName}"${
+        albumName ? ` (${albumName})` : ""
       }:`,
       err.message,
     );
@@ -210,8 +214,9 @@ async function batchFetchDeezerArtists(bandNames) {
     const chunkResults = await Promise.all(
       chunk.map(async (name) => {
         try {
-          const url = `${DEEZER_BASE}/search/artist?q=${encodeURIComponent(name)
-            }&limit=1`;
+          const url = `${DEEZER_BASE}/search/artist?q=${
+            encodeURIComponent(name)
+          }&limit=1`;
           const res = await fetch(url).then((r) => r.json());
           return res?.data?.[0]?.id ?? null;
         } catch {

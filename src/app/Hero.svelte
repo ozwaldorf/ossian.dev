@@ -132,6 +132,9 @@
     };
   }
 
+  // Only enable morphing when positions are ready
+  let canMorph = $derived(scrollState.introComplete && targetPos !== null);
+
   let profileTop = $derived(getInterpolatedPos("profile").top);
   let profileLeft = $derived(getInterpolatedPos("profile").left);
   let nameTop = $derived(getInterpolatedPos("name").top);
@@ -188,10 +191,10 @@
 <a
       href="./"
       class="profile-image"
-      class:morphing={scrollState.introComplete}
+      class:morphing={canMorph}
       style:--profile-size="{$profileSize}px"
-      style:top={scrollState.introComplete ? `${profileTop}px` : undefined}
-      style:left={scrollState.introComplete ? `${profileLeft}px` : undefined}
+      style:top={canMorph ? `${profileTop}px` : undefined}
+      style:left={canMorph ? `${profileLeft}px` : undefined}
       in:fade={{ duration: skipIntro ? 0 : 1000 }}
       onintroend={() => !skipIntro && (step = 1)}
       onclick={(e) => {
@@ -204,10 +207,10 @@
 
     <div
       class="name-container"
-      class:morphing={scrollState.introComplete}
+      class:morphing={canMorph}
       style:--name-size="{$nameSize}rem"
-      style:top={scrollState.introComplete ? `${nameTop}px` : undefined}
-      style:left={scrollState.introComplete ? `${nameLeft}px` : undefined}
+      style:top={canMorph ? `${nameTop}px` : undefined}
+      style:left={canMorph ? `${nameLeft}px` : undefined}
     >
       {#if step >= 1}
         <div in:slide={{ duration: skipIntro ? 0 : 400 }}>
@@ -225,10 +228,10 @@
     {#if step >= 2}
       <div
         class="title-container"
-        class:morphing={scrollState.introComplete}
+        class:morphing={canMorph}
         style:--title-size="{$titleSize}rem"
-        style:top={scrollState.introComplete ? `${titleTop}px` : undefined}
-        style:left={scrollState.introComplete ? `${titleLeft}px` : undefined}
+        style:top={canMorph ? `${titleTop}px` : undefined}
+        style:left={canMorph ? `${titleLeft}px` : undefined}
         in:fadeSlide={{ duration: skipIntro ? 0 : 800 }}
         onintroend={() => !skipIntro && setTimeout(() => (step = 3), 300)}
       >
@@ -242,15 +245,15 @@
         class="nav-container"
         onintroend={() => !skipIntro && onIntroComplete()}
       >
-        <nav class="hero-nav" class:morphing={scrollState.introComplete}>
+        <nav class="hero-nav" class:morphing={canMorph}>
 <a
             href="./"
             class="nav-link home-link"
-            class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete
+            class:morphing={canMorph}
+            style:top={canMorph
               ? `${homeLinkTop}px`
               : undefined}
-            style:left={scrollState.introComplete
+            style:left={canMorph
               ? `${homeLinkLeft}px`
               : undefined}
             style:opacity={$headerOpacity}
@@ -267,11 +270,11 @@
           <a
             href="#code"
             class="nav-link"
-            class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete
+            class:morphing={canMorph}
+            style:top={canMorph
               ? `${codeLinkTop}px`
               : undefined}
-            style:left={scrollState.introComplete
+            style:left={canMorph
               ? `${codeLinkLeft}px`
               : undefined}
             class:active={scrollState.currentSection === "code"}
@@ -286,11 +289,11 @@
           <a
             href="#music"
             class="nav-link"
-            class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete
+            class:morphing={canMorph}
+            style:top={canMorph
               ? `${musicLinkTop}px`
               : undefined}
-            style:left={scrollState.introComplete
+            style:left={canMorph
               ? `${musicLinkLeft}px`
               : undefined}
             class:active={scrollState.currentSection === "music" ||
@@ -306,11 +309,11 @@
           <a
             href="#links"
             class="nav-link"
-            class:morphing={scrollState.introComplete}
-            style:top={scrollState.introComplete
+            class:morphing={canMorph}
+            style:top={canMorph
               ? `${linksLinkTop}px`
               : undefined}
-            style:left={scrollState.introComplete
+            style:left={canMorph
               ? `${linksLinkLeft}px`
               : undefined}
             class:active={scrollState.currentSection === "links"}
