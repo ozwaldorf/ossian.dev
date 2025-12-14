@@ -231,7 +231,8 @@
             class:fading={fadingTile === i}
             class:loaded={loadedImages.has(item.id)}
             class:light-bg={item.concert.color?.isLight}
-            style:--band-color={item.concert.color?.bg ?? "var(--cds-border-subtle-01)"}
+            style:--band-color={item.concert.color?.bg ??
+              "var(--cds-border-subtle-01)"}
           >
             <img
               src={item.concert.picture ?? item.band.picture}
@@ -257,7 +258,12 @@
 
 <svg width="0" height="0" style="position: absolute;">
   <filter id="noise">
-    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+    <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.8"
+      numOctaves="4"
+      stitchTiles="stitch"
+    />
     <feColorMatrix type="saturate" values="0" />
   </filter>
 </svg>
@@ -339,7 +345,7 @@
     background: gray;
     filter: url(#noise) contrast(150%);
     mix-blend-mode: overlay;
-    opacity: 0.2;
+    opacity: 0.4;
     pointer-events: none;
     z-index: 1;
   }
@@ -376,31 +382,18 @@
   .band-info {
     margin-top: -70cqi;
     height: 85cqi;
-    padding: 0 0.75rem 0.75rem;
+    padding: 1rem 0.75rem 0.75rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     gap: 0.25rem;
     text-align: center;
-    background:
-      radial-gradient(
-        ellipse 50% 90% at 0% 100% in oklab,
-        var(--band-color, var(--cds-layer-01)) 0%,
-        var(--band-color, var(--cds-layer-01)) 40%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 50% 90% at 100% 100% in oklab,
-        var(--band-color, var(--cds-layer-01)) 0%,
-        var(--band-color, var(--cds-layer-01)) 40%,
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 80% 55% at 50% 100% in oklab,
-        var(--band-color, var(--cds-layer-01)) 0%,
-        var(--band-color, var(--cds-layer-01)) 50%,
-        transparent 100%
-      );
+    background: radial-gradient(
+      ellipse 80% 71% at 50% 0% in oklab,
+      transparent 0%,
+      transparent 50%,
+      var(--band-color, var(--cds-layer-01)) 100%
+    );
   }
 
   .band-name {
