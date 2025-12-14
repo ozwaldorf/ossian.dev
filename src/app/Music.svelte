@@ -1,21 +1,63 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { youtubeState } from "../lib/youtube.svelte";
+  import { fade } from "svelte/transition";
   import IconYoutube from "~icons/carbon/logo-youtube";
   import IconShuffle from "~icons/carbon/shuffle";
   import IconLaunch from "~icons/carbon/launch";
 
-  function shuffleVideo(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (youtubeState.videos.length > 1) {
+  const SHUFFLE_INTERVAL = 10000; // 10 seconds
+
+  let isShuffling = $state(false);
+  let progress = $state(0);
+  let isPaused = $state(false);
+  let lastTime = $state(0);
+  let animationFrame: number;
+
+  function doShuffle() {
+    if (youtubeState.videos.length > 1 && !isShuffling) {
+      isShuffling = true;
       let newIndex: number;
       const currentId = youtubeState.randomVideo?.id;
       do {
         newIndex = Math.floor(Math.random() * youtubeState.videos.length);
       } while (youtubeState.videos[newIndex].id === currentId);
       youtubeState.randomVideo = youtubeState.videos[newIndex];
+      progress = 0;
+      lastTime = performance.now();
     }
   }
+
+  function shuffleVideo(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+    doShuffle();
+  }
+
+  function onTransitionEnd() {
+    isShuffling = false;
+  }
+
+  function tick(time: number) {
+    if (!isPaused && !isShuffling && youtubeState.randomVideo) {
+      const delta = time - lastTime;
+      progress = Math.min(progress + delta / SHUFFLE_INTERVAL, 1);
+      lastTime = time;
+
+      if (progress >= 1) {
+        doShuffle();
+      }
+    } else {
+      lastTime = time;
+    }
+    animationFrame = requestAnimationFrame(tick);
+  }
+
+  onMount(() => {
+    lastTime = performance.now();
+    animationFrame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrame);
+  });
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -66,33 +108,66 @@
     {#if youtubeState.error}
       <div class="error">{youtubeState.error}</div>
     {:else if youtubeState.randomVideo}
-      <a
-        href={`https://www.youtube.com/watch?v=${youtubeState.randomVideo.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="video-card"
+      <div
+        class="video-card-container"
+        onmouseenter={() => (isPaused = true)}
+        onmouseleave={() => (isPaused = false)}
       >
-        <div class="thumbnail-wrapper">
-          <img
-            src={youtubeState.randomVideo.thumbnail}
-            alt={youtubeState.randomVideo.title}
-            class="video-thumbnail"
-          />
-          <button
-            class="shuffle-button"
-            onclick={shuffleVideo}
-            title="Random video"
+        <button
+          class="shuffle-button"
+          class:spinning={isShuffling}
+          onclick={shuffleVideo}
+          title="Random video ({Math.round((1 - progress) * 10)}s)"
+          disabled={isShuffling}
+        >
+          <svg class="progress-ring" viewBox="0 0 44 44">
+            <circle
+              class="progress-ring-bg"
+              cx="22"
+              cy="22"
+              r="20"
+              fill="none"
+              stroke-width="2"
+            />
+            <circle
+              class="progress-ring-fill"
+              cx="22"
+              cy="22"
+              r="20"
+              fill="none"
+              stroke-width="2"
+              stroke-dasharray="125.66"
+              stroke-dashoffset={125.66 * (1 - progress)}
+            />
+          </svg>
+          <IconShuffle width="18" height="18" />
+        </button>
+        {#key youtubeState.randomVideo.id}
+          <a
+            href={`https://www.youtube.com/watch?v=${youtubeState.randomVideo.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="video-card"
+            in:fade={{ duration: 200, delay: 150 }}
+            out:fade={{ duration: 150 }}
+            onintroend={onTransitionEnd}
           >
-            <IconShuffle width="18" height="18" />
-          </button>
-        </div>
-        <div class="video-info">
-          <h3 class="video-title">{youtubeState.randomVideo.title}</h3>
-          <p class="video-date">
-            {formatDate(youtubeState.randomVideo.published)}
-          </p>
-        </div>
-      </a>
+            <div class="thumbnail-wrapper">
+              <img
+                src={youtubeState.randomVideo.thumbnail}
+                alt={youtubeState.randomVideo.title}
+                class="video-thumbnail"
+              />
+            </div>
+            <div class="video-info">
+              <h3 class="video-title">{youtubeState.randomVideo.title}</h3>
+              <p class="video-date">
+                {formatDate(youtubeState.randomVideo.published)}
+              </p>
+            </div>
+          </a>
+        {/key}
+      </div>
     {:else if youtubeState.loading}
       <div class="video-card loading">
         <div class="thumbnail-wrapper skeleton"></div>
@@ -206,6 +281,16 @@
     box-shadow: var(--cds-shadow);
   }
 
+  .video-card-container {
+    position: relative;
+    width: 100%;
+    display: grid;
+  }
+
+  .video-card-container > .video-card {
+    grid-area: 1 / 1;
+  }
+
   .thumbnail-wrapper {
     position: relative;
     aspect-ratio: 16 / 9;
@@ -221,20 +306,63 @@
 
   .shuffle-button {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: var(--cds-layer-01);
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: #{colors.$red-50};
     border: none;
-    padding: 0.4rem;
-    color: var(--cds-icon-primary);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 
-  .shuffle-button:hover {
-    background: var(--cds-layer-selected-01);
+  .shuffle-button:hover:not(:disabled),
+  .shuffle-button.spinning {
+    background: #{colors.$red-60};
+    transform: scale(1.05);
+  }
+
+  .shuffle-button.spinning :global(svg:not(.progress-ring)) {
+    animation: spin 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .shuffle-button:disabled {
+    cursor: not-allowed;
+  }
+
+  .progress-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    pointer-events: none;
+  }
+
+  .progress-ring-bg {
+    stroke: rgba(255, 255, 255, 0.3);
+  }
+
+  .progress-ring-fill {
+    stroke: white;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
   }
 
   .video-info {
