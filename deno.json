@@ -14,7 +14,7 @@
     "@carbon/type": "npm:@carbon/type@^11.45.0",
     "lightningcss": "npm:lightningcss@^1.30.2",
     "sass": "npm:sass@^1.83.0",
-    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
+    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.6",
     "@iconify-json/carbon": "npm:@iconify-json/carbon@^1.2.14",
     "@mateothegreat/svelte5-router": "npm:@mateothegreat/svelte5-router@^2.16.19",
     "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.1.1",
