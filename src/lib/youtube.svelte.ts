@@ -1,7 +1,6 @@
 declare const __BUILD_DATA__: {
   youtube: {
-    channel: YouTubeChannel | null;
-    videos: YouTubeVideo[];
+    channels: { channel: YouTubeChannel; videos: YouTubeVideo[] }[];
   };
 };
 
@@ -19,25 +18,21 @@ export interface YouTubeChannel {
   avatar: string;
 }
 
-export interface YouTubeState {
-  channel: YouTubeChannel | null;
+export interface YouTubeChannelState {
+  channel: YouTubeChannel;
   videos: YouTubeVideo[];
   randomVideo: YouTubeVideo | null;
-  loading: boolean;
-  error: string | null;
 }
 
 const buildData = __BUILD_DATA__.youtube;
 
-// Pick a random video at runtime for variety
-const randomVideo = buildData.videos.length > 0
-  ? buildData.videos[Math.floor(Math.random() * buildData.videos.length)]
-  : null;
-
-export const youtubeState = $state<YouTubeState>({
-  channel: buildData.channel,
-  videos: buildData.videos,
-  randomVideo,
-  loading: false,
-  error: null,
-});
+// Pick a random video per channel at runtime for variety
+export const youtubeChannels = $state<YouTubeChannelState[]>(
+  buildData.channels.map(({ channel, videos }) => ({
+    channel,
+    videos,
+    randomVideo: videos.length > 0
+      ? videos[Math.floor(Math.random() * videos.length)]
+      : null,
+  })),
+);

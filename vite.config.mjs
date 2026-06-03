@@ -40,8 +40,10 @@ const GITHUB_PINNED = [
   "ozboar/zoom-sync",
   "fleek-network/lightning",
 ];
-const YOUTUBE_CHANNEL_ID = "UChDWgGHETbLiwXREBHKucAA";
-const YOUTUBE_HANDLE = "officialphoz";
+const YOUTUBE_CHANNELS = [
+  { id: "UChDWgGHETbLiwXREBHKucAA", handle: "officialphoz" },
+  { id: "UC2maoxYCDVtGugDA7rCn7nw", handle: "stringyandthebeans" },
+];
 const SAWTHAT_USER_NAME = "ossian";
 const SAWTHAT_USER_ID = "a320940a-b493-4515-9f25-d393ebb540e6";
 
@@ -287,7 +289,7 @@ async function fetchBuildData() {
 
   const data = {
     github: { user: null, repos: [], pinned_repos: [] },
-    youtube: { channel: null, videos: [] },
+    youtube: { channels: [] },
     sawthat: { username: SAWTHAT_USER_NAME, bands: [] },
   };
 
@@ -359,52 +361,54 @@ async function fetchBuildData() {
 
   // Fetch YouTube data
   if (YOUTUBE_API_KEY) {
-    try {
-      const API_BASE = "https://www.googleapis.com/youtube/v3";
-      const channelUrl =
-        `${API_BASE}/channels?part=snippet,statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
-      const channelResponse = await fetch(channelUrl);
+    const API_BASE = "https://www.googleapis.com/youtube/v3";
+    for (const { id, handle } of YOUTUBE_CHANNELS) {
+      try {
+        const channelResponse = await fetch(
+          `${API_BASE}/channels?part=snippet,statistics,contentDetails&id=${id}&key=${YOUTUBE_API_KEY}`,
+        );
+        if (!channelResponse.ok) continue;
 
-      if (channelResponse.ok) {
-        const channelData = await channelResponse.json();
-        const channel = channelData.items?.[0];
+        const channel = (await channelResponse.json()).items?.[0];
+        if (!channel) continue;
 
-        if (channel) {
-          const uploadsPlaylistId = channel.contentDetails?.relatedPlaylists
-            ?.uploads;
-
-          data.youtube.channel = {
+        const entry = {
+          channel: {
             name: channel.snippet.title,
             description: channel.snippet.description?.split("\n")[0] ?? "",
-            url: `https://www.youtube.com/@${YOUTUBE_HANDLE}`,
+            url: `https://www.youtube.com/@${handle}`,
             avatar: channel.snippet.thumbnails?.medium?.url ||
               channel.snippet.thumbnails?.default?.url,
-          };
+          },
+          videos: [],
+        };
 
-          if (uploadsPlaylistId) {
-            const videosUrl =
-              `${API_BASE}/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=15&key=${YOUTUBE_API_KEY}`;
-            const videosResponse = await fetch(videosUrl);
-
-            if (videosResponse.ok) {
-              const videosData = await videosResponse.json();
-              data.youtube.videos = (videosData.items || []).map((item) => ({
-                id: item.snippet.resourceId.videoId,
-                title: item.snippet.title,
-                published: item.snippet.publishedAt,
-                thumbnail: item.snippet.thumbnails?.maxres?.url ||
-                  item.snippet.thumbnails?.high?.url ||
-                  item.snippet.thumbnails?.medium?.url ||
-                  `https://i.ytimg.com/vi/${item.snippet.resourceId.videoId}/hqdefault.jpg`,
-              }));
-            }
+        const uploadsPlaylistId = channel.contentDetails?.relatedPlaylists
+          ?.uploads;
+        if (uploadsPlaylistId) {
+          const videosResponse = await fetch(
+            `${API_BASE}/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=15&key=${YOUTUBE_API_KEY}`,
+          );
+          if (videosResponse.ok) {
+            const videosData = await videosResponse.json();
+            entry.videos = (videosData.items || []).map((item) => ({
+              id: item.snippet.resourceId.videoId,
+              title: item.snippet.title,
+              published: item.snippet.publishedAt,
+              thumbnail: item.snippet.thumbnails?.maxres?.url ||
+                item.snippet.thumbnails?.high?.url ||
+                item.snippet.thumbnails?.medium?.url ||
+                `https://i.ytimg.com/vi/${item.snippet.resourceId.videoId}/hqdefault.jpg`,
+            }));
           }
         }
+
+        data.youtube.channels.push(entry);
+      } catch (error) {
+        console.error(`Failed to fetch YouTube channel ${handle}:`, error);
       }
-      console.log(`✓ YouTube: ${data.youtube.videos.length} videos`);
-    } catch (error) {
-      console.error("Failed to fetch YouTube data:", error);
     }
+    console.log(`✓ YouTube: ${data.youtube.channels.length} channels`);
   } else {
     console.log("⚠ YouTube: No API key configured");
   }
