@@ -1,6 +1,7 @@
 <script lang="ts">
   import IconLogoGithub from "~icons/carbon/logo-github";
   import IconLogoX from "~icons/carbon/logo-x";
+  import IconLogoInstagram from "~icons/carbon/logo-instagram";
   import IconLaunch from "~icons/carbon/launch";
 </script>
 
@@ -28,6 +29,16 @@
     >
       <IconLogoX width="24" height="24" />
       <span class="link-text">x.com</span>
+      <IconLaunch class="launch-icon" width="20" height="20" />
+    </a>
+    <a
+      href="https://instagram.com/_ossian"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-card"
+    >
+      <IconLogoInstagram width="24" height="24" />
+      <span class="link-text">Instagram</span>
       <IconLaunch class="launch-icon" width="20" height="20" />
     </a>
     <a
