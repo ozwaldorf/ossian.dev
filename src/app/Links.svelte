@@ -47,7 +47,7 @@
       rel="noopener noreferrer"
       class="link-card"
     >
-      <span>✌️</span>
+      <span>🤘</span>
       <span class="link-text">sawthat.band</span>
       <IconLaunch class="launch-icon" width="20" height="20" />
     </a>
