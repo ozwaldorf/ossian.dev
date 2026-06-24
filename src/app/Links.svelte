@@ -12,6 +12,16 @@
 
   <div class="links-list">
     <a
+      href="https://instagram.com/_ossian"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-card"
+    >
+      <IconLogoInstagram width="24" height="24" />
+      <span class="link-text">Instagram</span>
+      <IconLaunch class="launch-icon" width="20" height="20" />
+    </a>
+    <a
       href="https://github.com/ozwaldorf"
       target="_blank"
       rel="noopener noreferrer"
@@ -29,16 +39,6 @@
     >
       <IconLogoX width="24" height="24" />
       <span class="link-text">x.com</span>
-      <IconLaunch class="launch-icon" width="20" height="20" />
-    </a>
-    <a
-      href="https://instagram.com/_ossian"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="link-card"
-    >
-      <IconLogoInstagram width="24" height="24" />
-      <span class="link-text">Instagram</span>
       <IconLaunch class="launch-icon" width="20" height="20" />
     </a>
     <a
